@@ -14,19 +14,28 @@ var refreshStatePair = () => {
     }()),
     pair = [ causes[firstIndex], causes[secondIndex] ];
 
-  state.set('pair', pair);
+  exports.template(pair);
 
   mediator.publish("pair_updated");
 };
 
-module.exports = {
+var exports = {
   initialize() {
     document.querySelector("#new-vote").addEventListener("click", refreshStatePair);
   },
   start() {
     refreshStatePair();
   },
-  inflate() {
-    console.log("inflating");
+  inflate(data) {
+    exports.template(data.params.pairing.split('-vs-').map((x) => {
+      return _.findWhere(causes, { slug: x });
+    }));
+  },
+  template(pair) {
+    state.set('pair', pair);
+
+    document.querySelector("#slug-display").innerHTML = pair.map(x => x.name).join(" ");
   }
 };
+
+module.exports = exports;
