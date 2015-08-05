@@ -12,8 +12,12 @@ Object.keys(routes).forEach(key => routes[key].initialize());
 
 page.base('/');
 
-page('/', function() {
-  page.redirect('vote');
+page('/', function(context) {
+  if(context.pathname.indexOf("#!") !== -1) {
+    page.redirect(context.pathname.slice(3));
+  } else {
+    page.redirect('vote');
+  }
 });
 
 page('vote', routes.vote.start);
