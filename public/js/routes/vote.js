@@ -4,15 +4,26 @@ var causes = require('../data/causes');
 var dimensions = require("../data/dimensions");
 
 var refreshStatePair = () => {
-  var firstIndex = Math.round(Math.random() * (causes.length - 1)),
-    secondIndex = (function getSecondIndex() {
-      var attempt = Math.round(Math.random() * (causes.length - 1));
-      if(attempt === firstIndex) {
-        return getSecondIndex();
-      }
-      return attempt;
-    }()),
-    pair = [ firstIndex, secondIndex, Math.round(Math.random() * (dimensions.length - 1)) ];
+  var pair = (function getIndices() {
+    if(state.get('pair_history').length === causes.length * (causes.length - 1) * dimensions.length) {
+      return [-1, -1, -1];
+    }
+
+    var attempt = [
+      Math.round(Math.random() * (causes.length - 1)),
+      Math.round(Math.random() * (causes.length - 1)),
+      Math.round(Math.random() * (dimensions.length - 1))
+    ];
+
+    if(attempt[0] === attempt[1] || state.get('pair_history').some((x) => {
+      return _.isEqual(x, attempt);
+    })) {
+      return getIndices();
+    }
+    return attempt;
+  }());
+
+  console.log(pair);
 
   exports.template(pair);
 
@@ -37,6 +48,7 @@ var exports = {
     }).concat(_.findIndex(dimensions, x => x.name === dimension)));
   },
   template(pair) {
+    state.set('pair_history', state.get('pair_history').concat(pair));
     state.set('pair', pair);
 
     document.querySelector("#slug-display").innerHTML = [
