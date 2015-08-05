@@ -21,8 +21,5 @@ module.exports = {
 
     console.log(pair[0].slug + "-vs-" + pair[1].slug);
     // fetch a new pair and tell the router to update its url
-  },
-  end() {
-    console.log("end vote");
   }
 };

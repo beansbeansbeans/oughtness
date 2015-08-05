@@ -1,4 +1,3 @@
 module.exports = {
-  start() {},
-  end() {}
+  start() {}
 };

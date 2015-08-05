@@ -7,34 +7,21 @@ var routes = {
 
 page.base('/');
 
-page((ctx, next) => {
-  if(routes[ctx.path]) {
-    routes[ctx.path].start();
-  }
-  next();
-});
-
-page.exit((ctx, next) => {
-  if(routes[ctx.path]) {
-    routes[ctx.path].end();
-  }
-  next();
-});
-
 page('/', function() {
   page.redirect('vote');
 });
 
-page('vote', function() {
-
+page('vote/:pairing', function() {
+  console.log("voting on stuff");
+  routes.vote.start();
 });
 
 page('about', function() {
-
+  routes.about.start();
 });
 
 page('data', function() {
-
+  routes.data.start();
 });
 
 mediator.subscribe("pair_updated", () => {
