@@ -14,10 +14,7 @@ page('/', function() {
 
 page('vote', routes.vote.start);
 
-page('vote/:pairing', function() {
-  console.log("voting on stuff");
-  // routes.vote.start();
-});
+page('vote/:pairing', routes.vote.inflate);
 
 page('about', routes.about.start);
 
