@@ -4,9 +4,11 @@ var mediator = require('../mediator');
 var causes = require('../data/causes');
 var dimensions = require("../data/dimensions");
 
+var possibleCombinationCount = util.factorial(causes.length + dimensions.length) / (util.factorial(3) * util.factorial(causes.length + dimensions.length - 3));
+
 var refreshStatePair = () => {
   var pair = (function getIndices() {
-    if(state.get('pair_history').length === causes.length * (causes.length - 1) * dimensions.length) {
+    if(state.get('pair_history').length === possibleCombinationCount) {
       return [-1, -1, -1];
     }
 
@@ -23,8 +25,6 @@ var refreshStatePair = () => {
     }
     return attempt;
   }());
-
-  console.log(pair);
 
   exports.template(pair);
 
@@ -49,12 +49,16 @@ var exports = {
     }).concat(_.findIndex(dimensions, x => x.name === dimension)));
   },
   template(pair) {
-    state.set('pair_history', state.get('pair_history').concat(pair));
+    state.set('pair_history', state.get('pair_history').concat([pair]));
     state.set('pair', pair);
 
-    document.querySelector("#slug-display").innerHTML = [
-      causes[pair[0]], causes[pair[1]]
-    ].map(x => x.name).join(" ");
+    if(_.isEqual(pair, [-1, -1, -1])) {
+      document.querySelector("#slug-display").innerHTML = "that's it.";
+    } else {
+      document.querySelector("#slug-display").innerHTML = [
+        causes[pair[0]], causes[pair[1]]
+      ].map(x => x.name).join(" ");
+    }
   }
 };
 
