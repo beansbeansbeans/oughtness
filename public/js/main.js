@@ -1,5 +1,6 @@
 var util = require('./util');
 var api = require('./api');
+var router = require('./router');
 
 if(window.location.hostname === "localhost") {
   api.setURL("http://localhost:4400");

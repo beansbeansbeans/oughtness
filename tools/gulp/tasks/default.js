@@ -18,7 +18,7 @@ gulp.task('admin', function() {
 gulp.task('always', function() {
   gutil.log(gutil.colors.green('[ ' + config.env + ' : STARTING TO WATCH... ]'));
 
-  var sequence = ['clean', 'sass', 'markup', 'watch'];
+  var sequence = ['clean', 'sass', 'markup', 'watch', 'connect'];
 
   sequence.push(startedWatching);
 
