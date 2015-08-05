@@ -24,7 +24,7 @@ page('data', routes.data.start);
 
 mediator.subscribe("pair_updated", () => {
   var pair = state.get('pair');
-  page.show('vote/' + pair[0].slug + "-vs-" + pair[1].slug, null, false);
+  page.show('vote/' + pair[2].name + "-of-" + pair[0].slug + "-vs-" + pair[1].slug, null, false);
 });
 
 page();

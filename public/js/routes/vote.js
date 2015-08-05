@@ -12,7 +12,7 @@ var refreshStatePair = () => {
       }
       return attempt;
     }()),
-    pair = [ causes[firstIndex], causes[secondIndex] ];
+    pair = [ causes[firstIndex], causes[secondIndex], dimensions[Math.round(Math.random() * (dimensions.length - 1))] ];
 
   exports.template(pair);
 
@@ -27,14 +27,19 @@ var exports = {
     refreshStatePair();
   },
   inflate(data) {
-    exports.template(data.params.pairing.split('-vs-').map((x) => {
+    var pairing = data.params.pairing,
+      dimension = pairing.slice(0, pairing.indexOf('-of-'));
+
+    exports.template(pairing
+      .slice(dimension.length + '-of-'.length)
+      .split('-vs-').map((x) => {
       return _.findWhere(causes, { slug: x });
-    }));
+    }).concat(_.findWhere(dimensions, { name: dimension })));
   },
   template(pair) {
     state.set('pair', pair);
 
-    document.querySelector("#slug-display").innerHTML = pair.map(x => x.name).join(" ");
+    document.querySelector("#slug-display").innerHTML = [pair[0], pair[1]].map(x => x.name).join(" ");
   }
 };
 

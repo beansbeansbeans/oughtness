@@ -1,14 +1,14 @@
 module.exports = [
   {
-    name: 'Importance',
+    name: 'importance',
     adjective: 'important'
   },
   {
-    name: 'Tractability',
+    name: 'tractability',
     adjective: 'tractable'
   },
   {
-    name: 'Neglectedness',
+    name: 'neglectedness',
     adjective: 'neglected'
   }
 ];
