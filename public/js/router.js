@@ -1,3 +1,4 @@
+var mediator = require('./mediator');
 var routes = {
   vote: require('./routes/vote'),
   data: require('./routes/data'),
@@ -34,6 +35,10 @@ page('about', function() {
 
 page('data', function() {
 
+});
+
+mediator.subscribe("pair_updated", () => {
+  console.log("heard");
 });
 
 page();
