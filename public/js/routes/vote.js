@@ -1,3 +1,4 @@
+var util = require('../util');
 var state = require('../state');
 var mediator = require('../mediator');
 var causes = require('../data/causes');
