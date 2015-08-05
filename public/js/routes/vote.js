@@ -53,7 +53,7 @@ var exports = {
     state.set('pair', pair);
 
     if(_.isEqual(pair, [-1, -1, -1])) {
-      document.querySelector("#slug-display").innerHTML = "that's it.";
+      document.querySelector("#slug-display").innerHTML = "that's it. check out the data.";
     } else {
       document.querySelector("#slug-display").innerHTML = [
         causes[pair[0]], causes[pair[1]]
