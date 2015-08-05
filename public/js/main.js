@@ -1,6 +1,8 @@
 var util = require('./util');
 var api = require('./api');
 var router = require('./router');
+var causes = require('./data/causes');
+var dimensions = require('./data/dimensions');
 
 if(window.location.hostname === "localhost") {
   api.setURL("http://localhost:4400");
