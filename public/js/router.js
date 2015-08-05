@@ -6,6 +6,8 @@ var routes = {
   about: require('./routes/about')
 };
 
+Object.keys(routes).forEach(key => routes[key].initialize());
+
 page.base('/');
 
 page('/', function() {
@@ -21,10 +23,8 @@ page('about', routes.about.start);
 page('data', routes.data.start);
 
 mediator.subscribe("pair_updated", () => {
-  console.log("heard");
-  console.log(state.get('pair'));
   var pair = state.get('pair');
-  page('vote/' + pair[0].slug + "-vs-" + pair[1].slug);
+  page.show('vote/' + pair[0].slug + "-vs-" + pair[1].slug, null, false);
 });
 
 page();
