@@ -25,7 +25,7 @@ page('/', function() {
 });
 
 page('vote', function() {
-  console.log("vote");
+
 });
 
 page('about', function() {
