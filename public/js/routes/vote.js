@@ -12,7 +12,7 @@ var refreshStatePair = () => {
       }
       return attempt;
     }()),
-    pair = [ causes[firstIndex], causes[secondIndex], dimensions[Math.round(Math.random() * (dimensions.length - 1))] ];
+    pair = [ firstIndex, secondIndex, Math.round(Math.random() * (dimensions.length - 1)) ];
 
   exports.template(pair);
 
@@ -33,13 +33,15 @@ var exports = {
     exports.template(pairing
       .slice(dimension.length + '-of-'.length)
       .split('-vs-').map((x) => {
-      return _.findWhere(causes, { slug: x });
-    }).concat(_.findWhere(dimensions, { name: dimension })));
+      return _.findIndex(causes, cause => cause.slug === x);
+    }).concat(_.findIndex(dimensions, x => x.name === dimension)));
   },
   template(pair) {
     state.set('pair', pair);
 
-    document.querySelector("#slug-display").innerHTML = [pair[0], pair[1]].map(x => x.name).join(" ");
+    document.querySelector("#slug-display").innerHTML = [
+      causes[pair[0]], causes[pair[1]]
+    ].map(x => x.name).join(" ");
   }
 };
 

@@ -1,4 +1,6 @@
 var state = require('./state');
+var dimensions = require('./data/dimensions');
+var causes = require('./data/causes');
 var mediator = require('./mediator');
 var routes = {
   vote: require('./routes/vote'),
@@ -24,7 +26,7 @@ page('data', routes.data.start);
 
 mediator.subscribe("pair_updated", () => {
   var pair = state.get('pair');
-  page.show('vote/' + pair[2].name + "-of-" + pair[0].slug + "-vs-" + pair[1].slug, null, false);
+  page.show('vote/' + dimensions[pair[2]].name + "-of-" + causes[pair[0]].slug + "-vs-" + causes[pair[1]].slug, null, false);
 });
 
 page();
