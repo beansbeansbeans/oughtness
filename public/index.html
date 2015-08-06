@@ -20,6 +20,12 @@
   <script id="vote-template" type="text/template">
     {{>templates/vote}}
   </script>
+  <script>
+    var d = document;
+    d.qs = document.querySelector;
+    d.qsa = document.querySelectorAll;
+    d.gbID = document.getElementById;
+  </script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
   <script src="/js/bundle.js"></script>
 </html>

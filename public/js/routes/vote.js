@@ -57,11 +57,12 @@ var exports = {
     state.set('pair', pair);
 
     if(_.isEqual(pair, [-1, -1, -1])) {
-      document.querySelector("#question .main").innerHTML = "that's it. check out the data.";
+      d.qs("#question .main").innerHTML = "that's it. check out the data.";
     } else {
-      document.querySelector("#question .main").innerHTML = [
-        state.get('causes')[pair[0]], state.get('causes')[pair[1]]
-      ].map(x => x.name).join(" ");
+      d.qs("#question ")
+      d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
+      d.qs("#cause-A").textContent = state.get('causes')[pair[0]].name;
+      d.qs("#cause-B").textContent = state.get('causes')[pair[1]].name;
     }
   }
 };
