@@ -2,7 +2,12 @@
 <html>
   {{>templates/head}}
   <body>
-    <li><a href="./about">ABOUT</a></li>
+    <nav>
+      <li id="logo"><a href="./">OUGHTNESS</a></li>
+      <li id="vote"><a href="./vote">VOTE</a></li>
+      <li id="data"><a href="./data">DATA</a></li>
+      <li id="about"><a href="./about">ABOUT</a></li>
+    </nav>
     <div class="vote">
       <input type="text" name="count" placeholder="how many would it take?">
       <input id="vote-button" type="submit" value="submit">
