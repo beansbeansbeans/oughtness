@@ -33,7 +33,10 @@ var refreshStatePair = () => {
 
 var exports = {
   initialize() {
-    document.querySelector("#new-vote").addEventListener("click", refreshStatePair);
+    mediator.subscribe("window_click", (e) => {
+      if(e.target.getAttribute("id") !== "new-vote") { return; }
+      refreshStatePair();
+    });
   },
   start() {
     refreshStatePair();

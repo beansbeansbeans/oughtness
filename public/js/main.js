@@ -1,3 +1,4 @@
+var mediator = require("./mediator");
 var util = require('./util');
 var api = require('./api');
 var router = require('./router');
@@ -10,20 +11,32 @@ if(window.location.hostname === "localhost") {
   api.setURL("http://oughtness-49671.onmodulus.net");
 }
 
-document.querySelector("#vote-button").addEventListener("click", () => {
-  api.post('/vote', {
-    scenario_id: '55be756d248cacaee30bf3e5', 
-    data: 20
-  }, (data) => {
-
-  });
+window.addEventListener("click", (e) => {
+  mediator.publish("window_click", e);
 });
 
-document.querySelector("#create-button").addEventListener("click", () => {
-  api.post('/create', {
-    identifier: "lifeboat",
-    text: "sacrifice lifeboaters for greater good?"
-  }, (data) => {
-
-  });
+mediator.subscribe("route_updated", (context) => {
+  var path = context.path.split('/')[0];
+  document.querySelector("#content").setAttribute("data-active-route", path);
+  document.querySelector("#content").innerHTML = document.querySelector("#" + path + '-template').innerHTML;
 });
+
+router.initialize();
+
+// document.querySelector("#vote-button").addEventListener("click", () => {
+//   api.post('/vote', {
+//     scenario_id: '55be756d248cacaee30bf3e5', 
+//     data: 20
+//   }, (data) => {
+
+//   });
+// });
+
+// document.querySelector("#create-button").addEventListener("click", () => {
+//   api.post('/create', {
+//     identifier: "lifeboat",
+//     text: "sacrifice lifeboaters for greater good?"
+//   }, (data) => {
+
+//   });
+// });
