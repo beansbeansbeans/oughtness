@@ -1,3 +1,4 @@
+var state = require('./state');
 var mediator = require("./mediator");
 var util = require('./util');
 var api = require('./api');
@@ -29,7 +30,11 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   api.get('/causes', (err, results) => {
+    state.set('causes', results.data);
+  });
 
+  api.get('/dimensions', (err, results) => {
+    state.set('dimensions', results.data);
   });
 
   router.initialize();
