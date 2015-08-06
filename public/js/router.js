@@ -37,7 +37,9 @@ module.exports = {
 
     mediator.subscribe("pair_updated", () => {
       var pair = state.get('pair');
-      page.show('vote/' + dimensions[pair[2]].name + "-of-" + causes[pair[0]].slug + "-vs-" + causes[pair[1]].slug, null, false);
+      _.defer(() => {
+        page.show('vote/' + dimensions[pair[2]].name + "-of-" + causes[pair[0]].slug + "-vs-" + causes[pair[1]].slug, null, false);
+      });
     });
 
     page();

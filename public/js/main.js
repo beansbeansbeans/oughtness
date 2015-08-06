@@ -17,9 +17,15 @@ window.addEventListener("click", (e) => {
 
 window.addEventListener("DOMContentLoaded", () => {
   mediator.subscribe("route_updated", (context) => {
-    var path = context.path.split('/')[0];
-    document.querySelector("#content").setAttribute("data-active-route", path);
-    document.querySelector("#content").innerHTML = document.querySelector("#" + path + '-template').innerHTML;
+    var path = context.path.split('/')[0],
+      content = document.querySelector("#content"),
+      partial = document.querySelector("#" + path + '-template');
+
+    content.setAttribute("data-active-route", path);
+    
+    if(partial) {
+      content.innerHTML = partial.innerHTML;
+    }
   });
 
   router.initialize();
