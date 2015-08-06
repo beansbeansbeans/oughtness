@@ -32,11 +32,19 @@ var refreshStatePair = () => {
   mediator.publish("pair_updated");
 };
 
+var voteFor = (selection) => {
+  console.log('VOTE');
+  console.log(selection);
+  refreshStatePair();
+};
+
 var exports = {
   initialize() {
     mediator.subscribe("window_click", (e) => {
-      if(e.target.getAttribute("id") !== "new-vote") { return; }
-      refreshStatePair();
+      var target = e.target;
+      if(target.hasAttribute("data-vote-for")) {
+        voteFor(target.getAttribute("data-vote-for"));
+      }
     });
   },
   start() {
@@ -61,8 +69,8 @@ var exports = {
     } else {
       d.qs("#question ")
       d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
-      d.qs("#cause-A").textContent = state.get('causes')[pair[0]].name;
-      d.qs("#cause-B").textContent = state.get('causes')[pair[1]].name;
+      d.qs("#cause-0").textContent = state.get('causes')[pair[0]].name;
+      d.qs("#cause-1").textContent = state.get('causes')[pair[1]].name;
     }
   }
 };
