@@ -5,3 +5,10 @@ ROUTES
 - if we land on the site with a pair in the URL, we inflate the UI with that pair
 
 - so a route callback simply initializes a module? maybe there's middleware that initializes/destroys every route handler?
+
+a vote: 
+{
+  dimension: ObjectID(...dimension...),
+  winner: ObjectID(...cause...),
+  loser: ObjectID(...cause...)
+}

@@ -22,10 +22,14 @@ window.addEventListener("DOMContentLoaded", () => {
       partial = document.querySelector("#" + path + '-template');
 
     content.setAttribute("data-active-route", path);
-    
+
     if(partial) {
       content.innerHTML = partial.innerHTML;
     }
+  });
+
+  api.get('/causes', (err, results) => {
+
   });
 
   router.initialize();
