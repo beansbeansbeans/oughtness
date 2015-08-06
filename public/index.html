@@ -11,9 +11,15 @@
     <div data-active-route id="content">
     </div>
   </body>
-  {{>templates/about}}
-  {{>templates/data}}
-  {{>templates/vote}}
+  <script id="about-template" type="text/template">
+    {{>templates/about}}
+  </script>
+  <script id="data-template" type="text/template">
+    {{>templates/data}}
+  </script>
+  <script id="vote-template" type="text/template">
+    {{>templates/vote}}
+  </script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js'></script>
   <script src="/js/bundle.js"></script>
 </html>
