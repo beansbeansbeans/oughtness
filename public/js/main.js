@@ -15,13 +15,16 @@ window.addEventListener("click", (e) => {
   mediator.publish("window_click", e);
 });
 
-mediator.subscribe("route_updated", (context) => {
-  var path = context.path.split('/')[0];
-  document.querySelector("#content").setAttribute("data-active-route", path);
-  document.querySelector("#content").innerHTML = document.querySelector("#" + path + '-template').innerHTML;
+window.addEventListener("DOMContentLoaded", () => {
+  mediator.subscribe("route_updated", (context) => {
+    var path = context.path.split('/')[0];
+    document.querySelector("#content").setAttribute("data-active-route", path);
+    document.querySelector("#content").innerHTML = document.querySelector("#" + path + '-template').innerHTML;
+  });
+
+  router.initialize();
 });
 
-router.initialize();
 
 // document.querySelector("#vote-button").addEventListener("click", () => {
 //   api.post('/vote', {
