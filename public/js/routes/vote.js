@@ -1,10 +1,11 @@
 var util = require('../util');
 var state = require('../state');
 var mediator = require('../mediator');
-var causes = require('../data/causes');
-var dimensions = require("../data/dimensions");
+var possibleCombinationCount = 0;
 
-var possibleCombinationCount = util.factorial(causes.length + dimensions.length) / (util.factorial(3) * util.factorial(causes.length + dimensions.length - 3));
+mediator.subscribe("loaded", () => {
+  possibleCombinationCount = util.factorial(state.get('causes').length + state.get('dimensions').length) / (util.factorial(3) * util.factorial(state.get('causes').length + state.get('dimensions').length - 3));
+});
 
 var refreshStatePair = () => {
   var pair = (function getIndices() {
@@ -13,9 +14,9 @@ var refreshStatePair = () => {
     }
 
     var attempt = [
-      Math.round(Math.random() * (causes.length - 1)),
-      Math.round(Math.random() * (causes.length - 1)),
-      Math.round(Math.random() * (dimensions.length - 1))
+      Math.round(Math.random() * (state.get('causes').length - 1)),
+      Math.round(Math.random() * (state.get('causes').length - 1)),
+      Math.round(Math.random() * (state.get('dimensions').length - 1))
     ];
 
     if(attempt[0] === attempt[1] || state.get('pair_history').some((x) => {
@@ -48,8 +49,8 @@ var exports = {
     exports.template(pairing
       .slice(dimension.length + '-of-'.length)
       .split('-vs-').map((x) => {
-      return _.findIndex(causes, cause => cause.slug === x);
-    }).concat(_.findIndex(dimensions, x => x.name === dimension)));
+      return _.findIndex(state.get('causes'), cause => cause.slug === x);
+    }).concat(_.findIndex(state.get('dimensions'), x => x.name === dimension)));
   },
   template(pair) {
     state.set('pair_history', state.get('pair_history').concat([pair]));
@@ -59,7 +60,7 @@ var exports = {
       document.querySelector("#slug-display").innerHTML = "that's it. check out the data.";
     } else {
       document.querySelector("#slug-display").innerHTML = [
-        causes[pair[0]], causes[pair[1]]
+        state.get('causes')[pair[0]], state.get('causes')[pair[1]]
       ].map(x => x.name).join(" ");
     }
   }

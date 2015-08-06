@@ -3,8 +3,6 @@ var mediator = require("./mediator");
 var util = require('./util');
 var api = require('./api');
 var router = require('./router');
-var causes = require('./data/causes');
-var dimensions = require('./data/dimensions');
 
 if(window.location.hostname === "localhost") {
   api.setURL("http://localhost:4400");
@@ -29,12 +27,21 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  api.get('/causes', (err, results) => {
-    state.set('causes', results.data);
-  });
-
-  api.get('/dimensions', (err, results) => {
-    state.set('dimensions', results.data);
+  util.async([
+    (done) => {
+      api.get('/causes', (err, results) => {
+        state.set('causes', results.data);
+        done();
+      });
+    },
+    (done) => {
+      api.get('/dimensions', (err, results) => {
+        state.set('dimensions', results.data);
+        done();
+      });
+    }
+  ], () => {
+    mediator.publish("loaded");
   });
 
   router.initialize();
