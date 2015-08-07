@@ -2,7 +2,6 @@
 
 body {
   margin: 0;
-  color: green;
   @include border-radius(50%);
   @extend %body-font;
   nav {
