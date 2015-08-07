@@ -1,6 +1,15 @@
 @import "library";
 
 body {
+  margin: 0;
   color: green;
   @include border-radius(50%);
+  nav {
+    li {
+      list-style: none;
+      display: inline-block;
+    }
+  }
 }
+
+@import "vote";

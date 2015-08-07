@@ -1,0 +1,12 @@
+[data-route="vote"] {
+  #question {
+    #dimension, .main {
+      display: inline-block;
+    }
+  }
+  #choose-both {
+    .tagline, #choose-both-button {
+      display: inline-block;
+    }
+  }
+}
