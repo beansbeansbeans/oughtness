@@ -1,0 +1,12 @@
+.button {
+  background: $black;
+  color: white;
+  padding: 7px 12px;
+  font-weight: 100;
+  border-radius: 2px;
+  cursor: pointer;
+  @include transition(background-color $transition-duration);
+  &:hover {
+    background: lighten($black, 10%);
+  }
+}
