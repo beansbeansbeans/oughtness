@@ -40,11 +40,11 @@ var voteFor = (selection) => {
     causes: [
       {
         id: state.get('causes')[pair[0]]._id,
-        won: selection === 0
+        won: +selection === 0
       },
       {
         id: state.get('causes')[pair[1]]._id,
-        won: selection === 1
+        won: +selection === 1
       }
     ]
   }, refreshStatePair);
