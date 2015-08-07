@@ -1,5 +1,9 @@
 @import "library";
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   @include border-radius(50%);
