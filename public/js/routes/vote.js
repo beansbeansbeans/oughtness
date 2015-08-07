@@ -1,5 +1,6 @@
 var util = require('../util');
 var state = require('../state');
+var api = require('../api');
 var mediator = require('../mediator');
 var possibleCombinationCount = 0;
 
@@ -33,9 +34,20 @@ var refreshStatePair = () => {
 };
 
 var voteFor = (selection) => {
-  console.log('VOTE');
-  console.log(selection);
-  refreshStatePair();
+  var pair = state.get('pair');
+  api.post('/vote', {
+    dimension: state.get('dimensions')[pair[2]]._id,
+    causes: [
+      {
+        id: state.get('causes')[pair[0]]._id,
+        won: selection === 0
+      },
+      {
+        id: state.get('causes')[pair[1]]._id,
+        won: selection === 1
+      }
+    ]
+  }, refreshStatePair);
 };
 
 var exports = {
