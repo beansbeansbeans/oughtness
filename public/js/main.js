@@ -17,13 +17,12 @@ window.addEventListener("click", (e) => {
 window.addEventListener("DOMContentLoaded", () => {
   mediator.subscribe("route_updated", (context) => {
     var path = context.path.split('/')[0],
-      content = document.querySelector("#content"),
-      partial = document.querySelector("#" + path + '-template');
+      partial = d.qs("#" + path + '-template');
 
-    content.setAttribute("data-active-route", path);
+    d.body.setAttribute("data-active-route", path);
 
     if(partial) {
-      content.innerHTML = partial.innerHTML;
+      d.qs("#content").innerHTML = partial.innerHTML;
     }
   });
 

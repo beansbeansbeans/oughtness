@@ -1,14 +1,14 @@
 <!doctype html>
 <html>
   {{>templates/head}}
-  <body>
+  <body data-active-route>
     <nav>
       <li id="logo"><a href="./">OUGHTNESS</a></li>
-      <li id="vote"><a href="./vote">VOTE</a></li>
-      <li id="data"><a href="./data">DATA</a></li>
       <li id="about"><a href="./about">ABOUT</a></li>
+      <li id="data"><a href="./data">DATA</a></li>
+      <li id="vote"><a href="./vote">VOTE</a></li>
     </nav>
-    <div data-active-route id="content">
+    <div id="content">
     </div>
   </body>
   <script id="about-template" type="text/template">

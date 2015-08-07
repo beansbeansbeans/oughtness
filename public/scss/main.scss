@@ -4,11 +4,41 @@ body {
   margin: 0;
   @include border-radius(50%);
   @extend %body-font;
+  &[data-active-route="vote"] nav #vote,
+  &[data-active-route="about"] nav #about,
+  &[data-active-route="data"] nav #data {
+    &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 3px);
+      height: 1px;
+      background: lighten($black, 10%);
+    }
+  }
   nav {
+    padding: 20px;
     li {
+      position: relative;
       list-style: none;
       display: inline-block;
+      a {
+        font-size: 13px;
+        text-decoration: none;
+        font-weight: 300;
+        &:visited {
+          color: $black;
+        }
+      }
     }
+    #vote, #data, #about {
+      float: right;
+      margin-left: 20px;
+    }
+  }
+  #content {
+    padding: 20px;
   }
 }
 
