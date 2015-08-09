@@ -1,10 +1,15 @@
 var baseURL = "";
+var cache = {};
 
 module.exports = {
   setURL(url) {
     baseURL = url;
   },
   get(url, callback) {
+    if(typeof cache[url] !== 'undefined') {
+      return callback(null, cache[url]);
+    }
+
     var request = new XMLHttpRequest();
     request.open('GET', baseURL + url, true);
 
@@ -23,6 +28,9 @@ module.exports = {
 
       result.responseCode = request.status;
       result.data = data;
+
+      cache[url] = result;
+      
       if(callback) {
         callback(null, result);
       }
