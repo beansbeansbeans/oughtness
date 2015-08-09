@@ -10,7 +10,7 @@ mediator.subscribe("loaded", () => {
 
 var refreshStatePair = () => {
   var pair = (function getIndices() {
-    if(state.get('pair_history').length === possibleCombinationCount) {
+    if(state.get('pair_history').length >= possibleCombinationCount) {
       return [-1, -1, -1];
     }
 
@@ -76,13 +76,13 @@ var exports = {
   },
   template(pair) {
     state.set('pair_history', state.get('pair_history').concat([pair]));
-    state.set('pair', pair);
 
     if(_.isEqual(pair, [-1, -1, -1])) {
       d.qs("#question").innerHTML = "that's it. check out the data.";
       d.qs("#cause-container").innerHTML = '';
       d.qs("#choose-both").innerHTML = '';
     } else {
+      state.set('pair', pair);
       d.qs("#question ")
       d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
       d.qs("#cause-0").textContent = state.get('causes')[pair[0]].name;
