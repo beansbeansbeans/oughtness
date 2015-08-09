@@ -51,13 +51,6 @@ module.exports = {
       var svg = d3.select("svg").attr("width", visWidth)
           .attr("height", visHeight);
 
-      var foreground = svg.append("g")
-          .attr("class", "foreground")
-        .selectAll("path")
-          .data(visData)
-        .enter().append("path")
-          .attr("d", path);
-
       var g = svg.selectAll(".dimension")
           .data(x.domain())
         .enter().append("g")
@@ -73,6 +66,13 @@ module.exports = {
           .style("text-anchor", "middle")
           .attr("y", -9)
           .text(_.identity);
+
+      var foreground = svg.append("g")
+          .attr("class", "foreground")
+        .selectAll("path")
+          .data(visData)
+        .enter().append("path")
+          .attr("d", path);
 
     });
   }
