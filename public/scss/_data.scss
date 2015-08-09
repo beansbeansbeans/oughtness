@@ -8,12 +8,9 @@
       stroke: #ddd;
       shape-rendering: crispEdges;
     }
-
     .foreground path {
       fill: none;
-      stroke: steelblue;
     }
-
     .brush .extent {
       fill-opacity: .3;
       stroke: #fff;
@@ -25,6 +22,20 @@
       fill: none;
       stroke: #ddd;
       shape-rendering: crispEdges;
+    }
+    margin-bottom: 30px;
+  }
+  .key {
+    text-align: left;
+    padding-left: 80px;
+    .color, .label {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .color {
+      width: 5px;
+      height: 5px;
+      margin-right: 10px;
     }
   }
 }

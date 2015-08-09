@@ -41,6 +41,7 @@ module.exports = {
 
       var x = d3.scale.ordinal().domain(_.pluck(state.get('dimensions'), 'name')).rangePoints([0, visWidth]);
       var y = {};
+      var colors = d3.scale.category10();
 
       x.domain().forEach((d, i) => {
         y[d] = d3.scale.linear().domain(d3.extent(visData, (row) => {
@@ -72,7 +73,24 @@ module.exports = {
         .selectAll("path")
           .data(visData)
         .enter().append("path")
-          .attr("d", path);
+          .attr("d", path)
+          .attr("stroke", (_, i) => {
+            return colors(i);
+          });
+
+      var key = d3.select('.key');
+
+      var keyElements = key.selectAll('.item')
+        .data(_.pluck(state.get('causes'), 'name'))
+        .enter().append('div')
+        .attr("class", "item");
+      
+      var keyColors = keyElements.append('div').attr('class', 'color').style("background-color", (_, i) => {
+          return colors(i);
+        });
+
+      var keyLabels = keyElements.append("div").attr("class", "label")
+          .text(_.identity);
 
     });
   }
