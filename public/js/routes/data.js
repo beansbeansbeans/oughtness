@@ -29,26 +29,28 @@ module.exports = {
 
       console.log(visData);
 
-      console.log("RENDER VIZZZZZZ");
-
       var line = d3.svg.line();
 
       function path(d) {
         return line(x.domain().map((p, i) => { 
-          return [x(p), y(d[i])]; 
+          return [x(p), y[p](d[i])]; 
         }));
       }
 
       var visWidth = window.innerWidth - 200;
-      var visHeight = visWidth * 0.75;
+      var visHeight = visWidth * 0.5;
 
       var x = d3.scale.ordinal().domain(_.pluck(state.get('dimensions'), 'name')).rangePoints([0, visWidth]);
-      var y = d3.scale.linear().domain([0, 1]).range([visHeight, 0]);
+      var y = {};
 
-      console.log(x.domain());
+      x.domain().forEach((d, i) => {
+        y[d] = d3.scale.linear().domain(d3.extent(visData, (row) => {
+          return row[i];
+        })).range([visHeight, 0]);
+      });
 
       var svg = d3.select("svg").attr("width", visWidth)
-          .attr("height", visWidth * 0.75);
+          .attr("height", visHeight);
 
       var foreground = svg.append("g")
           .attr("class", "foreground")
