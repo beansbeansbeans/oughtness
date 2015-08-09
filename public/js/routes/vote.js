@@ -30,7 +30,9 @@ var refreshStatePair = () => {
 
   exports.template(pair);
 
-  mediator.publish("pair_updated");
+  if(!_.isEqual(pair, [-1, -1, -1])) {
+    mediator.publish("pair_updated");
+  }
 };
 
 var voteFor = (selection) => {
@@ -77,7 +79,9 @@ var exports = {
     state.set('pair', pair);
 
     if(_.isEqual(pair, [-1, -1, -1])) {
-      d.qs("#question .main").innerHTML = "that's it. check out the data.";
+      d.qs("#question").innerHTML = "that's it. check out the data.";
+      d.qs("#cause-container").innerHTML = '';
+      d.qs("#choose-both").innerHTML = '';
     } else {
       d.qs("#question ")
       d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
