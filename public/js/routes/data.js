@@ -8,7 +8,7 @@ module.exports = {
 
   },
   start() {
-    var vectors = api.get('/vectors', (error, result) => {
+    api.get('/vectors', (error, result) => {
       var visData = new Array(state.get('causes').length);
 
       result.data.forEach((d, i) => {
@@ -27,9 +27,8 @@ module.exports = {
         });
       });
 
-      console.log(visData);
-
       var line = d3.svg.line();
+      var axis = d3.svg.axis().orient("left").ticks([]).tickSize(0);
 
       function path(d) {
         return line(x.domain().map((p, i) => { 
@@ -58,6 +57,22 @@ module.exports = {
           .data(visData)
         .enter().append("path")
           .attr("d", path);
+
+      var g = svg.selectAll(".dimension")
+          .data(x.domain())
+        .enter().append("g")
+          .attr("class", "dimension")
+          .attr("transform", (d) => { 
+            return "translate(" + x(d) + ")"; 
+          });
+
+      g.append("g")
+          .attr("class", "axis")
+          .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
+        .append("text")
+          .style("text-anchor", "middle")
+          .attr("y", -9)
+          .text(_.identity);
 
     });
   }
