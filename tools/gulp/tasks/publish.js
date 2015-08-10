@@ -10,9 +10,7 @@ gulp.task('publish', function() {
     region: 'us-west-2',
     params: {
       Bucket: 'oughtness.cc'
-    },
-    accessKeyId: 'AKIAIAVS33XSS4S6PSGQ',
-    secretAccessKey: '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'
+    }
   });
  
   // define custom headers 
