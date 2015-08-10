@@ -21,7 +21,10 @@ var refreshStatePair = () => {
     ];
 
     if(attempt[0] === attempt[1] || state.get('pair_history').some((x) => {
-      return _.isEqual(x, attempt);
+      var cause1Match, cause2Match;
+      cause1Match = x[0] === attempt[0] || x[0] === attempt[1];
+      cause2Match = x[1] === attempt[1] || x[1] === attempt[0];
+      return x[2] === attempt[2] && cause1Match && cause2Match;
     })) {
       return getIndices();
     }

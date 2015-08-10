@@ -37,7 +37,7 @@ module.exports = {
       }
 
       var visWidth = window.innerWidth - 200;
-      var visHeight = visWidth * 0.5;
+      var visHeight = window.innerHeight * 0.5;
 
       var x = d3.scale.ordinal().domain(_.pluck(state.get('dimensions'), 'name')).rangePoints([0, visWidth]);
       var y = {};
