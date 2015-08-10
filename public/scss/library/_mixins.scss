@@ -1,0 +1,32 @@
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin square($size) {
+  @include size($size, $size);
+}
+
+@mixin calc($property, $value, $fallback: false) {
+  @if $fallback {
+    #{$property}: #{$fallback};
+  }
+  #{$property}: -webkit-calc(#{$value});
+  #{$property}: calc(#{$value});
+}
+
+@mixin responsive-grid-width($absolute, $default-width: $default-width) {
+  @include bigger-than-mobile {
+    width: $default-width;
+    min-width: $default-min-width;
+  }
+  @if $absolute == true {
+    left: 50%;
+    @include bigger-than-mobile {
+      margin-left: -$default-width / 2;
+    }
+  } @else {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

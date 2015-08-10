@@ -44,6 +44,56 @@ body {
   }
 }
 
+#loader-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: white;
+  z-index: 1;
+  @include transition(opacity $transition-duration);
+  pointer-events: none;
+  html:not(.loading) & {
+    opacity: 0;
+  }
+}
+
+#loader {
+  $loader-size: 80px;
+  top: 50%;
+  left: 50%;
+  margin-left: -$loader-size / 2;
+  margin-top: -$loader-size / 2;
+  position: absolute;
+  @include square($loader-size);
+  border-radius: 50%;
+  border: 3px solid $gray;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  @include animation(loader 3s linear infinite);
+  @at-root {
+    @include keyframes(loader) {
+      0% {
+        @include transform(rotate(0deg));
+      }
+      100% {
+        @include transform(rotate(360deg));
+      }
+    }
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 20px;
+    @include square(11px);
+    border-radius: 50%;
+    background-color: $gray;
+  }
+}
+
 @import "ui_elements";
 @import "vote";
 @import "data";

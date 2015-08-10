@@ -41,6 +41,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   ], () => {
     mediator.publish("loaded");
+    d.documentElement.classList.remove('loading');
   });
 
   router.initialize();
