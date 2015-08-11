@@ -46,22 +46,3 @@ window.addEventListener("DOMContentLoaded", () => {
 
   router.initialize();
 });
-
-
-// document.querySelector("#vote-button").addEventListener("click", () => {
-//   api.post('/vote', {
-//     scenario_id: '55be756d248cacaee30bf3e5', 
-//     data: 20
-//   }, (data) => {
-
-//   });
-// });
-
-// document.querySelector("#create-button").addEventListener("click", () => {
-//   api.post('/create', {
-//     identifier: "lifeboat",
-//     text: "sacrifice lifeboaters for greater good?"
-//   }, (data) => {
-
-//   });
-// });
