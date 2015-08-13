@@ -25,6 +25,7 @@ gulp.task('publish', function() {
     // publisher will add Content-Length, Content-Type and headers specified above 
     // If not specified it will set x-amz-acl to public-read by default 
     .pipe(publisher.publish(headers))
+    // .pipe(publisher.publish(headers, {force: true}))
  
     // create a cache file to speed up consecutive uploads 
     .pipe(publisher.cache())
