@@ -8,5 +8,5 @@ var buildComplete = function() {
 
 gulp.task('build', function() {
   gutil.log(gutil.colors.green('[ STARTING BUILD... ]'));
-  runSequence('clean', 'scripts', 'sass', 'images', 'markup', 'copy', buildComplete);
+  runSequence('clean', 'scripts', 'sass', 'images', 'copy', 'markup', buildComplete);
 });
