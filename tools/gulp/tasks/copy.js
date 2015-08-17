@@ -12,16 +12,12 @@ gulp.task('copy', function() {
     .pipe(plumber())
     .pipe(gulp.dest(config.buildAssetsDir + 'js/lib/'));
 
-  gulp.src([config.sourceAssetsDir + 'js/bootstrap.js'])
-    .pipe(plumber())
-    .pipe(gulp.dest(config.buildAssetsDir + 'js/'));
-
-  gulp.src(config.sourceAssetsDir + 'js/bundle.js')
+  gulp.src(config.buildAssetsDir + 'js/bundle.js')
     .pipe(plumber())
     .pipe(uglify())
     .pipe(gulp.dest(config.buildAssetsDir + 'js/'));
 
-  gulp.src(config.sourceAssetsDir + 'css/styles.css')
+  gulp.src(config.buildAssetsDir + 'css/main.css')
     .pipe(plumber())
     .pipe(minify())
     .pipe(gulp.dest(config.buildAssetsDir + 'css/'));
@@ -30,20 +26,11 @@ gulp.task('copy', function() {
     .pipe(plumber())
     .pipe(gulp.dest(config.buildAssetsDir + 'fonts/'));
 
-  gulp.src(config.sourceAssetsDir + 'audio/*')
-    .pipe(plumber())
-    .pipe(gulp.dest(config.buildAssetsDir + 'audio/'));
-
-  gulp.src(config.sourceAssetsDir + 'img/*')
+  gulp.src(config.buildAssetsDir + 'img/*')
     .pipe(plumber())
     .pipe(gulp.dest(config.buildAssetsDir + 'img/'));
 
-  gulp.src(config.sourceDir + '*.html')
+  gulp.src(config.buildAssetsDir + '*.html')
     .pipe(plumber())
     .pipe(gulp.dest(config.buildDir));
-
-  gulp.src(config.sourceDir + '*.php')
-    .pipe(plumber())
-    .pipe(gulp.dest(config.buildDir));
-
 });
