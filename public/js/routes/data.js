@@ -8,89 +8,53 @@ module.exports = {
 
   },
   start() {
+    var causes = state.get("causes");
+    var dimensions = state.get("dimensions");
+
     api.get('/vectors', (error, result) => {
-      var visData = new Array(state.get('causes').length);
+      var visData = new Array(causes.length);
 
       result.data.forEach((d, i) => {
         var total = 0;
 
         d.causes.forEach((row, rowIndex) => {
-          if(typeof visData[rowIndex] === 'undefined') { visData[rowIndex] = []; }
+          if(typeof visData[rowIndex] === 'undefined') { 
+            visData[rowIndex] = {
+              cause: causes[rowIndex]._id,
+              results: []
+            }; 
+          }
+
           var sum = row.reduce((p, c) => { return p + c; }, 0);
 
-          visData[rowIndex].push(sum);
+          visData[rowIndex].results.push({
+            id: dimensions[i]._id,
+            sum: sum
+          });
+
           total += sum;
         });
 
         visData.forEach((_, causeIndex) => {
-          visData[causeIndex][i] = visData[causeIndex][i] / total;
+          visData[causeIndex].results[i].sum = visData[causeIndex].results[i].sum / total;
         });
       });
 
-      var line = d3.svg.line();
-      var axis = d3.svg.axis().orient("left").ticks([]).tickSize(0);
+      var container = d3.select(".visualization");
 
-      function path(d) {
-        return line(x.domain().map((p, i) => { 
-          return [x(p), y[p](d[i])]; 
-        }));
-      }
-
-      var visWidth = window.innerWidth - 200;
-      var visHeight = window.innerHeight * 0.5;
-
-      var x = d3.scale.ordinal().domain(_.pluck(state.get('dimensions'), 'name')).rangePoints([0, visWidth]);
-      var y = {};
-      var colors = d3.scale.category10();
-
-      x.domain().forEach((d, i) => {
-        y[d] = d3.scale.linear().domain(d3.extent(visData, (row) => {
-          return row[i];
-        })).range([visHeight, 0]);
-      });
-
-      var svg = d3.select("svg").attr("width", visWidth)
-          .attr("height", visHeight);
-
-      var g = svg.selectAll(".dimension")
-          .data(x.domain())
-        .enter().append("g")
-          .attr("class", "dimension")
-          .attr("transform", (d) => { 
-            return "translate(" + x(d) + ")"; 
-          });
-
-      g.append("g")
-          .attr("class", "axis")
-          .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
-        .append("text")
-          .style("text-anchor", "middle")
-          .attr("y", -9)
-          .text(_.identity);
-
-      var foreground = svg.append("g")
-          .attr("class", "foreground")
-        .selectAll("path")
-          .data(visData)
-        .enter().append("path")
-          .attr("d", path)
-          .attr("stroke", (_, i) => {
-            return colors(i);
-          });
-
-      var key = d3.select('.key');
-
-      var keyElements = key.selectAll('.item')
-        .data(_.pluck(state.get('causes'), 'name'))
-        .enter().append('div')
-        .attr("class", "item");
+      var rows = container.selectAll(".row").data(visData);
       
-      var keyColors = keyElements.append('div').attr('class', 'color').style("background-color", (_, i) => {
-          return colors(i);
-        });
+      rows.enter().append("div").attr("class", "row")
+        .append("div").attr("class", "label");
 
-      var keyLabels = keyElements.append("div").attr("class", "label")
-          .text(_.identity);
+      var bars = rows.selectAll(".bar").data((d, i) => { return d.results; });
+
+      rows.select(".label").text((d) => {
+        return _.findWhere(causes, { _id: d.cause }).name;
+      });
+
+      bars.enter().append("div").attr("class", "bar")
+        .text((d) => { return d.sum; });
 
     });
   }
