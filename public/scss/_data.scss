@@ -18,6 +18,7 @@
     text-align: center;
     position: relative;
     .row {
+      @include transition(top $transition-duration);
       position: absolute;
       left: 0;
       right: 0;
@@ -32,6 +33,7 @@
         position: relative;
       }
       .bar {
+        @include transition(width $transition-duration);
         position: absolute;
         &:first-of-type {
           right: 50%;
