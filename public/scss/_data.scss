@@ -3,12 +3,21 @@
   .visualization {
     .row {
       margin-bottom: 1rem;
+      width: 70vw;
+      margin-left: auto;
+      margin-right: auto;
       .label {
         width: 20vw;
         text-align: right;
         margin-right: 1rem;
       }
-      .label, .bar {
+      .bar-container {
+        margin-top: -3px;
+        vertical-align: top;
+        width: calc(95% - 20vw - 1rem);
+        white-space: nowrap;
+      }
+      .label, .bar-container, .bar {
         display: inline-block;
       }
       .bar {

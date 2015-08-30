@@ -82,21 +82,23 @@ module.exports = {
 
       var rows = container.selectAll(".row").data(visData);
 
-      rows.enter().append("div").attr("class", "row")
-        .append("div").attr("class", "label");
+      var enteringRows = rows.enter().append("div").attr("class", "row");
 
-      var bars = rows.selectAll(".bar").data((d, i) => { return d.results; });
+      enteringRows.append("div").attr("class", "label");
+      enteringRows.append("div").attr("class", "bar-container");
+
+      var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
 
       rows.select(".label").text((d) => {
         return _.findWhere(causes, { _id: d.cause }).name;
       });
 
       bars.enter().append("div").attr("class", "bar")
-        .text((d) => { return d.sum; })
         .style("background-color", (d, i) => {
           return colors[i];
-        })
-        .style("width", (d) => {
+        });
+      
+      bars.style("width", (d) => {
           return (100 * d.sum / maxCombinedValue) + '%';
         });
 
