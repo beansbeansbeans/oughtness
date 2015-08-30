@@ -65,7 +65,21 @@ module.exports = {
       });
 
       // normalize according to weights of each dimension
-      visData = normalize(visData, weights);
+      visData = normalize(visData, weights).sort((a, b) => {
+        var aSum = a.results.reduce((p, c) => {
+          return p + c.sum;
+        }, 0),
+        bSum = b.results.reduce((p, c) => {
+          return p + c.sum;
+        }, 0);
+
+        if(aSum > bSum) {
+          return -1;
+        } else if(aSum < bSum) {
+          return 1;
+        }
+        return 0;
+      });
 
       var maxCombinedValue = visData.reduce((p, c) => {
         var currCombinedValue = c.results.reduce((np, nc) => {
