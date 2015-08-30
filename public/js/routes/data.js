@@ -65,73 +65,78 @@ module.exports = {
         });
       });
 
-      // normalize according to weights of each dimension
-      visData = normalize(visData, weights).sort((a, b) => {
-        var aSum = a.results.reduce((p, c) => {
-          return p + c.sum;
-        }, 0),
-        bSum = b.results.reduce((p, c) => {
-          return p + c.sum;
+      var update = () => {
+
+        // normalize according to weights of each dimension
+        visData = normalize(visData, weights).sort((a, b) => {
+          var aSum = a.results.reduce((p, c) => {
+            return p + c.sum;
+          }, 0),
+          bSum = b.results.reduce((p, c) => {
+            return p + c.sum;
+          }, 0);
+
+          if(aSum > bSum) {
+            return -1;
+          } else if(aSum < bSum) {
+            return 1;
+          }
+          return 0;
+        });
+
+        var maxCombinedValue = visData.reduce((p, c) => {
+          var currCombinedValue = c.results.reduce((np, nc) => {
+            return np + nc.sum;
+          }, 0);
+
+          if(currCombinedValue > p) {
+            return currCombinedValue;
+          }
+          return p;
         }, 0);
 
-        if(aSum > bSum) {
-          return -1;
-        } else if(aSum < bSum) {
-          return 1;
-        }
-        return 0;
-      });
+        var minSingleSum = visData.reduce((p, c) => {
+          var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
+          if(cSum < p) {
+            return cSum;
+          }
+          return p;
+        }, Infinity);
 
-      var maxCombinedValue = visData.reduce((p, c) => {
-        var currCombinedValue = c.results.reduce((np, nc) => {
-          return np + nc.sum;
+        var maxSingleSum = visData.reduce((p, c) => {
+          var cSum = Math.max.apply(Math, c.results.map(d => d.sum));
+          if(cSum > p) {
+            return cSum;
+          }
+          return p;
         }, 0);
 
-        if(currCombinedValue > p) {
-          return currCombinedValue;
-        }
-        return p;
-      }, 0);
+        var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([5, 50]);
 
-      var minSingleSum = visData.reduce((p, c) => {
-        var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
-        if(cSum < p) {
-          return cSum;
-        }
-        return p;
-      }, Infinity);
+        var container = d3.select(".visualization");
 
-      var maxSingleSum = visData.reduce((p, c) => {
-        var cSum = Math.max.apply(Math, c.results.map(d => d.sum));
-        if(cSum > p) {
-          return cSum;
-        }
-        return p;
-      }, 0);
+        var rows = container.selectAll(".row").data(visData);
 
-      var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([5, 50]);
+        var enteringRows = rows.enter().append("div").attr("class", "row");
 
-      var container = d3.select(".visualization");
+        enteringRows.append("div").attr("class", "bar-container");
+        enteringRows.append("div").attr("class", "label");
 
-      var rows = container.selectAll(".row").data(visData);
+        var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
 
-      var enteringRows = rows.enter().append("div").attr("class", "row");
+        rows.select(".label").text((d) => {
+          return _.findWhere(causes, { _id: d.cause }).name;
+        });
 
-      enteringRows.append("div").attr("class", "bar-container");
-      enteringRows.append("div").attr("class", "label");
+        bars.enter().append("div").attr("class", "bar")
+          .style("background-color", (d, i) => { return colors[i]; });
+        
+        bars.style("width", (d) => {
+          return scale(d.sum / maxCombinedValue) + '%';
+        });
+      }
 
-      var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
-
-      rows.select(".label").text((d) => {
-        return _.findWhere(causes, { _id: d.cause }).name;
-      });
-
-      bars.enter().append("div").attr("class", "bar")
-        .style("background-color", (d, i) => { return colors[i]; });
-      
-      bars.style("width", (d) => {
-        return scale(d.sum / maxCombinedValue) + '%';
-      });
+      update();
 
     }, false);
   }
