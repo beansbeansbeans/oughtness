@@ -1,28 +1,21 @@
 [data-route="data"] {
   padding-top: 50px;
-  svg {
-    overflow: visible;
-    .background path {
-      fill: none;
-      stroke: #ddd;
-      shape-rendering: crispEdges;
+  .visualization {
+    .row {
+      margin-bottom: 1rem;
+      .label {
+        width: 20vw;
+        text-align: right;
+        margin-right: 1rem;
+      }
+      .label, .bar {
+        display: inline-block;
+      }
+      .bar {
+        height: 2px;
+        margin-right: 0.5rem;
+      }
     }
-    .foreground path {
-      fill: none;
-    }
-    .brush .extent {
-      fill-opacity: .3;
-      stroke: #fff;
-      shape-rendering: crispEdges;
-    }
-
-    .axis line,
-    .axis path {
-      fill: none;
-      stroke: #ddd;
-      shape-rendering: crispEdges;
-    }
-    margin-bottom: 30px;
   }
   .key {
     text-align: left;
