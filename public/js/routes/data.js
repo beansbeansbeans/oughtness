@@ -17,6 +17,7 @@ var normalize = (data, weights) => {
   });
 }
 
+var rowHeight = 50;
 
 module.exports = {
   initialize() {
@@ -34,6 +35,7 @@ module.exports = {
     });
 
     var visData = new Array(causes.length);
+    var normalizedVisData = new Array(causes.length);
 
     // TO BE MADE DYNAMIC
     var weights = dimensions.map((d) => {
@@ -48,7 +50,7 @@ module.exports = {
     var update = () => {
 
       // normalize according to weights of each dimension
-      visData = normalize(visData, weights).sort((a, b) => {
+      normalizedVisData = normalize(visData, weights).sort((a, b) => {
         var aSum = a.results.reduce((p, c) => {
           return p + c.sum;
         }, 0),
@@ -64,7 +66,7 @@ module.exports = {
         return 0;
       });
 
-      var maxCombinedValue = visData.reduce((p, c) => {
+      var maxCombinedValue = normalizedVisData.reduce((p, c) => {
         var currCombinedValue = c.results.reduce((np, nc) => {
           return np + nc.sum;
         }, 0);
@@ -75,7 +77,7 @@ module.exports = {
         return p;
       }, 0);
 
-      var minSingleSum = visData.reduce((p, c) => {
+      var minSingleSum = normalizedVisData.reduce((p, c) => {
         var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
         if(cSum < p) {
           return cSum;
@@ -83,7 +85,7 @@ module.exports = {
         return p;
       }, Infinity);
 
-      var maxSingleSum = visData.reduce((p, c) => {
+      var maxSingleSum = normalizedVisData.reduce((p, c) => {
         var cSum = Math.max.apply(Math, c.results.map(d => d.sum));
         if(cSum > p) {
           return cSum;
@@ -91,11 +93,11 @@ module.exports = {
         return p;
       }, 0);
 
-      var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([5, 50]);
+      var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([3, 50]);
 
-      var container = d3.select(".visualization");
+      var container = d3.select(".visualization").style("height", rowHeight * causes.length + 'px');
 
-      var rows = container.selectAll(".row").data(visData, (d) => {
+      var rows = container.selectAll(".row").data(normalizedVisData, (d) => {
         return d.cause;
       });
 
@@ -111,7 +113,7 @@ module.exports = {
       });
 
       rows.style("top", (d, i) => {
-        return i * 50 + 'px';
+        return i * rowHeight + 'px';
       });
 
       bars.enter().append("div").attr("class", "bar")
