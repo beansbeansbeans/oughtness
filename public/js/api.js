@@ -5,9 +5,13 @@ module.exports = {
   setURL(url) {
     baseURL = url;
   },
-  get(url, callback) {
+  get(url, callback, cacheResult) {
     if(typeof cache[url] !== 'undefined') {
       return callback(null, cache[url]);
+    }
+
+    if(typeof cacheResult === 'undefined') {
+      cacheResult = true;
     }
 
     var request = new XMLHttpRequest();
@@ -29,7 +33,9 @@ module.exports = {
       result.responseCode = request.status;
       result.data = data;
 
-      cache[url] = result;
+      if(cacheResult) {
+        cache[url] = result;
+      }
       
       if(callback) {
         callback(null, result);

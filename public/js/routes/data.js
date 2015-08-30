@@ -102,6 +102,6 @@ module.exports = {
           return (100 * d.sum / maxCombinedValue) + '%';
         });
 
-    });
+    }, false);
   }
 };
