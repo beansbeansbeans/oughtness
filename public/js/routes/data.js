@@ -17,6 +17,7 @@ var normalize = (data, weights) => {
   });
 }
 
+
 module.exports = {
   initialize() {
 
@@ -92,14 +93,32 @@ module.exports = {
         return p;
       }, 0);
 
+      var minSingleSum = visData.reduce((p, c) => {
+        var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
+        if(cSum < p) {
+          return cSum;
+        }
+        return p;
+      }, Infinity);
+
+      var maxSingleSum = visData.reduce((p, c) => {
+        var cSum = Math.max.apply(Math, c.results.map(d => d.sum));
+        if(cSum > p) {
+          return cSum;
+        }
+        return p;
+      }, 0);
+
+      var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([5, 50]);
+
       var container = d3.select(".visualization");
 
       var rows = container.selectAll(".row").data(visData);
 
       var enteringRows = rows.enter().append("div").attr("class", "row");
 
-      enteringRows.append("div").attr("class", "label");
       enteringRows.append("div").attr("class", "bar-container");
+      enteringRows.append("div").attr("class", "label");
 
       var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
 
@@ -108,13 +127,11 @@ module.exports = {
       });
 
       bars.enter().append("div").attr("class", "bar")
-        .style("background-color", (d, i) => {
-          return colors[i];
-        });
+        .style("background-color", (d, i) => { return colors[i]; });
       
       bars.style("width", (d) => {
-          return (100 * d.sum / maxCombinedValue) + '%';
-        });
+        return scale(d.sum / maxCombinedValue) + '%';
+      });
 
     }, false);
   }
