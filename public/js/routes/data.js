@@ -115,7 +115,9 @@ module.exports = {
 
         var container = d3.select(".visualization");
 
-        var rows = container.selectAll(".row").data(visData);
+        var rows = container.selectAll(".row").data(visData, (d) => {
+          return d.cause;
+        });
 
         var enteringRows = rows.enter().append("div").attr("class", "row");
 
@@ -124,8 +126,12 @@ module.exports = {
 
         var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
 
-        rows.select(".label").text((d) => {
+        enteringRows.select(".label").text((d) => {
           return _.findWhere(causes, { _id: d.cause }).name;
+        });
+
+        rows.style("top", (d, i) => {
+          return i * 50 + 'px';
         });
 
         bars.enter().append("div").attr("class", "bar")
