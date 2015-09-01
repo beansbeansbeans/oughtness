@@ -62,6 +62,9 @@
       margin-right: 10px;
     }
   }
+  .loader {
+    text-align: center;
+  }
   &[data-loading="true"] {
     .visualization-container {
       display: none;
