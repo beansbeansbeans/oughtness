@@ -62,4 +62,14 @@
       margin-right: 10px;
     }
   }
+  &[data-loading="true"] {
+    .visualization-container {
+      display: none;
+    }
+  }
+  &[data-loading="false"] {
+    .loader {
+      display: none;
+    }
+  }
 }

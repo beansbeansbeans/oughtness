@@ -153,6 +153,8 @@ module.exports = {
 
       update();
 
+      d.qs('[data-route="data"]').setAttribute("data-loading", false);
+
     }, false);
   }
 };
