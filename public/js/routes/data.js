@@ -27,7 +27,7 @@ module.exports = {
     var causes = state.get("causes");
     var dimensions = state.get("dimensions");
 
-    d.qs(".slider input").addEventListener("change", (e) => {
+    d.qs(".slider input").addEventListener("input", (e) => {
       var value = d.qs('.slider input').value / 100;
       weights[0].value = value;
       weights[1].value = 1 - value;
