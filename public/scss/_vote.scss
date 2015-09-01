@@ -34,4 +34,20 @@
       margin-left: 8px;
     }
   }
+  .loader {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(white, 0.5);
+    opacity: 0;
+    pointer-events: none;
+  }
+  &[data-loading="true"] {
+    pointer-events: none;
+    .loader {
+      opacity: 1;
+    }
+  }
 }

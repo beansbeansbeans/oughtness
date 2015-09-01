@@ -32,6 +32,7 @@ var refreshStatePair = () => {
   }());
 
   exports.template(pair);
+  exports.toggleLoader(false);
 
   if(!_.isEqual(pair, [-1, -1, -1])) {
     mediator.publish("pair_updated");
@@ -39,6 +40,8 @@ var refreshStatePair = () => {
 };
 
 var voteFor = (selection) => {
+  exports.toggleLoader(true);
+
   var pair = state.get('pair');
   api.post('/vote', {
     dimension: state.get('dimensions')[pair[2]]._id,
@@ -76,6 +79,9 @@ var exports = {
       .split('-vs-').map((x) => {
       return _.findIndex(state.get('causes'), cause => cause.slug === x);
     }).concat(_.findIndex(state.get('dimensions'), x => x.name === dimension)));
+  },
+  toggleLoader(show) {
+    d.qs('[data-route="vote"]').setAttribute("data-loading", show);
   },
   template(pair) {
     state.set('pair_history', state.get('pair_history').concat([pair]));
