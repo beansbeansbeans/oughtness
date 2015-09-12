@@ -37,7 +37,6 @@ module.exports = {
     var visData = new Array(causes.length);
     var normalizedVisData = new Array(causes.length);
 
-    // TO BE MADE DYNAMIC
     var weights = dimensions.map((d) => {
       return {
         id: d._id,
@@ -93,7 +92,7 @@ module.exports = {
         return p;
       }, 0);
 
-      var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([3, 50]);
+      var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([0, 50]);
 
       var container = d3.select(".visualization").style("height", rowHeight * causes.length + 'px');
 
