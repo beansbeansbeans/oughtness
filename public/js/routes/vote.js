@@ -61,9 +61,10 @@ var voteFor = (selection) => {
 var exports = {
   initialize() {
     mediator.subscribe("window_click", (e) => {
-      var target = e.target;
-      if(target.hasAttribute("data-vote-for")) {
-        voteFor(target.getAttribute("data-vote-for"));
+      var target = e.target,
+        closestVote = target.closest('[data-vote-for]');
+      if(closestVote) {
+        voteFor(closestVote.getAttribute("data-vote-for"));
       }
     });
   },
@@ -94,8 +95,10 @@ var exports = {
       state.set('pair', pair);
       d.qs("#question ")
       d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
-      d.qs("#cause-0").textContent = state.get('causes')[pair[0]].name;
-      d.qs("#cause-1").textContent = state.get('causes')[pair[1]].name;
+      d.qs("#cause-0 .title").textContent = state.get('causes')[pair[0]].name;
+      d.qs("#cause-0 .description").textContent = state.get('causes')[pair[0]].description;
+      d.qs("#cause-1 .title").textContent = state.get('causes')[pair[1]].name;
+      d.qs("#cause-1 .description").textContent = state.get('causes')[pair[1]].description;
     }
   }
 };
