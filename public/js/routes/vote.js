@@ -40,27 +40,36 @@ var refreshStatePair = () => {
 };
 
 var voteFor = (selection) => {
-  d.qs('[data-route="vote"]').setAttribute("data-won", selection);
-  setTimeout(() => {
-    exports.toggleLoader(true);
+  util.async([
+    (done) => {
+      var selectionTransitionEndHandler = () => {
+        done();
+        d.qs('#cause-0').removeEventListener('transitionend', selectionTransitionEndHandler);
+      };
 
-    var pair = state.get('pair');
-    api.post('/vote', {
-      dimension: state.get('dimensions')[pair[2]]._id,
-      causes: [
-        {
-          id: state.get('causes')[pair[0]]._id,
-          won: +selection === 0
-        },
-        {
-          id: state.get('causes')[pair[1]]._id,
-          won: +selection === 1
-        }
-      ]
-    }, () => {
-      refreshStatePair();
-    });
-  }, 1000);
+      d.qs('#cause-0').addEventListener('transitionend', selectionTransitionEndHandler);
+    },
+    (done) => {
+      var pair = state.get('pair');
+      api.post('/vote', {
+        dimension: state.get('dimensions')[pair[2]]._id,
+        causes: [
+          {
+            id: state.get('causes')[pair[0]]._id,
+            won: +selection === 0
+          },
+          {
+            id: state.get('causes')[pair[1]]._id,
+            won: +selection === 1
+          }
+        ]
+      }, done);
+    }
+  ], () => {
+    refreshStatePair();
+  });
+
+  d.qs('[data-route="vote"]').setAttribute("data-won", selection);
 };
 
 var exports = {
