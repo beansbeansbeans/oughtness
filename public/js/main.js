@@ -44,5 +44,6 @@ window.addEventListener("DOMContentLoaded", () => {
     d.documentElement.classList.remove('loading');
   });
 
+  util.initialize();
   router.initialize();
 });

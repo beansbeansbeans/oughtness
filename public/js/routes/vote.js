@@ -44,10 +44,10 @@ var voteFor = (selection) => {
     (done) => {
       var selectionTransitionEndHandler = () => {
         done();
-        d.qs('#cause-0').removeEventListener('transitionend', selectionTransitionEndHandler);
+        d.qs('#cause-0').removeEventListener(util.prefixedTransitionEnd[util.prefixedProperties.transition.js], selectionTransitionEndHandler);
       };
 
-      d.qs('#cause-0').addEventListener('transitionend', selectionTransitionEndHandler);
+      d.qs('#cause-0').addEventListener(util.prefixedTransitionEnd[util.prefixedProperties.transition.js], selectionTransitionEndHandler);
     },
     (done) => {
       var pair = state.get('pair');
