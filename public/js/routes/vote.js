@@ -43,7 +43,7 @@ var voteFor = (selection) => {
   util.async([
     (done) => {
       var selectionTransitionEndHandler = () => {
-        done();
+        setTimeout(done, 1000); // for UI sake
         d.qs('#cause-0').removeEventListener(util.prefixedTransitionEnd[util.prefixedProperties.transition.js], selectionTransitionEndHandler);
       };
 
@@ -66,7 +66,13 @@ var voteFor = (selection) => {
       }, done);
     }
   ], () => {
-    refreshStatePair();
+    var fadeOutEndHandler = (e) => {
+      d.qs('[data-route="vote"]').removeEventListener(util.prefixedTransitionEnd[util.prefixedProperties.transition.js], fadeOutEndHandler);
+      refreshStatePair();
+    };
+
+    d.qs('[data-route="vote"]').classList.add("fade");
+    d.qs('[data-route="vote"]').addEventListener(util.prefixedTransitionEnd[util.prefixedProperties.transition.js], fadeOutEndHandler);
   });
 
   d.qs('[data-route="vote"]').setAttribute("data-won", selection);
@@ -100,6 +106,7 @@ var exports = {
   },
   template(pair) {
     state.set('pair_history', state.get('pair_history').concat([pair]));
+    d.qs("[data-route='vote']").classList.remove("fade");
     d.qs("[data-route='vote']").removeAttribute("data-won");
 
     if(_.isEqual(pair, [-1, -1, -1])) {
