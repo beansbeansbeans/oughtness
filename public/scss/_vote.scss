@@ -1,3 +1,7 @@
+$vote-content-width: 60;
+$winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50 - ($vote-content-width / 100) * 50vw) / 2;
+@warn $winning-distance;
+
 [data-route="vote"] {
   #question {
     padding: 2rem 0 0px 0;
@@ -6,6 +10,35 @@
     #dimension, .main {
       display: inline-block;
     }
+  }
+  &[data-won="0"] {
+    #cause-container:before {
+      @include animation(exit-stage 0.5s forwards);
+    }
+    #cause-0 {
+      @include animation(center-stage 0.5s forwards);
+      @at-root {
+        @include keyframes(center-stage) {
+          100% {
+            @include transform(translateX(#{$winning-distance}));
+          }
+        }
+      }
+    }
+    #cause-1 {
+      @include animation(exit-stage 0.5s forwards);
+    }
+    @at-root {
+      @include keyframes(exit-stage) {
+        100% {
+          opacity: 0;
+          @include transform(translateX(#{$winning-distance}));
+        }
+      }
+    }
+  }
+  &[data-won="1"] {
+
   }
   #cause-container {
     text-align: center;
@@ -30,7 +63,7 @@
     height: 45vh;
     .contents {
       padding-top: 2rem;
-      width: 60%;
+      width: $vote-content-width * 1%;
       margin: 0 auto;
     }
     .title {

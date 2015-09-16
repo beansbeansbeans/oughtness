@@ -55,7 +55,13 @@ var voteFor = (selection) => {
         won: +selection === 1
       }
     ]
-  }, refreshStatePair);
+  }, () => {
+    console.log("VOTED");
+    console.log(selection);
+    d.qs('[data-route="vote"]').setAttribute("data-won", selection);
+    exports.toggleLoader(false);
+    // refreshStatePair();
+  });
 };
 
 var exports = {
