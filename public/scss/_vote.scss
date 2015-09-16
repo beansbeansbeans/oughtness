@@ -28,6 +28,11 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       }
     }
   }
+  &[data-won] {
+    #cause-container:before, #cause-0, #cause-1 {
+      @include transition(all $transition-duration);
+    }
+  }
   #cause-container {
     text-align: center;
     margin: 6rem 0;
@@ -42,7 +47,6 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       position: absolute;
       left: 50%;
       top: 0;
-      @include transition(all $transition-duration);
     }
   }
   #cause-0, #cause-1 {
@@ -50,7 +54,6 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     cursor: pointer;
     width: 50%;
     height: 45vh;
-    @include transition(all $transition-duration);
     .contents {
       padding-top: 2rem;
       width: $vote-content-width * 1%;

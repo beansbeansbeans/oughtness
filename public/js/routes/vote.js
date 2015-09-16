@@ -40,28 +40,27 @@ var refreshStatePair = () => {
 };
 
 var voteFor = (selection) => {
-  exports.toggleLoader(true);
+  d.qs('[data-route="vote"]').setAttribute("data-won", selection);
+  setTimeout(() => {
+    exports.toggleLoader(true);
 
-  var pair = state.get('pair');
-  api.post('/vote', {
-    dimension: state.get('dimensions')[pair[2]]._id,
-    causes: [
-      {
-        id: state.get('causes')[pair[0]]._id,
-        won: +selection === 0
-      },
-      {
-        id: state.get('causes')[pair[1]]._id,
-        won: +selection === 1
-      }
-    ]
-  }, () => {
-    console.log("VOTED");
-    console.log(selection);
-    d.qs('[data-route="vote"]').setAttribute("data-won", selection);
-    exports.toggleLoader(false);
-    // refreshStatePair();
-  });
+    var pair = state.get('pair');
+    api.post('/vote', {
+      dimension: state.get('dimensions')[pair[2]]._id,
+      causes: [
+        {
+          id: state.get('causes')[pair[0]]._id,
+          won: +selection === 0
+        },
+        {
+          id: state.get('causes')[pair[1]]._id,
+          won: +selection === 1
+        }
+      ]
+    }, () => {
+      refreshStatePair();
+    });
+  }, 1000);
 };
 
 var exports = {
@@ -92,6 +91,7 @@ var exports = {
   },
   template(pair) {
     state.set('pair_history', state.get('pair_history').concat([pair]));
+    d.qs("[data-route='vote']").removeAttribute("data-won");
 
     if(_.isEqual(pair, [-1, -1, -1])) {
       d.qs("#question").innerHTML = "that's it. check out the data.";
