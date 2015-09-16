@@ -1,0 +1,63 @@
+%loader-container-base {
+  @include transition(opacity $transition-duration);
+  pointer-events: none;
+}
+
+%loader-base {
+  border-radius: 50%;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  @include animation(loader 3s linear infinite);
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  &:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+  }
+}
+
+@include keyframes(loader) {
+  0% {
+    @include transform(rotate(0deg));
+  }
+  100% {
+    @include transform(rotate(360deg));
+  }
+}
+
+@mixin loader($size, $color) {
+  @extend %loader-base;
+  margin-left: -$size / 2;
+  margin-top: -$size / 2;
+  @include square($size);
+  border: 3px solid $color;
+  &:after {
+    background-color: $color;
+  }
+}
+
+#loader-container {
+  @extend %loader-container-base;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: white;
+  z-index: 1;
+  html:not(.loading) & {
+    opacity: 0;
+  }
+}
+
+#loader {
+  @include loader(80px, $gray);
+  &:after {
+    top: -5px;
+    left: 20px;
+    @include square(11px);
+  }
+}
