@@ -20,13 +20,13 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     }
     &[data-won="#{$cause}"] {
       #cause-container:before, #cause-#{$other-cause}, #cause-#{$cause} {
-        @include transform(translateX(#{$winning-distance * $multiplier}));
+        @include transform(translate3d(#{$winning-distance * $multiplier}, 0, 0));
       }
       #cause-container:before, #cause-#{$other-cause} {
         opacity: 0;
       }
       #cause-#{$cause} .loader-container {
-        @include animation(fade-in $transition-duration 0.4s forwards);
+        @include animation(fade-in $transition-duration 1.5s forwards);
       }
     }
   }
@@ -75,15 +75,15 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     }
     .loader-container {
       opacity: 0;
-      margin-top: 2rem;
+      margin-top: 3rem;
       position: relative;
       .loader {
-        @include loader(1.5rem, $gray);
+        @include loader(1.5rem, lighten($gray, 5%));
         border-width: 2px;
         &:after {
           top: 0px;
           left: 15px;
-          @include square(0.5rem);
+          @include square(0.35rem);
         }
       }
     }
