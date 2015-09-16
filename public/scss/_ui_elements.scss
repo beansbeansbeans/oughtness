@@ -1,12 +1,11 @@
 .button {
-  background: $black;
-  color: white;
+  border: solid 1px lighten($black, 10%);
+  color: $black;
   padding: 7px 12px;
   font-weight: 100;
   border-radius: 2px;
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   @include transition(background-color $transition-duration);
-  &:hover {
-    background: lighten($black, 10%);
-  }
 }

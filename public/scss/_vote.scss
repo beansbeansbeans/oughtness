@@ -9,28 +9,46 @@
   }
   #cause-container {
     text-align: center;
-    margin: 3rem 0;
+    margin: 6rem 0;
+    position: relative;
+    @extend %clearfix;
+    &:before {
+      content: "";
+      width: 1px;
+      display: block;
+      height: 100%;
+      background: gray;
+      position: absolute;
+      left: 50%;
+      top: 0;
+    }
   }
   #cause-0, #cause-1 {
-    display: inline-block;
-    vertical-align: top;
+    float: left;
     cursor: pointer;
-    border: solid 1px $smoke;
-    width: 30vw;
+    width: 50%;
     height: 45vh;
-    padding: 1.5rem;
+    .contents {
+      padding-top: 2rem;
+      width: 60%;
+      margin: 0 auto;
+    }
     .title {
       font-weight: 800;
       margin-bottom: 1rem;
     }
+    .button {
+      margin-top: 2rem;
+      display: inline-block;
+    }
   }
   #cause-0 {
-    margin-right: 20px;
   }
   #cause-1 {
-    margin-left: 20px;
   }
   #choose-both {
+    display: none; // ?
+
     text-align: center;
     .text, .tagline, #choose-both-button {
       display: inline-block;
