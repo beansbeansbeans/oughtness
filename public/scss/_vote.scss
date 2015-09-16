@@ -11,34 +11,22 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       display: inline-block;
     }
   }
-  &[data-won="0"] {
-    #cause-container:before {
-      @include animation(exit-stage 0.5s forwards);
+  $causes: 0, 1;
+  @each $cause in $causes {
+    $other-cause: 0;
+    $multiplier: -1;
+    @if $cause == 0 {
+      $other-cause: 1;
+      $multiplier: 1;
     }
-    #cause-0 {
-      @include animation(center-stage 0.5s forwards);
-      @at-root {
-        @include keyframes(center-stage) {
-          100% {
-            @include transform(translateX(#{$winning-distance}));
-          }
-        }
+    &[data-won="#{$cause}"] {
+      #cause-container:before, #cause-#{$other-cause}, #cause-#{$cause} {
+        @include transform(translateX(#{$winning-distance * $multiplier}));
+      }
+      #cause-container:before, #cause-#{$other-cause} {
+        opacity: 0;
       }
     }
-    #cause-1 {
-      @include animation(exit-stage 0.5s forwards);
-    }
-    @at-root {
-      @include keyframes(exit-stage) {
-        100% {
-          opacity: 0;
-          @include transform(translateX(#{$winning-distance}));
-        }
-      }
-    }
-  }
-  &[data-won="1"] {
-
   }
   #cause-container {
     text-align: center;
@@ -54,6 +42,7 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       position: absolute;
       left: 50%;
       top: 0;
+      @include transition(all $transition-duration);
     }
   }
   #cause-0, #cause-1 {
@@ -61,6 +50,7 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     cursor: pointer;
     width: 50%;
     height: 45vh;
+    @include transition(all $transition-duration);
     .contents {
       padding-top: 2rem;
       width: $vote-content-width * 1%;
