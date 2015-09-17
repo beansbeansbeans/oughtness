@@ -40,32 +40,6 @@ module.exports = {
     var dimensions = state.get("dimensions");
     var control = d.qs(".circle-wrapper .controls");
 
-    var handleInput = () => {
-      var value = d.qs('.slider input').value / 100;
-
-      var t0, t1 = value * 2 * Math.PI;
-      if (value > 0 && value < 1) {
-        t1 = Math.pow(12 * value * Math.PI, 1 / 3);
-        for (var i = 0; i < 10; ++i) {
-          t0 = t1;
-          t1 = (Math.sin(t0) - t0 * Math.cos(t0) + 2 * value * Math.PI) / (1 - Math.cos(t0));
-        }
-        value = (1 - Math.cos(t1 / 2)) / 2;
-      }
-
-      var h = 2 * r * value;
-
-      d.qs('.section').style.width = h + 'px';
-      d.qs('.section:last-of-type').style.left = h + 'px';
-      d.qs('.section:last-of-type').style.width = ((r * 2) - h) + 'px';
-
-      weights[0].value = value;
-      weights[1].value = 1 - value;
-      update();
-    }
-
-    d.qs(".slider input").addEventListener("input", handleInput);
-
     control.addEventListener("mousedown", () => {
       dragging = true;
     });
@@ -74,12 +48,12 @@ module.exports = {
       dragging = false;
     });
 
-    window.addEventListener("mousemove", (e) => {
-      if(!dragging) { return; }
-      var position = Math.min(Math.max((e.clientX - circleOffsetLeft), 0), r * 2);
+    var handleDrag = (e) => {
+      var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * 2 * r)) : e.clientX;
+      var position = Math.min(Math.max((x - circleOffsetLeft), 0), r * 2);
       control.style.left = position + 'px';
 
-      var h = Math.min(Math.max((e.clientX - circleOffsetLeft), 0), r * 2),
+      var h = Math.min(Math.max((x - circleOffsetLeft), 0), r * 2),
         circularArea = Math.PI * Math.pow(r, 2),
         area = getCircularSegmentArea(Math.abs(r - h), r);
 
@@ -94,6 +68,11 @@ module.exports = {
       weights[0].value = percentage;
       weights[1].value = 1 - percentage;
       update();
+    }
+
+    window.addEventListener("mousemove", (e) => {
+      if(!dragging) { return; }
+      handleDrag(e);
     });
 
     var visData = new Array(causes.length);
@@ -197,7 +176,7 @@ module.exports = {
       var bounds = d.qs(".circle").getBoundingClientRect();
       r = bounds.width / 2;
       circleOffsetLeft = bounds.left;
-      handleInput();
+      handleDrag();
     }, false);
   }
 };
