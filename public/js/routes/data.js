@@ -79,15 +79,21 @@ module.exports = {
       var position = Math.min(Math.max((e.clientX - circleOffsetLeft), 0), r * 2);
       control.style.left = position + 'px';
 
-      (function() {
-        var h = Math.min(Math.max((e.clientX - circleOffsetLeft), 0), r * 2),
-          circularArea = Math.PI * Math.pow(r, 2),
-          area = getCircularSegmentArea(Math.abs(r - h), r);
+      var h = Math.min(Math.max((e.clientX - circleOffsetLeft), 0), r * 2),
+        circularArea = Math.PI * Math.pow(r, 2),
+        area = getCircularSegmentArea(Math.abs(r - h), r);
 
-        if(h > r) { area = circularArea - area; }
+      if(h > r) { area = circularArea - area; }
 
-        console.log(area * 100 / circularArea);
-      })();  
+      var percentage = area / circularArea;
+
+      d.qs('.section').style.width = (position) + 'px';
+      d.qs('.section:last-of-type').style.left = (position) + 'px';
+      d.qs('.section:last-of-type').style.width = ((r * 2) - (position)) + 'px';
+
+      weights[0].value = percentage;
+      weights[1].value = 1 - percentage;
+      update();
     });
 
     var visData = new Array(causes.length);
