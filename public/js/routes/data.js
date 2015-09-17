@@ -28,6 +28,8 @@ var getCircularSegmentArea = (seg, rad) => {
 
 var rowHeight = 50;
 var r = 0;
+var dragging = false;
+var circleOffsetLeft = 0;
 
 module.exports = {
   initialize() {
@@ -36,6 +38,7 @@ module.exports = {
   start() {
     var causes = state.get("causes");
     var dimensions = state.get("dimensions");
+    var control = d.qs(".circle-wrapper .controls");
 
     var handleInput = () => {
       var value = d.qs('.slider input').value / 100;
@@ -73,6 +76,19 @@ module.exports = {
     }
 
     d.qs(".slider input").addEventListener("input", handleInput);
+
+    control.addEventListener("mousedown", () => {
+      dragging = true;
+    });
+
+    window.addEventListener("mouseup", () => {
+      dragging = false;
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if(!dragging) { return; }
+      control.style.left = Math.min(Math.max((e.clientX - circleOffsetLeft), 0), r * 2) + 'px';
+    });
 
     var visData = new Array(causes.length);
     var normalizedVisData = new Array(causes.length);
@@ -172,7 +188,9 @@ module.exports = {
       });
 
       d.qs('[data-route="data"]').setAttribute("data-loading", false);
-      r = d.qs(".circle").getBoundingClientRect().width / 2;
+      var bounds = d.qs(".circle").getBoundingClientRect();
+      r = bounds.width / 2;
+      circleOffsetLeft = bounds.left;
       handleInput();
     }, false);
   }
