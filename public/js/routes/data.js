@@ -31,6 +31,12 @@ var r = 0;
 var dragging = false;
 var circleOffsetLeft = 0;
 
+var setDimensions = () => {
+  var bounds = d.qs(".circle").getBoundingClientRect();
+  r = bounds.width / 2;
+  circleOffsetLeft = bounds.left;
+}
+
 module.exports = {
   initialize() {
 
@@ -46,6 +52,11 @@ module.exports = {
 
     window.addEventListener("mouseup", () => {
       dragging = false;
+    });
+
+    mediator.subscribe("resize", () => {
+      setDimensions();
+      update();
     });
 
     var handleDrag = (e) => {
@@ -173,9 +184,7 @@ module.exports = {
       });
 
       d.qs('[data-route="data"]').setAttribute("data-loading", false);
-      var bounds = d.qs(".circle").getBoundingClientRect();
-      r = bounds.width / 2;
-      circleOffsetLeft = bounds.left;
+      setDimensions();
       handleDrag();
     }, false);
   }

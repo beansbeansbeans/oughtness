@@ -14,6 +14,10 @@ window.addEventListener("click", (e) => {
   mediator.publish("window_click", e);
 });
 
+window.addEventListener("resize", _.debounce(() => {
+  mediator.publish("resize");
+}, 200));
+
 window.addEventListener("DOMContentLoaded", () => {
   mediator.subscribe("route_updated", (context) => {
     var path = context.path.split('/')[0],
