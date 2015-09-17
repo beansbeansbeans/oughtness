@@ -50,18 +50,11 @@ module.exports = {
 
       // normalize according to weights of each dimension
       normalizedVisData = normalize(visData, weights).sort((a, b) => {
-        var aSum = a.results.reduce((p, c) => {
-          return p + c.sum;
-        }, 0),
-        bSum = b.results.reduce((p, c) => {
-          return p + c.sum;
-        }, 0);
+        var aSum = a.results.reduce((p, c) => { return p + c.sum; }, 0),
+          bSum = b.results.reduce((p, c) => { return p + c.sum; }, 0);
 
-        if(aSum > bSum) {
-          return -1;
-        } else if(aSum < bSum) {
-          return 1;
-        }
+        if(aSum > bSum) { return -1;
+        } else if(aSum < bSum) { return 1; }
         return 0;
       });
 
@@ -70,25 +63,19 @@ module.exports = {
           return np + nc.sum;
         }, 0);
 
-        if(currCombinedValue > p) {
-          return currCombinedValue;
-        }
+        if(currCombinedValue > p) { return currCombinedValue; }
         return p;
       }, 0);
 
       var minSingleSum = normalizedVisData.reduce((p, c) => {
         var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
-        if(cSum < p) {
-          return cSum;
-        }
+        if(cSum < p) { return cSum; }
         return p;
       }, Infinity);
 
       var maxSingleSum = normalizedVisData.reduce((p, c) => {
         var cSum = Math.max.apply(Math, c.results.map(d => d.sum));
-        if(cSum > p) {
-          return cSum;
-        }
+        if(cSum > p) { return cSum; }
         return p;
       }, 0);
 
@@ -96,9 +83,7 @@ module.exports = {
 
       var container = d3.select(".visualization").style("height", rowHeight * causes.length + 'px');
 
-      var rows = container.selectAll(".row").data(normalizedVisData, (d) => {
-        return d.cause;
-      });
+      var rows = container.selectAll(".row").data(normalizedVisData, (d) => { return d.cause; });
 
       var enteringRows = rows.enter().append("div").attr("class", "row");
 
@@ -111,16 +96,12 @@ module.exports = {
         return _.findWhere(causes, { _id: d.cause }).name;
       });
 
-      rows.style("top", (d, i) => {
-        return i * rowHeight + 'px';
-      });
+      rows.style("top", (d, i) => { return i * rowHeight + 'px'; });
 
       bars.enter().append("div").attr("class", "bar")
         .style("background-color", (d, i) => { return colors[i]; });
       
-      bars.style("width", (d) => {
-        return scale(d.sum / maxCombinedValue) + '%';
-      });
+      bars.style("width", (d) => { return scale(d.sum / maxCombinedValue) + '%'; });
     }
 
     api.get('/vectors', (error, result) => {
