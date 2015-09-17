@@ -18,6 +18,7 @@ var normalize = (data, weights) => {
 }
 
 var rowHeight = 50;
+var r = 0;
 
 module.exports = {
   initialize() {
@@ -29,6 +30,23 @@ module.exports = {
 
     d.qs(".slider input").addEventListener("input", (e) => {
       var value = d.qs('.slider input').value / 100;
+
+      var t0, t1 = value * 2 * Math.PI;
+      if (value > 0 && value < 1) {
+        t1 = Math.pow(12 * value * Math.PI, 1 / 3);
+        for (var i = 0; i < 10; ++i) {
+          t0 = t1;
+          t1 = (Math.sin(t0) - t0 * Math.cos(t0) + 2 * value * Math.PI) / (1 - Math.cos(t0));
+        }
+        value = (1 - Math.cos(t1 / 2)) / 2;
+      }
+
+      var h = 2 * r * value;
+
+      d.qs('.section').style.width = h + 'px';
+      d.qs('.section:last-of-type').style.left = h + 'px';
+      d.qs('.section:last-of-type').style.width = ((r * 2) - h) + 'px';
+
       weights[0].value = value;
       weights[1].value = 1 - value;
       update();
@@ -135,6 +153,7 @@ module.exports = {
 
       d.qs('[data-route="data"]').setAttribute("data-loading", false);
 
+      r = d.qs(".circle").getBoundingClientRect().width / 2;
     }, false);
   }
 };

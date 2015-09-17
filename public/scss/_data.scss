@@ -12,6 +12,27 @@
       margin: 0 1rem;
     }
   }
+  .circle {
+    width: 10rem;
+    height: 10rem;
+    margin: 3rem auto;
+    border-radius: 50%;
+    border: solid 2px black;
+    overflow: hidden;
+    position: relative;
+    .section {
+      position: absolute;
+      height: 100%;
+      width: 50%;
+      &:first-of-type {
+        background: red;
+      }
+      &:last-of-type {
+        left: 50%;
+        background: blue;
+      }
+    }
+  }
   .visualization {
     width: 75vw;
     margin-left: auto;
