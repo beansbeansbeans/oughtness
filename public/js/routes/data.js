@@ -28,7 +28,7 @@ module.exports = {
     var causes = state.get("causes");
     var dimensions = state.get("dimensions");
 
-    d.qs(".slider input").addEventListener("input", (e) => {
+    var handleInput = () => {
       var value = d.qs('.slider input').value / 100;
 
       var t0, t1 = value * 2 * Math.PI;
@@ -50,7 +50,9 @@ module.exports = {
       weights[0].value = value;
       weights[1].value = 1 - value;
       update();
-    });
+    }
+
+    d.qs(".slider input").addEventListener("input", handleInput);
 
     var visData = new Array(causes.length);
     var normalizedVisData = new Array(causes.length);
@@ -149,11 +151,9 @@ module.exports = {
         });
       });
 
-      update();
-
       d.qs('[data-route="data"]').setAttribute("data-loading", false);
-
       r = d.qs(".circle").getBoundingClientRect().width / 2;
+      handleInput();
     }, false);
   }
 };
