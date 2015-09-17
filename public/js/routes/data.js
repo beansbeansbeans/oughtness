@@ -17,6 +17,15 @@ var normalize = (data, weights) => {
   });
 }
 
+var getCentralAngle = (seg, rad) => {
+  return 2 * Math.acos(seg / rad);
+}
+
+var getCircularSegmentArea = (seg, rad) => {
+  var a = getCentralAngle(seg, rad);
+  return (Math.pow(rad, 2) / 2) * (a - Math.sin(a));
+}
+
 var rowHeight = 50;
 var r = 0;
 
@@ -42,6 +51,17 @@ module.exports = {
       }
 
       var h = 2 * r * value;
+
+      (function() {
+        var h = d.qs('.slider input').value / 100,
+          radius = 0.5,
+          circularArea = Math.PI * Math.pow(radius, 2),
+          area = getCircularSegmentArea(Math.abs(radius - h), radius);
+
+        if(h > radius) { area = circularArea - area; }
+
+        console.log(area * 100 / circularArea);
+      })();     
 
       d.qs('.section').style.width = h + 'px';
       d.qs('.section:last-of-type').style.left = h + 'px';
