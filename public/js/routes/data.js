@@ -101,7 +101,20 @@ module.exports = {
     var update = () => {
 
       // normalize according to weights of each dimension
-      normalizedVisData = normalize(visData, weights).sort((a, b) => {
+      normalizedVisData = normalize(visData, weights).map((d) => {
+        var metaSum = d.results[0].sum + d.results[1].sum;
+        var results = d.results.map((x) => {
+          return {
+            id: x.id,
+            sum: x.sum,
+            metaSum: metaSum
+          };
+        });
+        return {
+          cause: d.cause,
+          results: results
+        };
+      }).sort((a, b) => {
         var aSum = a.results.reduce((p, c) => { return p + c.sum; }, 0),
           bSum = b.results.reduce((p, c) => { return p + c.sum; }, 0);
 
@@ -109,6 +122,15 @@ module.exports = {
         } else if(aSum < bSum) { return 1; }
         return 0;
       });
+
+      var minCombinedValue = normalizedVisData.reduce((p, c) => {
+        var currCombinedValue = c.results.reduce((np, nc) => {
+          return np + nc.sum;
+        }, 0);
+
+        if(currCombinedValue < p) { return currCombinedValue; }
+        return p;
+      }, Infinity);
 
       var maxCombinedValue = normalizedVisData.reduce((p, c) => {
         var currCombinedValue = c.results.reduce((np, nc) => {
@@ -131,7 +153,7 @@ module.exports = {
         return p;
       }, 0);
 
-      var scale = d3.scale.linear().domain([minSingleSum / maxCombinedValue, maxSingleSum / maxCombinedValue]).range([0, 50]);
+      var scale = d3.scale.linear().domain([minCombinedValue, maxCombinedValue]).range([5, 100]);
 
       var container = d3.select(".visualization").style("height", rowHeight * causes.length + 'px');
 
@@ -153,7 +175,9 @@ module.exports = {
       bars.enter().append("div").attr("class", "bar")
         .style("background-color", (d, i) => { return colors[i]; });
       
-      bars.style("width", (d) => { return scale(d.sum / maxCombinedValue) + '%'; });
+      bars.style("width", (d) => { 
+        return ((d.sum / d.metaSum) * scale(d.metaSum)) + '%'; 
+      });
     }
 
     api.get('/vectors', (error, result) => {
