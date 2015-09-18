@@ -95,20 +95,14 @@ module.exports = {
     var colors = ['#77C4D3', '#EA2E49'];
 
     var update = () => {
-
       // normalize according to weights of each dimension
       normalizedVisData = normalize(visData, weights).map((d) => {
         var metaSum = d.results.reduce((p, c) => { return p + c.sum; }, 0);
-        var results = d.results.map((x) => {
-          return {
-            id: x.id,
-            sum: x.sum,
-            metaSum: metaSum
-          };
-        });
         return {
           cause: d.cause,
-          results: results
+          results: d.results.map(({ id, sum }) => {
+            return { id, sum, metaSum };
+          })
         };
       }).sort((a, b) => {
         var aSum = a.results.reduce((p, c) => { return p + c.sum; }, 0),
@@ -166,9 +160,7 @@ module.exports = {
       bars.enter().append("div").attr("class", "bar")
         .style("background-color", (d, i) => { return colors[i]; });
       
-      bars.style("width", (d) => { 
-        return ((d.sum / d.metaSum) * scale(d.metaSum)) + '%'; 
-      });
+      bars.style("width", (d) => { return ((d.sum / d.metaSum) * scale(d.metaSum)) + '%'; });
     }
 
     api.get('/vectors', (error, result) => {
