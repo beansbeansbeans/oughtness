@@ -1,4 +1,4 @@
-$circle-width: 20vw;
+$circle-width: 30vw;
 
 [data-route="data"] {
   padding-top: 5rem;
@@ -45,53 +45,41 @@ $circle-width: 20vw;
     cursor: pointer;
   }
   .visualization {
-    width: 75vw;
     margin-left: auto;
     margin-right: auto;
-    text-align: center;
     position: relative;
+    $label-width: 10rem;
     .row {
       @include transition(top $transition-duration);
       position: absolute;
       left: 0;
       right: 0;
+      @extend %clearfix;
+      .label, .bar-container {
+        float: left;
+      }
       .label {
+        width: $label-width;
+        padding-right: 1rem;
+        text-align: right;
         font-size: 0.7rem;
         font-weight: 100;
         text-transform: uppercase;
         padding-top: .5rem;
       }
       .bar-container {
+        width: calc(100% - #{$label-width});
         white-space: nowrap;
         position: relative;
       }
       .bar {
+        display: inline-block;
         @include transition(width $transition-duration);
-        position: absolute;
-        &:first-of-type {
-          right: 50%;
-        }
-        &:last-of-type {
-          left: 50%;
-        }
       }
       .bar {
         height: 2px;
         margin-right: 0.5rem;
       }
-    }
-  }
-  .key {
-    text-align: left;
-    padding-left: 80px;
-    .color, .label {
-      display: inline-block;
-      vertical-align: middle;
-    }
-    .color {
-      width: 5px;
-      height: 5px;
-      margin-right: 10px;
     }
   }
   .loader {

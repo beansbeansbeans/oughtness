@@ -139,8 +139,8 @@ module.exports = {
 
       var enteringRows = rows.enter().append("div").attr("class", "row");
 
-      enteringRows.append("div").attr("class", "bar-container");
       enteringRows.append("div").attr("class", "label");
+      enteringRows.append("div").attr("class", "bar-container");
 
       var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
 

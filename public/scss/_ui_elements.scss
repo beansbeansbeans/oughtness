@@ -9,3 +9,13 @@
   letter-spacing: 1px;
   @include transition(background-color $transition-duration);
 }
+
+%clearfix {
+  &:before, &:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */    
+  }
+  &:after {
+    clear: both;
+  }
+}
