@@ -1,4 +1,4 @@
-$circle-width: 30vw;
+$circle-width: 35vw;
 
 [data-route="data"] {
   padding-top: 5rem;
@@ -53,7 +53,7 @@ $circle-width: 30vw;
       @include transition(top $transition-duration);
       position: absolute;
       left: 0;
-      right: 0;
+      right: 10vw;
       @extend %clearfix;
       .label, .bar-container {
         float: left;
@@ -65,20 +65,17 @@ $circle-width: 30vw;
         font-size: 0.7rem;
         font-weight: 100;
         text-transform: uppercase;
-        padding-top: .5rem;
       }
       .bar-container {
+        padding-top: .35rem;
         width: calc(100% - #{$label-width});
         white-space: nowrap;
         position: relative;
       }
       .bar {
-        display: inline-block;
+        float: left;
         @include transition(width $transition-duration);
-      }
-      .bar {
         height: 2px;
-        margin-right: 0.5rem;
       }
     }
   }
