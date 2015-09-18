@@ -52,6 +52,9 @@ module.exports = {
 
     tasks.forEach( task => task(complete) );
   },
+  sum(arr) {
+    return arr.reduce((p, c) => { return p + c; }, 0);
+  },
   initialize() {
     this.vendors.every((prefix) => {
       var e = 'transform';
