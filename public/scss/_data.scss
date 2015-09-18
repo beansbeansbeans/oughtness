@@ -4,50 +4,62 @@ $control-color: black;
 [data-route="data"] {
   padding-top: 5rem;
   padding-bottom: 5rem;
-  .input {
+  .input-wrapper {
     width: $circle-width;
     text-align: center;
     padding-top: 5rem;
+    position: relative;
   }
   .chart {
     width: calc(100% - #{$circle-width});
   }
-  .input, .chart {
+  .input-wrapper, .chart {
     float: left;
   }
-  .circle-wrapper {
+  .input {
+    position: relative;
     width: 15vw;
     height: 15vw;
     margin: 0 auto;
+  }
+  .circle-wrapper, .circle {
+    @include square(100%);
+  }
+  .circle-wrapper {
+    border-radius: 50%;
+    overflow: hidden;
     position: relative;   
   }
   .circle {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    overflow: hidden;
-    position: relative;
     .section {
       position: absolute;
       height: 100%;
       &:first-of-type {
         background: #77C4D3;
-        border-right: solid 1px $control-color;
       }
       &:last-of-type {
         background: #EA2E49;
-        border-left: solid 1px $control-color;
       }
     }
   }
-  .controls {
+  .labels {
     position: absolute;
-    top: 0;
-    height: 50%;
+    bottom: 50%;
+    height: 100%;
+    .extended-controls {
+      height: 100%;
+    }
+  }
+  .extended-controls, .controls {
     width: 2px;
     margin-left: -1px;
     background: $control-color;
-    cursor: pointer;
+    cursor: pointer;    
+    position: absolute;
+  }
+  .controls {
+    top: 0;
+    height: 100%;
   }
   .visualization {
     margin-left: auto;

@@ -45,7 +45,9 @@ module.exports = {
     var causes = state.get("causes");
     var dimensions = state.get("dimensions");
     var control = d.qs(".circle-wrapper .controls");
+    var controlLabel = d.qs(".input .extended-controls");
 
+    controlLabel.addEventListener("mousedown", () => { dragging = true; });
     control.addEventListener("mousedown", () => { dragging = true; });
 
     window.addEventListener("mouseup", () => { dragging = false; });
@@ -59,6 +61,7 @@ module.exports = {
       var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * 2 * r)) : e.clientX;
       var position = Math.min(Math.max((x - circleOffsetLeft), 1), r * 2 - 1);
       control.style.left = position + 'px';
+      controlLabel.style.left = position + 'px';
 
       var h = Math.min(Math.max((x - circleOffsetLeft), 0), r * 2),
         circularArea = Math.PI * Math.pow(r, 2),
