@@ -18,8 +18,8 @@ $control-color: black;
   }
   .input {
     position: relative;
-    width: 15vw;
-    height: 15vw;
+    width: 10vw;
+    height: 10vw;
     margin: 0 auto;
   }
   .circle-wrapper, .circle {
@@ -45,7 +45,7 @@ $control-color: black;
   .labels {
     position: absolute;
     bottom: 50%;
-    height: 80%;
+    height: 90%;
     .extended-controls {
       height: 100%;
       &:before {
@@ -57,6 +57,18 @@ $control-color: black;
         left: -0.32rem;
         position: absolute;
         display: block;
+      }
+      .dimension {
+        position: absolute;
+        top: -2rem;
+        padding: 1rem;
+        pointer-events: none;
+        &.urgency {
+          right: 100%;
+        }
+        &.tractability {
+
+        }
       }
     }
   }
