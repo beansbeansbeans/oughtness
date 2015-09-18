@@ -46,6 +46,10 @@ module.exports = {
     var dimensions = state.get("dimensions");
     var control = d.qs(".circle-wrapper .controls");
     var controlLabel = d.qs(".input .extended-controls");
+    var firstSection = d.qs('.section');
+    var lastSection = d.qs('.section:last-of-type');
+    var firstPercentLabel = d.qs('.labels .urgency .value');
+    var secondPercentLabel = d.qs('.labels .tractability .value');
 
     controlLabel.addEventListener("mousedown", () => { dragging = true; });
     control.addEventListener("mousedown", () => { dragging = true; });
@@ -71,12 +75,16 @@ module.exports = {
 
       var percentage = area / circularArea;
 
-      d.qs('.section').style.width = (position) + 'px';
-      d.qs('.section:last-of-type').style.left = (position) + 'px';
-      d.qs('.section:last-of-type').style.width = ((r * 2) - (position)) + 'px';
+      firstSection.style.width = (position) + 'px';
+      lastSection.style.left = (position) + 'px';
+      lastSection.style.width = ((r * 2) - (position)) + 'px';
 
       weights[0].value = percentage;
       weights[1].value = 1 - percentage;
+
+      firstPercentLabel.textContent = Math.round(percentage * 100) + '%';
+      secondPercentLabel.textContent = Math.round((1 - percentage) * 100) + '%';
+
       update();
     }
 
