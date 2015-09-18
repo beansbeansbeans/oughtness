@@ -1,4 +1,5 @@
 $circle-width: 35vw;
+$control-color: black;
 
 [data-route="data"] {
   padding-top: 5rem;
@@ -6,6 +7,7 @@ $circle-width: 35vw;
   .input {
     width: $circle-width;
     text-align: center;
+    padding-top: 5rem;
   }
   .chart {
     width: calc(100% - #{$circle-width});
@@ -30,18 +32,21 @@ $circle-width: 35vw;
       height: 100%;
       &:first-of-type {
         background: #77C4D3;
+        border-right: solid 1px $control-color;
       }
       &:last-of-type {
         background: #EA2E49;
+        border-left: solid 1px $control-color;
       }
     }
   }
   .controls {
     position: absolute;
     top: 0;
-    height: 100%;
+    height: 50%;
     width: 2px;
-    background: black;
+    margin-left: -1px;
+    background: $control-color;
     cursor: pointer;
   }
   .visualization {

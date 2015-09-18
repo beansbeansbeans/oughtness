@@ -57,7 +57,7 @@ module.exports = {
 
     var handleDrag = (e) => {
       var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * 2 * r)) : e.clientX;
-      var position = Math.min(Math.max((x - circleOffsetLeft), 0), r * 2);
+      var position = Math.min(Math.max((x - circleOffsetLeft), 1), r * 2 - 1);
       control.style.left = position + 'px';
 
       var h = Math.min(Math.max((x - circleOffsetLeft), 0), r * 2),
