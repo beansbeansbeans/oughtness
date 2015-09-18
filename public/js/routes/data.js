@@ -46,13 +46,9 @@ module.exports = {
     var dimensions = state.get("dimensions");
     var control = d.qs(".circle-wrapper .controls");
 
-    control.addEventListener("mousedown", () => {
-      dragging = true;
-    });
+    control.addEventListener("mousedown", () => { dragging = true; });
 
-    window.addEventListener("mouseup", () => {
-      dragging = false;
-    });
+    window.addEventListener("mouseup", () => { dragging = false; });
 
     mediator.subscribe("resize", () => {
       setDimensions();
@@ -126,9 +122,7 @@ module.exports = {
       var minCombinedValue = Infinity, maxCombinedValue = 0;
 
       normalizedVisData.forEach((d, i) => {
-        var currCombinedValue = d.results.reduce((np, nc) => {
-          return np + nc.sum;
-        }, 0);
+        var currCombinedValue = d.results.reduce((np, nc) => { return np + nc.sum; }, 0);
 
         if(currCombinedValue < minCombinedValue) { 
           minCombinedValue = currCombinedValue;
