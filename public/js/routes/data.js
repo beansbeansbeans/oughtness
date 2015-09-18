@@ -166,7 +166,7 @@ module.exports = {
         return _.findWhere(causes, { _id: d.cause }).name;
       });
 
-      rows.style("top", (d, i) => { return i * rowHeight + 'px'; });
+      rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
 
       bars.enter().append("div").attr("class", "bar")
         .style("background-color", (d, i) => { return colors[i]; });
