@@ -123,23 +123,20 @@ module.exports = {
         return 0;
       });
 
-      var minCombinedValue = normalizedVisData.reduce((p, c) => {
-        var currCombinedValue = c.results.reduce((np, nc) => {
+      var minCombinedValue = Infinity, maxCombinedValue = 0;
+
+      normalizedVisData.forEach((d, i) => {
+        var currCombinedValue = d.results.reduce((np, nc) => {
           return np + nc.sum;
         }, 0);
 
-        if(currCombinedValue < p) { return currCombinedValue; }
-        return p;
-      }, Infinity);
-
-      var maxCombinedValue = normalizedVisData.reduce((p, c) => {
-        var currCombinedValue = c.results.reduce((np, nc) => {
-          return np + nc.sum;
-        }, 0);
-
-        if(currCombinedValue > p) { return currCombinedValue; }
-        return p;
-      }, 0);
+        if(currCombinedValue < minCombinedValue) { 
+          minCombinedValue = currCombinedValue;
+        }
+        if(currCombinedValue > maxCombinedValue) {
+          maxCombinedValue = currCombinedValue;
+        }
+      });
 
       var minSingleSum = normalizedVisData.reduce((p, c) => {
         var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
