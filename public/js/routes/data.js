@@ -175,9 +175,10 @@ module.exports = {
             }; 
           }
 
+          var sum = util.sum(row);
+
           visData[rowIndex].results.push({
-            id: dimensions[i]._id, 
-            sum: util.sum(row)
+            id: dimensions[i]._id, sum
           });
 
           total += sum;
