@@ -98,7 +98,7 @@ module.exports = {
 
       // normalize according to weights of each dimension
       normalizedVisData = normalize(visData, weights).map((d) => {
-        var metaSum = d.results[0].sum + d.results[1].sum;
+        var metaSum = d.results.reduce((p, c) => { return p + c.sum; }, 0);
         var results = d.results.map((x) => {
           return {
             id: x.id,
