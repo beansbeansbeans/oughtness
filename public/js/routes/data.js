@@ -178,8 +178,7 @@ module.exports = {
           var sum = row.reduce((p, c) => { return p + c; }, 0);
 
           visData[rowIndex].results.push({
-            id: dimensions[i]._id,
-            sum: sum
+            id: dimensions[i]._id, sum
           });
 
           total += sum;
