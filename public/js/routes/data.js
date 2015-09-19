@@ -94,7 +94,7 @@ var update = () => {
 
   var container = d3.select(".visualization").style("height", rowHeight * causes.length + 'px');
 
-  var rows = container.selectAll(".row").data(normalizedVisData, (d) => { return d.cause; });
+  var rows = container.selectAll(".row").data(normalizedVisData, d => d.cause);
 
   var enteringRows = rows.enter().append("div").attr("class", "row")
     .attr("data-cause-id", d => d.cause );
@@ -102,7 +102,7 @@ var update = () => {
   enteringRows.append("div").attr("class", "label");
   enteringRows.append("div").attr("class", "bar-container");
 
-  var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
+  var bars = rows.select(".bar-container").selectAll(".bar").data(d => d.results);
 
   enteringRows.select(".label").text(d => getCause(d.cause));
 
