@@ -166,7 +166,9 @@ module.exports = {
 
         dimensions.forEach((dimension) => {
           var won = 0, lost = 0;
-          data.votes.forEach((d) => {
+          data.votes.filter((d) => {
+            return Object.keys(d.causes).every(c => disabledCauses.indexOf(c) === -1);
+          }).forEach((d) => {
             if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(causeID) !== -1) {
               Object.keys(d.causes).forEach((c) => {
                 if(c === causeID) { won += d.causes[c];
