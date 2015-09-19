@@ -17,6 +17,8 @@ var normalize = (data, weights) => {
   });
 }
 
+var getCause = id => _.findWhere(causes, { _id: id }).name;
+
 var getCentralAngle = (seg, rad) => {
   return 2 * Math.acos(seg / rad);
 }
@@ -33,6 +35,7 @@ var circleOffsetLeft = 0;
 
 var visData, normalizedVisData;
 var weights = [];
+var data;
 var causes = [], dimensions = [];
 var colors = ['#77C4D3', '#EA2E49'];
 
@@ -105,9 +108,7 @@ var update = () => {
 
   var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
 
-  enteringRows.select(".label").text((d) => {
-    return _.findWhere(causes, { _id: d.cause }).name;
-  });
+  enteringRows.select(".label").text(d => getCause(d.cause));
 
   rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
 
@@ -146,12 +147,29 @@ module.exports = {
         var lastActive = chart.querySelector('.active');
         if(lastActive) { lastActive.classList.remove('active'); }
         row.classList.add('active');
-        description.innerHTML = row.getAttribute('data-cause-id');
+        // With respect to tractability, A was chosen over other causes 20 out of 190 times.
+
+        var causeID = row.getAttribute('data-cause-id');
+        var causeName = getCause(causeID);
+        var dimension = dimensions[0];
+        var won = 0, lost = 0;
+        data.votes.forEach((d) => {
+          if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(causeID) !== -1) {
+            Object.keys(d.causes).forEach((c) => {
+              if(c === causeID) { won += d.causes[c];
+              } else { lost += d.causes[c]; }
+            });
+            won += d.causes[causeID];
+          }
+        });
+
+        description.innerHTML = dimension.name + ' ' + causeName + ' won ' + won + ' out of ' + (won + lost) + ' times';
       }
     });
     chart.addEventListener('mouseleave', (e) => {
       description.innerHTML = '';
-      chart.querySelector('.active').classList.remove('active');
+      var lastActive = chart.querySelector('.active');
+      if(lastActive) { lastActive.classList.remove('active'); }
     });
 
     mediator.subscribe("resize", handleResize);
@@ -199,6 +217,8 @@ module.exports = {
     });
 
     api.get('/vectors', (error, result) => {
+      data = result.data;
+
       result.data.result.forEach((d, i) => {
         var total = 0;
 
