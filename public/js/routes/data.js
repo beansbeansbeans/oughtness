@@ -33,6 +33,7 @@ var visData, normalizedVisData;
 var weights = [];
 var data;
 var causes = [], dimensions = [];
+var disabledCauses = [];
 var colors = ['#77C4D3', '#EA2E49'];
 
 var setDimensions = () => {
@@ -101,6 +102,7 @@ var update = () => {
 
   enteringRows.append("div").attr("class", "label");
   enteringRows.append("div").attr("class", "bar-container");
+  enteringRows.append("div").attr("class", "remove").text("remove");
 
   var bars = rows.select(".bar-container").selectAll(".bar").data(d => d.results);
 
@@ -170,6 +172,12 @@ module.exports = {
       description.innerHTML = '';
       var lastActive = chart.querySelector('.active');
       if(lastActive) { lastActive.classList.remove('active'); }
+    });
+    chart.addEventListener("click", (e) => {
+      if(e.target.classList.contains('remove')) {
+        disabledCauses.push(e.target.closest('.row').getAttribute("data-cause-id"));
+        update();
+      }
     });
 
     mediator.subscribe("resize", handleResize);
