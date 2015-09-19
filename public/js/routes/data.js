@@ -144,26 +144,30 @@ module.exports = {
     chart.addEventListener('mouseover', (e) => {
       var row = e.target.closest('.row');
       if(row) {
+        var template = '';
         var lastActive = chart.querySelector('.active');
         if(lastActive) { lastActive.classList.remove('active'); }
         row.classList.add('active');
-        // With respect to tractability, A was chosen over other causes 20 out of 190 times.
 
         var causeID = row.getAttribute('data-cause-id');
         var causeName = getCause(causeID);
-        var dimension = dimensions[0];
-        var won = 0, lost = 0;
-        data.votes.forEach((d) => {
-          if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(causeID) !== -1) {
-            Object.keys(d.causes).forEach((c) => {
-              if(c === causeID) { won += d.causes[c];
-              } else { lost += d.causes[c]; }
-            });
-            won += d.causes[causeID];
-          }
+
+        dimensions.forEach((dimension) => {
+          var won = 0, lost = 0;
+          data.votes.forEach((d) => {
+            if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(causeID) !== -1) {
+              Object.keys(d.causes).forEach((c) => {
+                if(c === causeID) { won += d.causes[c];
+                } else { lost += d.causes[c]; }
+              });
+              won += d.causes[causeID];
+            }
+          });
+
+          template += `With respect to ${dimension.name} ${causeName} won ${won} out of ${won + lost} times. `;          
         });
 
-        description.innerHTML = `With respect to ${dimension.name} ${causeName} won ${won} out of ${won + lost} times`;
+        description.innerHTML = template;
       }
     });
     chart.addEventListener('mouseleave', (e) => {
