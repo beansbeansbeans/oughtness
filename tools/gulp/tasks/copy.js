@@ -26,7 +26,7 @@ gulp.task('copy', function() {
     .pipe(plumber())
     .pipe(gulp.dest(config.buildAssetsDir + 'fonts/'));
 
-  gulp.src(config.buildAssetsDir + 'images/*')
+  gulp.src(config.sourceAssetsDir + 'images/*')
     .pipe(plumber())
     .pipe(gulp.dest(config.buildAssetsDir + 'images/'));
 
