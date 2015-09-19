@@ -183,7 +183,7 @@ module.exports = {
     });
 
     api.get('/vectors', (error, result) => {
-      result.data.forEach((d, i) => {
+      result.data.result.forEach((d, i) => {
         var total = 0;
 
         d.causes.forEach((row, rowIndex) => {
