@@ -118,9 +118,11 @@ var update = () => {
     container.append("div").attr("class", "disabled-causes");
   }
 
-  var disabledCauseEls = container.select(".disabled-causes").selectAll(".disabled-cause").data(disabledCauses, (d) => { return d; });
+  var disabledCauseEls = container.select(".disabled-causes").selectAll(".disabled-cause").data(disabledCauses, _.identity);
 
-  disabledCauseEls.enter().append("div").attr("class", "disabled-cause").text(getCause);
+  disabledCauseEls.enter().append("div").attr("class", "disabled-cause")
+    .attr("data-cause-id", _.identity)
+    .text(getCause);
 
   disabledCauseEls.exit().remove();
 
@@ -186,6 +188,9 @@ module.exports = {
     chart.addEventListener("click", (e) => {
       if(e.target.classList.contains('remove')) {
         disabledCauses.push(e.target.closest('.row').getAttribute("data-cause-id"));
+        update();
+      } else if(e.target.classList.contains('disabled-cause')) {
+        disabledCauses.splice(disabledCauses.indexOf(e.target.getAttribute("data-cause-id")), 1);
         update();
       }
     });
