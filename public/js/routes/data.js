@@ -163,7 +163,7 @@ module.exports = {
           }
         });
 
-        description.innerHTML = dimension.name + ' ' + causeName + ' won ' + won + ' out of ' + (won + lost) + ' times';
+        description.innerHTML = `With respect to ${dimension.name} ${causeName} won ${won} out of ${won + lost} times`;
       }
     });
     chart.addEventListener('mouseleave', (e) => {
