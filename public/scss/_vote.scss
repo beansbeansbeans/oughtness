@@ -61,13 +61,28 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     width: 50%;
     height: 45vh;
     .contents {
-      padding-top: 2rem;
       width: $vote-content-width * 1%;
       margin: 0 auto;
     }
     .title {
       font-weight: 800;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .description {
+      padding-top: 8rem;
+      position: relative;
+      &:before {
+        content: "";
+        left: 50%;
+        margin-left: -6.5rem;
+        width: 13rem;
+        height: 6.5rem;
+        background-size: 100%;
+        position: absolute;
+        top: 0;
+        display: block;
+        background-image: url('../images/climate_change.png');
+      }
     }
     .button {
       margin-top: 2rem;
@@ -91,6 +106,15 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
   #cause-0 {
   }
   #cause-1 {
+    .description {
+      &:before {
+        background-image: url('../images/democracy.png');
+        width: 9rem;
+        height: 6.5rem;
+        margin-left: -4.5rem;
+        margin-top: -0.5rem;
+      }      
+    }
   }
   #choose-both {
     display: none; // ?
