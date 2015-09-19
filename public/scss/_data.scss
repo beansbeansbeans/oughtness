@@ -94,6 +94,9 @@ $control-color: black;
       left: 0;
       right: 10vw;
       @extend %clearfix;
+      &.active {
+        background: yellow;
+      }
       .label, .bar-container {
         float: left;
       }
