@@ -19,12 +19,8 @@ var normalize = (data, weights) => {
 
 var getCause = id => _.findWhere(causes, { _id: id }).name;
 
-var getCentralAngle = (seg, rad) => {
-  return 2 * Math.acos(seg / rad);
-}
-
 var getCircularSegmentArea = (seg, rad) => {
-  var a = getCentralAngle(seg, rad);
+  var a = 2 * Math.acos(seg / rad);
   return (Math.pow(rad, 2) / 2) * (a - Math.sin(a));
 }
 
