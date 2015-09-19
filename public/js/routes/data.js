@@ -191,8 +191,10 @@ module.exports = {
     });
     chart.addEventListener("click", (e) => {
       if(e.target.classList.contains('remove')) {
-        disabledCauses.push(e.target.closest('.row').getAttribute("data-cause-id"));
-        update();
+        if(disabledCauses.length < causes.length - 2) {
+          disabledCauses.push(e.target.closest('.row').getAttribute("data-cause-id"));
+          update();          
+        }
       } else if(e.target.classList.contains('disabled-cause')) {
         disabledCauses.splice(disabledCauses.indexOf(e.target.getAttribute("data-cause-id")), 1);
         update();
