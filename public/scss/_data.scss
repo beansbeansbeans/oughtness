@@ -124,6 +124,10 @@ $control-color: black;
   .loader {
     text-align: center;
   }
+  .disabled-causes {
+    position: absolute;
+    margin-top: 40rem;
+  }
   &[data-loading="true"] {
     .visualization-container {
       display: none;

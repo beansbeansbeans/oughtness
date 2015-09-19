@@ -103,17 +103,27 @@ var update = () => {
   enteringRows.append("div").attr("class", "label");
   enteringRows.append("div").attr("class", "bar-container");
   enteringRows.append("div").attr("class", "remove").text("remove");
+  enteringRows.select(".label").text(d => getCause(d.cause));
+  
+  rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
 
   var bars = rows.select(".bar-container").selectAll(".bar").data(d => d.results);
-
-  enteringRows.select(".label").text(d => getCause(d.cause));
-
-  rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
 
   bars.enter().append("div").attr("class", "bar")
     .style("background-color", (d, i) => { return colors[i]; });
   
   bars.style("width", (d) => { return ((d.sum / d.metaSum) * scale(d.metaSum)) + '%'; });
+
+  if(!d.qs('.visualization .disabled-causes')) {
+    container.append("div").attr("class", "disabled-causes");
+  }
+
+  var disabledCauseEls = container.select(".disabled-causes").selectAll(".disabled-cause").data(disabledCauses, (d) => { return d; });
+
+  disabledCauseEls.enter().append("div").attr("class", "disabled-cause").text(getCause);
+
+  disabledCauseEls.exit().remove();
+
 }
 
 module.exports = {
