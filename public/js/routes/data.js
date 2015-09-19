@@ -97,7 +97,8 @@ var update = () => {
 
   var rows = container.selectAll(".row").data(normalizedVisData, (d) => { return d.cause; });
 
-  var enteringRows = rows.enter().append("div").attr("class", "row");
+  var enteringRows = rows.enter().append("div").attr("class", "row")
+    .attr("data-cause-id", d => d.cause );
 
   enteringRows.append("div").attr("class", "label");
   enteringRows.append("div").attr("class", "bar-container");
@@ -132,11 +133,21 @@ module.exports = {
     var lastSection = d.qs('.section:last-of-type');
     var firstPercentLabel = d.qs('.labels .urgency .value');
     var secondPercentLabel = d.qs('.labels .tractability .value');
+    var description = d.qs('.input-wrapper .description');
 
     controlLabel.addEventListener("mousedown", () => { dragging = true; });
     control.addEventListener("mousedown", () => { dragging = true; });
 
     window.addEventListener("mouseup", () => { dragging = false; });
+    d.qs('.chart').addEventListener('mouseover', (e) => {
+      var row = e.target.closest('.row');
+      if(row) {
+        description.innerHTML = row.getAttribute('data-cause-id');
+      }
+    });
+    d.qs('.chart').addEventListener('mouseleave', (e) => {
+      description.innerHTML = '';
+    });
 
     mediator.subscribe("resize", handleResize);
 
