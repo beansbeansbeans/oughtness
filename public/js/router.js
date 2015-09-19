@@ -36,7 +36,7 @@ module.exports = {
 
       page('vote', routes.vote.start);
 
-      page('vote/:pairing', routes.vote.inflate);
+      page('vote/:pairing', routes.vote.inflate.bind(routes.vote));
 
       page('about', routes.about.start);
 

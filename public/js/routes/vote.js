@@ -77,23 +77,28 @@ var voteFor = (selection) => {
   d.qs('[data-route="vote"]').setAttribute("data-won", selection);
 };
 
+var handleClick = (e) => {
+  var target = e.target,
+    closestVote = target.closest('[data-vote-for]');
+  if(closestVote) {
+    voteFor(closestVote.getAttribute("data-vote-for"));
+  }
+}
+
 var exports = {
   initialize() {
-    mediator.subscribe("window_click", (e) => {
-      var target = e.target,
-        closestVote = target.closest('[data-vote-for]');
-      if(closestVote) {
-        voteFor(closestVote.getAttribute("data-vote-for"));
-      }
-    });
+    
   },
   stop() {
-
+    mediator.unsubscribe("window_click", handleClick);
   },
   start() {
     refreshStatePair();
+    mediator.subscribe("window_click", handleClick);
   },
   inflate(data) {
+    this.start();
+
     var pairing = data.params.pairing,
       dimension = pairing.slice(0, pairing.indexOf('-of-'));
 
