@@ -21,6 +21,7 @@ module.exports = {
       page.base('/');
 
       page((context, next) => {
+        Object.keys(routes).forEach(x => routes[x].stop());
         mediator.publish("route_updated", context);
         next();
       });

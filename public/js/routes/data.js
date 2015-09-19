@@ -31,19 +31,101 @@ var r = 0;
 var dragging = false;
 var circleOffsetLeft = 0;
 
+var visData, normalizedVisData;
+var weights = [];
+var causes = [], dimensions = [];
+var colors = ['#77C4D3', '#EA2E49'];
+
 var setDimensions = () => {
   var bounds = d.qs(".circle").getBoundingClientRect();
   r = bounds.width / 2;
   circleOffsetLeft = bounds.left;
 }
 
+var handleResize = () => {
+  setDimensions();
+  update();
+}
+
+var update = () => {
+  // normalize according to weights of each dimension
+  normalizedVisData = normalize(visData, weights).map((d) => {
+    var metaSum = d.results.reduce((p, c) => { return p + c.sum; }, 0);
+    return {
+      cause: d.cause,
+      results: d.results.map(({ id, sum }) => {
+        return { id, sum, metaSum };
+      })
+    };
+  }).sort((a, b) => {
+    var aSum = a.results.reduce((p, c) => { return p + c.sum; }, 0),
+      bSum = b.results.reduce((p, c) => { return p + c.sum; }, 0);
+
+    if(aSum > bSum) { return -1;
+    } else if(aSum < bSum) { return 1; }
+    return 0;
+  });
+
+  var minCombinedValue = Infinity, maxCombinedValue = 0;
+
+  normalizedVisData.forEach((d, i) => {
+    var currCombinedValue = d.results.reduce((np, nc) => { return np + nc.sum; }, 0);
+
+    if(currCombinedValue < minCombinedValue) { 
+      minCombinedValue = currCombinedValue;
+    }
+    if(currCombinedValue > maxCombinedValue) {
+      maxCombinedValue = currCombinedValue;
+    }
+  });
+
+  var minSingleSum = normalizedVisData.reduce((p, c) => {
+    var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
+    if(cSum < p) { return cSum; }
+    return p;
+  }, Infinity);
+
+  var maxSingleSum = normalizedVisData.reduce((p, c) => {
+    var cSum = Math.max.apply(Math, c.results.map(d => d.sum));
+    if(cSum > p) { return cSum; }
+    return p;
+  }, 0);
+
+  var scale = d3.scale.linear().domain([minCombinedValue, maxCombinedValue]).range([5, 100]);
+
+  var container = d3.select(".visualization").style("height", rowHeight * causes.length + 'px');
+
+  var rows = container.selectAll(".row").data(normalizedVisData, (d) => { return d.cause; });
+
+  var enteringRows = rows.enter().append("div").attr("class", "row");
+
+  enteringRows.append("div").attr("class", "label");
+  enteringRows.append("div").attr("class", "bar-container");
+
+  var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
+
+  enteringRows.select(".label").text((d) => {
+    return _.findWhere(causes, { _id: d.cause }).name;
+  });
+
+  rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
+
+  bars.enter().append("div").attr("class", "bar")
+    .style("background-color", (d, i) => { return colors[i]; });
+  
+  bars.style("width", (d) => { return ((d.sum / d.metaSum) * scale(d.metaSum)) + '%'; });
+}
+
 module.exports = {
   initialize() {
 
   },
+  stop() {
+    mediator.unsubscribe("resize", handleResize);
+  },
   start() {
-    var causes = state.get("causes");
-    var dimensions = state.get("dimensions");
+    causes = state.get("causes");
+    dimensions = state.get("dimensions");
     var control = d.qs(".circle-wrapper .controls");
     var controlLabel = d.qs(".input .extended-controls");
     var firstSection = d.qs('.section');
@@ -56,10 +138,7 @@ module.exports = {
 
     window.addEventListener("mouseup", () => { dragging = false; });
 
-    mediator.subscribe("resize", () => {
-      setDimensions();
-      update();
-    });
+    mediator.subscribe("resize", handleResize);
 
     var handleDrag = (e) => {
       var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * 2 * r)) : e.clientX;
@@ -93,86 +172,15 @@ module.exports = {
       handleDrag(e);
     });
 
-    var visData = new Array(causes.length);
-    var normalizedVisData = new Array(causes.length);
+    visData = new Array(causes.length);
+    normalizedVisData = new Array(causes.length);
 
-    var weights = dimensions.map((d) => {
+    weights = dimensions.map((d) => {
       return {
         id: d._id,
         value: 1 / dimensions.length
       };
     });
-
-    var colors = ['#77C4D3', '#EA2E49'];
-
-    var update = () => {
-      // normalize according to weights of each dimension
-      normalizedVisData = normalize(visData, weights).map((d) => {
-        var metaSum = d.results.reduce((p, c) => { return p + c.sum; }, 0);
-        return {
-          cause: d.cause,
-          results: d.results.map(({ id, sum }) => {
-            return { id, sum, metaSum };
-          })
-        };
-      }).sort((a, b) => {
-        var aSum = a.results.reduce((p, c) => { return p + c.sum; }, 0),
-          bSum = b.results.reduce((p, c) => { return p + c.sum; }, 0);
-
-        if(aSum > bSum) { return -1;
-        } else if(aSum < bSum) { return 1; }
-        return 0;
-      });
-
-      var minCombinedValue = Infinity, maxCombinedValue = 0;
-
-      normalizedVisData.forEach((d, i) => {
-        var currCombinedValue = d.results.reduce((np, nc) => { return np + nc.sum; }, 0);
-
-        if(currCombinedValue < minCombinedValue) { 
-          minCombinedValue = currCombinedValue;
-        }
-        if(currCombinedValue > maxCombinedValue) {
-          maxCombinedValue = currCombinedValue;
-        }
-      });
-
-      var minSingleSum = normalizedVisData.reduce((p, c) => {
-        var cSum = Math.min.apply(Math, c.results.map(d => d.sum));
-        if(cSum < p) { return cSum; }
-        return p;
-      }, Infinity);
-
-      var maxSingleSum = normalizedVisData.reduce((p, c) => {
-        var cSum = Math.max.apply(Math, c.results.map(d => d.sum));
-        if(cSum > p) { return cSum; }
-        return p;
-      }, 0);
-
-      var scale = d3.scale.linear().domain([minCombinedValue, maxCombinedValue]).range([5, 100]);
-
-      var container = d3.select(".visualization").style("height", rowHeight * causes.length + 'px');
-
-      var rows = container.selectAll(".row").data(normalizedVisData, (d) => { return d.cause; });
-
-      var enteringRows = rows.enter().append("div").attr("class", "row");
-
-      enteringRows.append("div").attr("class", "label");
-      enteringRows.append("div").attr("class", "bar-container");
-
-      var bars = rows.select(".bar-container").selectAll(".bar").data((d, i) => { return d.results; });
-
-      enteringRows.select(".label").text((d) => {
-        return _.findWhere(causes, { _id: d.cause }).name;
-      });
-
-      rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
-
-      bars.enter().append("div").attr("class", "bar")
-        .style("background-color", (d, i) => { return colors[i]; });
-      
-      bars.style("width", (d) => { return ((d.sum / d.metaSum) * scale(d.metaSum)) + '%'; });
-    }
 
     api.get('/vectors', (error, result) => {
       result.data.forEach((d, i) => {

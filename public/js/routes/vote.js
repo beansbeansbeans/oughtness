@@ -87,6 +87,9 @@ var exports = {
       }
     });
   },
+  stop() {
+
+  },
   start() {
     refreshStatePair();
   },
