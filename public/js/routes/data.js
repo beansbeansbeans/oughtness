@@ -49,7 +49,7 @@ var handleResize = () => {
 
 var update = () => {
   // normalize according to weights of each dimension
-  normalizedVisData = normalize(visData, weights).map((d) => {
+  normalizedVisData = normalize(visData.filter(d => disabledCauses.indexOf(d.cause) === -1), weights).map((d) => {
     var metaSum = d.results.reduce((p, c) => { return p + c.sum; }, 0);
     return {
       cause: d.cause,
@@ -106,6 +106,8 @@ var update = () => {
   enteringRows.select(".label").text(d => getCause(d.cause));
   
   rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
+
+  rows.exit().remove();
 
   var bars = rows.select(".bar-container").selectAll(".bar").data(d => d.results);
 
