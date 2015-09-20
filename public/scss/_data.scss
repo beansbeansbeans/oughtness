@@ -77,6 +77,12 @@ $control-color: black;
     top: 0;
     height: 100%;
   }
+  .scale {
+    text-align: right;
+    .label, .value {
+      display: inline-block;
+    }
+  }
   .visualization {
     margin-left: auto;
     margin-right: auto;
@@ -112,7 +118,6 @@ $control-color: black;
         text-transform: uppercase;
       }
       .bar-container {
-        padding-top: .35rem;
         width: calc(100% - #{$label-width});
         white-space: nowrap;
         position: relative;
