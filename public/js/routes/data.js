@@ -18,7 +18,9 @@ var normalize = (data, weights) => {
 }
 
 var formatEigenvalue = (num) => {
-  return (100 * num).toFixed(1);
+  var val = (100 * num).toFixed(1);
+  if(+val[val.length - 1] === 0) { val = Math.round(val); }
+  return val;
 }
 
 var getCause = id => _.findWhere(causes, { _id: id }).name;
