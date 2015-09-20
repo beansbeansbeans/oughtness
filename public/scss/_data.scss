@@ -119,6 +119,10 @@ $control-color: black;
         @include transition(width $transition-duration);
         height: 2px;
       }
+      .remove {
+        position: absolute;
+        right: 0;
+      }
     }
   }
   .loader {
