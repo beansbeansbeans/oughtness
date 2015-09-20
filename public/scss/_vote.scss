@@ -65,12 +65,17 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       margin: 0 auto;
     }
     .title {
-      font-weight: 800;
+      font-weight: bold;
+      font-size: 1.5rem;
       margin-bottom: 1.5rem;
+      text-transform: uppercase;
     }
     .description {
       padding-top: 8rem;
       position: relative;
+      font-size: 0.85rem;
+      line-height: 1.35;
+      text-align: left;
       &:before {
         content: "";
         left: 50%;

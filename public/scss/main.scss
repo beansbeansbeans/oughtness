@@ -22,6 +22,7 @@ body {
     }
   }
   nav {
+    @extend %header-font;
     padding: 20px;
     li {
       position: relative;

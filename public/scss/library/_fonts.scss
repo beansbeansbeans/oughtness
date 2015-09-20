@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic);
+
 @font-face {
     font-family: Futura;
     src: url("../fonts/futura-heavy-bt-webfont.woff");
@@ -32,7 +34,11 @@
 }
 
 %body-font {
-    font-family: Futura;
+    font-family: Helvetica;
     font-weight: 300;
     color: $black;
+}
+
+%header-font {
+    font-family: Helvetica;
 }
