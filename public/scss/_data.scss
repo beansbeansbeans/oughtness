@@ -109,13 +109,12 @@ $control-color: black;
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    $label-width: 12rem;
     .row {
       @include transition(transform $transition-duration);
       position: absolute;
       left: 0;
-      right: 10vw;
-      @extend %clearfix;
+      right: 0;
+      padding: 1rem;
       &.active {
         background: yellow;
         .bar .value {
@@ -125,40 +124,28 @@ $control-color: black;
           opacity: 1;
         }
       }
-      .label, .bar-container {
-        float: left;
-        position: relative;
-        top: 50%;
-        @include transform(translateY(-50%));
-      }
       .label {
-        width: $label-width;
-        padding-right: 1rem;
-        text-align: right;
+        text-align: left;
         font-size: 0.8rem;
         font-weight: 100;
         text-transform: uppercase;
+        padding-bottom: 0.25rem;
       }
       .bar-container {
-        width: calc(100% - #{$label-width});
+        width: 100%;
         white-space: nowrap;
         position: relative;
       }
       .bar {
         float: left;
         @include transition(width $transition-duration);
-        height: 2px;
+        height: 4px;
         .value {
           opacity: 0;
         }
-        &:first-of-type {
-          border-right: solid 1px $body-background-color;
-        }
-        &:last-of-type {
-          border-left: solid 1px $body-background-color;
-        }
       }
       .remove {
+        cursor: pointer;
         opacity: 0;
         position: absolute;
         right: 0;
