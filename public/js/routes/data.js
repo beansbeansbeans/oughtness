@@ -159,6 +159,7 @@ module.exports = {
     var secondPercentLabel = d.qs('.labels .tractability .value');
     var description = d.qs('.input-wrapper .description');
     var chart = d.qs('.chart');
+    var visualization = d.qs('.visualization-container');
 
     firstSection.style.backgroundColor = colors[0];
     lastSection.style.backgroundColor = colors[1];
@@ -174,6 +175,7 @@ module.exports = {
         var lastActive = chart.querySelector('.active');
         if(lastActive) { lastActive.classList.remove('active'); }
         row.classList.add('active');
+        visualization.classList.add("preview");
 
         var causeID = row.getAttribute('data-cause-id');
         var causeName = getCause(causeID);
@@ -198,7 +200,7 @@ module.exports = {
       }
     });
     chart.addEventListener('mouseleave', (e) => {
-      description.innerHTML = '';
+      visualization.classList.remove("preview");
       var lastActive = chart.querySelector('.active');
       if(lastActive) { lastActive.classList.remove('active'); }
     });
