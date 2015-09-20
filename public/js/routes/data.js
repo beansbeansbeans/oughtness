@@ -17,6 +17,10 @@ var normalize = (data, weights) => {
   });
 }
 
+var formatEigenvalue = (num) => {
+  return (100 * num).toFixed(1);
+}
+
 var getCause = id => _.findWhere(causes, { _id: id }).name;
 
 var getCircularSegmentArea = (seg, rad) => {
@@ -91,7 +95,7 @@ var update = () => {
     return p;
   }, 0);
 
-  d.qs('.chart .scale .value').textContent = (100 * maxSingleSum).toFixed(1);
+  d.qs('.chart .scale .value').textContent = formatEigenvalue(maxSingleSum);
 
   var scale = d3.scale.linear().domain([minCombinedValue, maxCombinedValue]).range([5, 100]);
 
@@ -115,7 +119,7 @@ var update = () => {
 
   bars.enter().append("div").attr("class", "bar")
       .style("background-color", (d, i) => { return colors[i]; })
-    .append("div").attr("class", "value").text(d => (100 * d.sum).toFixed(1));
+    .append("div").attr("class", "value").text(d => formatEigenvalue(d.sum));
   
   bars.style("width", d => ((d.sum / d.metaSum) * scale(d.metaSum)) + '%');
 
