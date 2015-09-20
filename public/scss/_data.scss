@@ -93,6 +93,9 @@ $control-color: black;
         .bar .value {
           opacity: 1;
         }
+        .remove {
+          opacity: 1;
+        }
       }
       .label, .bar-container {
         float: left;
@@ -120,6 +123,7 @@ $control-color: black;
         }
       }
       .remove {
+        opacity: 0;
         position: absolute;
         right: 0;
       }
