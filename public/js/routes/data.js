@@ -111,21 +111,23 @@ var update = () => {
 
   enteringRows.append("div").attr("class", "label");
   enteringRows.append("div").attr("class", "bar-container");
+  enteringRows.append("div").attr("class", "values");
   enteringRows.append("div").attr("class", "remove").text("remove");
   enteringRows.select(".label").text(d => getCause(d.cause));
   
-  rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
+  rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; })
+    .select(".values").text((d) => {
+      return `${formatEigenvalue(d.results[0].sum)} : ${formatEigenvalue(d.results[1].sum)}`;
+    }).style("left", d => scale(d.results[0].metaSum) + '%');
 
   rows.exit().remove();
 
   var bars = rows.select(".bar-container").selectAll(".bar").data(d => d.results);
 
   bars.enter().append("div").attr("class", "bar")
-      .style("background-color", (d, i) => { return colors[i]; })
-    .append("div").attr("class", "value");
+      .style("background-color", (d, i) => { return colors[i]; });
   
-  bars.style("width", d => ((d.sum / d.metaSum) * scale(d.metaSum)) + '%')
-    .select(".value").text(d => formatEigenvalue(d.sum));
+  bars.style("width", d => ((d.sum / d.metaSum) * scale(d.metaSum)) + '%');
 
   if(!d.qs('.visualization .disabled-causes')) {
     container.append("div").attr("class", "disabled-causes");

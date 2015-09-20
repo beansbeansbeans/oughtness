@@ -114,15 +114,20 @@ $control-color: black;
       position: absolute;
       left: 0;
       right: 0;
-      padding: 1rem;
+      padding: 1rem 4rem 1rem 1rem;
+      white-space: nowrap;
       &.active {
         background: yellow;
-        .bar .value {
+        .bar, .values {
           opacity: 1;
         }
         .remove {
           opacity: 1;
         }
+      }
+      .values {
+        opacity: 0;
+        font-size: 0.8rem;
       }
       .label {
         text-align: left;
@@ -135,14 +140,22 @@ $control-color: black;
         width: 100%;
         white-space: nowrap;
         position: relative;
-        padding-right: 3rem;
       }
       .bar {
         float: left;
         @include transition(width $transition-duration);
-        height: 4px;
-        .value {
-          opacity: 0;
+        height: 5px;
+        &:first-of-type {
+          border-right: solid 1px $body-background-color;
+          .value:after {
+            content: " :";
+          }
+        }
+        &:last-of-type {
+          border-left: solid 1px $body-background-color;
+          .value {
+            padding-left: 2rem;
+          }
         }
       }
       .remove {
