@@ -96,6 +96,9 @@ $control-color: black;
       @extend %clearfix;
       &.active {
         background: yellow;
+        .bar .value {
+          opacity: 1;
+        }
       }
       .label, .bar-container {
         float: left;
@@ -118,6 +121,9 @@ $control-color: black;
         float: left;
         @include transition(width $transition-duration);
         height: 2px;
+        .value {
+          opacity: 0;
+        }
       }
       .remove {
         position: absolute;
