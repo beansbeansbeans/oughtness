@@ -40,7 +40,7 @@ var weights = [];
 var data;
 var causes = [], dimensions = [];
 var disabledCauses = [];
-var colors = ['#FF5335', '#63B9BF'];
+var colors = ['#D1DBBD', '#D4BDDB'];
 
 var setDimensions = () => {
   var bounds = d.qs(".circle").getBoundingClientRect();

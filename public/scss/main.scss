@@ -7,6 +7,7 @@
 body {
   background-color: $body-background-color;
   margin: 0;
+  color: $text-color;
   @include border-radius(50%);
   @extend %body-font;
   &[data-active-route="vote"] nav #vote,
@@ -30,10 +31,10 @@ body {
       list-style: none;
       display: inline-block;
       a {
-        font-size: 13px;
+        font-size: 1.2rem;
         text-decoration: none;
         font-weight: 300;
-        color: $black;
+        color: $text-color;
       }
     }
     #vote, #data, #about {

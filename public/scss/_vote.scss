@@ -5,7 +5,9 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
   #question {
     padding: 2rem 0 0px 0;
     text-align: center;
-    font-size: 36px;
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
     #dimension, .main {
       display: inline-block;
     }
@@ -66,11 +68,13 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     }
     .title {
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.75rem;
+      letter-spacing: 1px;
       margin-bottom: 1rem;
       text-transform: uppercase;
       padding-top: 8rem;
       position: relative;
+      @extend %header-font;
       &:before {
         content: "";
         left: 50%;
@@ -85,13 +89,14 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       }
     }
     .description {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       line-height: 1.35;
       text-align: left;
     }
     .button {
       margin-top: 2rem;
       display: inline-block;
+      font-size: 0.9rem;
     }
     .loader-container {
       opacity: 0;

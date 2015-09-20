@@ -4,4 +4,12 @@ $smoke: #eee;
 $gray: #ccc;
 $black: #474747;
 
-$body-background-color: white;
+// from https://color.adobe.com/Birdfolio-Blues-color-theme-1945976
+$outer-space: #2B3A42;
+$fiord: #3F5765;
+$ziggurat: #BDD4DE;
+$gallery: #EFEFEF;
+$international-orange: #FF530D;
+
+$body-background-color: $gallery;
+$text-color: $outer-space;
