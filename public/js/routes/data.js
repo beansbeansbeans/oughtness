@@ -174,7 +174,6 @@ module.exports = {
                 if(c === causeID) { won += d.causes[c];
                 } else { lost += d.causes[c]; }
               });
-              won += d.causes[causeID];
             }
           });
 
