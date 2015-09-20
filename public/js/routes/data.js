@@ -97,7 +97,7 @@ var update = () => {
     return p;
   }, 0);
 
-  d.qs('.chart .scale .value').textContent = formatEigenvalue(maxSingleSum);
+  d.qs('.chart .scale .value').textContent = formatEigenvalue(maxCombinedValue);
 
   var scale = d3.scale.linear().domain([minCombinedValue, maxCombinedValue]).range([5, 100]);
 
@@ -121,9 +121,10 @@ var update = () => {
 
   bars.enter().append("div").attr("class", "bar")
       .style("background-color", (d, i) => { return colors[i]; })
-    .append("div").attr("class", "value").text(d => formatEigenvalue(d.sum));
+    .append("div").attr("class", "value");
   
-  bars.style("width", d => ((d.sum / d.metaSum) * scale(d.metaSum)) + '%');
+  bars.style("width", d => ((d.sum / d.metaSum) * scale(d.metaSum)) + '%')
+    .select(".value").text(d => formatEigenvalue(d.sum));
 
   if(!d.qs('.visualization .disabled-causes')) {
     container.append("div").attr("class", "disabled-causes");
