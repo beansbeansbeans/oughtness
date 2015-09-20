@@ -112,9 +112,10 @@ var update = () => {
   var bars = rows.select(".bar-container").selectAll(".bar").data(d => d.results);
 
   bars.enter().append("div").attr("class", "bar")
-    .style("background-color", (d, i) => { return colors[i]; });
+      .style("background-color", (d, i) => { return colors[i]; })
+    .append("div").attr("class", "value").text(d => (100 * d.sum).toFixed(2));
   
-  bars.style("width", (d) => { return ((d.sum / d.metaSum) * scale(d.metaSum)) + '%'; });
+  bars.style("width", d => ((d.sum / d.metaSum) * scale(d.metaSum)) + '%');
 
   if(!d.qs('.visualization .disabled-causes')) {
     container.append("div").attr("class", "disabled-causes");
