@@ -1,4 +1,4 @@
-$circle-width: 35vw;
+$circle-width: 40vw;
 $control-color: black;
 
 [data-route="data"] {
@@ -135,6 +135,7 @@ $control-color: black;
         width: 100%;
         white-space: nowrap;
         position: relative;
+        padding-right: 3rem;
       }
       .bar {
         float: left;
