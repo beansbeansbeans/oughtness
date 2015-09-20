@@ -34,7 +34,7 @@ module.exports = {
         }
       });
 
-      page('vote', routes.vote.start);
+      page('vote', routes.vote.start.bind(routes.vote));
 
       page('vote/:pairing', routes.vote.inflate.bind(routes.vote));
 

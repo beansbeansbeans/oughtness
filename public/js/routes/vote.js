@@ -92,12 +92,15 @@ var exports = {
   stop() {
     mediator.unsubscribe("window_click", handleClick);
   },
-  start() {
-    refreshStatePair();
+  subscribeAll() {
     mediator.subscribe("window_click", handleClick);
   },
+  start() {
+    refreshStatePair();
+    this.subscribeAll();
+  },
   inflate(data) {
-    this.start();
+    this.subscribeAll();
 
     var pairing = data.params.pairing,
       dimension = pairing.slice(0, pairing.indexOf('-of-'));
