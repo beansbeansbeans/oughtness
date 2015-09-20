@@ -106,6 +106,7 @@ var update = () => {
   var rows = container.selectAll(".row").data(normalizedVisData, d => d.cause);
 
   var enteringRows = rows.enter().append("div").attr("class", "row")
+    .style("height", rowHeight + 'px')
     .attr("data-cause-id", d => d.cause );
 
   enteringRows.append("div").attr("class", "label");
@@ -161,7 +162,7 @@ module.exports = {
 
     firstSection.style.backgroundColor = colors[0];
     lastSection.style.backgroundColor = colors[1];
-    
+
     controlLabel.addEventListener("mousedown", () => { dragging = true; });
     control.addEventListener("mousedown", () => { dragging = true; });
 

@@ -5,6 +5,7 @@
 }
 
 body {
+  background-color: $body-background-color;
   margin: 0;
   @include border-radius(50%);
   @extend %body-font;
