@@ -40,7 +40,7 @@ var weights = [];
 var data;
 var causes = [], dimensions = [];
 var disabledCauses = [];
-var colors = ['#77C4D3', '#EA2E49'];
+var colors = ['#91AA9D', '#A6DBDD'];
 
 var setDimensions = () => {
   var bounds = d.qs(".circle").getBoundingClientRect();
@@ -159,6 +159,9 @@ module.exports = {
     var description = d.qs('.input-wrapper .description');
     var chart = d.qs('.chart');
 
+    firstSection.style.backgroundColor = colors[0];
+    lastSection.style.backgroundColor = colors[1];
+    
     controlLabel.addEventListener("mousedown", () => { dragging = true; });
     control.addEventListener("mousedown", () => { dragging = true; });
 
