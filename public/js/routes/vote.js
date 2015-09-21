@@ -48,13 +48,13 @@ var refreshStatePair = () => {
     return sets[currentSet][currentQuestion];
   }());
 
+  exports.template(pair);
+
   currentQuestion++;
   if(typeof sets[currentSet][currentQuestion] === 'undefined') {
     currentSet++;
     currentQuestion = 0;
   }
-
-  exports.template(pair);
 
   if(!_.isEqual(pair, [-1, -1, -1])) {
     mediator.publish("pair_updated");
@@ -152,8 +152,8 @@ var exports = {
     }
 
     // rearranging things
-    sets.concat(sets.splice(0, indexOfSet));
-    sets[0].concat(sets[0].splice(0, indexOfQuestion));
+    sets = sets.concat(sets.splice(0, indexOfSet));
+    sets[0] = sets[0].concat(sets[0].splice(0, indexOfQuestion));
   },
   template(pair) {
     state.set('pair_history', state.get('pair_history').concat([pair]));
@@ -172,6 +172,8 @@ var exports = {
       d.qs("#cause-0 .description").textContent = state.get('causes')[pair[0]].description;
       d.qs("#cause-1 .title").textContent = state.get('causes')[pair[1]].name;
       d.qs("#cause-1 .description").textContent = state.get('causes')[pair[1]].description;
+
+      d.qs('.set-progress').textContent = `Set ${currentSet + 1}: ${currentQuestion + 1} / ${sets[currentSet].length}`;
     }
   }
 };
