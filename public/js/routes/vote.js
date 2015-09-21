@@ -156,7 +156,6 @@ var exports = {
     sets[0] = sets[0].concat(sets[0].splice(0, indexOfQuestion));
   },
   template(pair) {
-    state.set('pair_history', state.get('pair_history').concat([pair]));
     d.qs("[data-route='vote']").classList.remove("fade");
     d.qs("[data-route='vote']").removeAttribute("data-won");
 

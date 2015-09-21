@@ -1,5 +1,4 @@
 var state = {
-  pair_history: [],
   pair: []
 };
 
