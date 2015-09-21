@@ -197,7 +197,8 @@ var exports = {
         d.qs("#cause-1 .title").textContent = state.get('causes')[pair[1]].name;
         d.qs("#cause-1 .description").textContent = state.get('causes')[pair[1]].description;
 
-        d.qs('.set-progress').textContent = `Set ${currentSet + 1}: ${currentQuestion + 1} / ${sets[currentSet].length}`;
+        d.qs('.set-progress #current-question').textContent = currentQuestion + 1;
+        d.qs('.set-progress #total-questions').textContent = sets[currentSet].length;
       }
     }
   }
