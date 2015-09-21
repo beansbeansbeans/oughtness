@@ -126,13 +126,34 @@ var exports = {
     this.subscribeAll();
 
     var pairing = data.params.pairing,
-      dimension = pairing.slice(0, pairing.indexOf('-of-'));
+      dimension = pairing.slice(0, pairing.indexOf('-of-')),
+      indices = pairing.slice(dimension.length + '-of-'.length)
+        .split('-vs-').map((x) => {
+          return _.findIndex(state.get('causes'), cause => cause.slug === x);
+        }).concat(_.findIndex(state.get('dimensions'), x => x.name === dimension));
 
-    exports.template(pairing
-      .slice(dimension.length + '-of-'.length)
-      .split('-vs-').map((x) => {
-      return _.findIndex(state.get('causes'), cause => cause.slug === x);
-    }).concat(_.findIndex(state.get('dimensions'), x => x.name === dimension)));
+    exports.template(indices);
+
+    currentQuestion = 1;
+
+    var indexOfSet = -1, setSearchIndex = 0, indexOfQuestion = -1;
+    while(indexOfSet === -1) {
+      if(sets[setSearchIndex].some((d, i) => {
+        if(util.arrayEquals(d, indices)) {
+          indexOfQuestion = i;
+          return true;
+        }
+        return false;
+      })) {
+        indexOfSet = setSearchIndex;
+      } else {
+        setSearchIndex++;
+      }
+    }
+
+    // rearranging things
+    sets.concat(sets.splice(0, indexOfSet));
+    sets[0].concat(sets[0].splice(0, indexOfQuestion));
   },
   template(pair) {
     state.set('pair_history', state.get('pair_history').concat([pair]));

@@ -52,6 +52,9 @@ module.exports = {
 
     tasks.forEach( task => task(complete) );
   },
+  arrayEquals(arr1, arr2) {
+    return arr1.length == arr2.length && arr1.every((this_i,i) => { return this_i == arr2[i]; });
+  },
   sum(arr) {
     return arr.reduce((p, c) => { return p + c; }, 0);
   },
