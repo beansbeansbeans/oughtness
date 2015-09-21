@@ -1,5 +1,5 @@
 $circle-width: 30rem;
-$middle-buffer: 2rem;
+$middle-buffer: 5rem;
 $circle-size: 5rem;
 $control-color: $outer-space;
 
@@ -7,6 +7,8 @@ $control-color: $outer-space;
   padding-top: 5rem;
   padding-bottom: 5rem;
   .visualization-container {
+    width: 80vw;
+    margin: 0 auto;
     &.preview {
 
     }
@@ -16,9 +18,15 @@ $control-color: $outer-space;
   }
   .input-wrapper {
     width: $circle-width;
-    text-align: center;
-    padding: 5rem 0 0 0;
     position: relative;
+    .input {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      border-top: dotted 1px $outer-space;
+      border-bottom: dotted 1px $outer-space;
+      text-align: center;
+    }
   }
   .chart {
     margin-left: $middle-buffer;
