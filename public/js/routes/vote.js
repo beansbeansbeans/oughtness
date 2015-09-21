@@ -2,34 +2,57 @@ var util = require('../util');
 var state = require('../state');
 var api = require('../api');
 var mediator = require('../mediator');
-var possibleCombinationCount = 0;
+var questionsInSet = 0;
+var sets = [];
+var currentSet = 0;
+var currentQuestion = 0;
 
 mediator.subscribe("loaded", () => {
-  possibleCombinationCount = state.get('dimensions').length * (util.factorial(state.get('causes').length) / (2 * util.factorial(state.get('causes').length - 2)));
+  questionsInSet = state.get('causes').length - 1;
+  
+  var availableCombinations = [];
+  for(var i=0; i<state.get('causes').length; i++) {
+    for(var j=i + 1; j<state.get('causes').length; j++) {
+      availableCombinations.push([i, j]);
+    }
+  }
+
+  var combinationsForDimensions = [];
+  for(var i=0; i<state.get('dimensions').length; i++) {
+    combinationsForDimensions.push(JSON.parse(JSON.stringify(availableCombinations)));
+  }
+
+  var dimension;
+  for(var i=0; i<(availableCombinations.length * state.get('dimensions').length / questionsInSet); i++) {
+    var combinations = [];
+    if(i === 0) {
+      dimension = Math.round(Math.random() * (state.get('dimensions').length - 1));
+    } else {
+      dimension = (dimension + 1) % state.get('dimensions').length;
+    }
+
+    for(var j=0; j<questionsInSet; j++) {
+      var pair = combinationsForDimensions[dimension].splice(Math.round(Math.random() * (combinationsForDimensions[dimension].length - 1)), 1);
+      combinations.push(pair[0].concat(dimension));
+    }
+    sets.push(combinations);
+  }
 });
 
 var refreshStatePair = () => {
   var pair = (function getIndices() {
-    if(state.get('pair_history').length >= possibleCombinationCount) {
+    if(currentSet === sets.length - 1 && currentQuestion === sets[currentSet].length - 1) {
       return [-1, -1, -1];
     }
 
-    var attempt = [
-      Math.round(Math.random() * (state.get('causes').length - 1)),
-      Math.round(Math.random() * (state.get('causes').length - 1)),
-      Math.round(Math.random() * (state.get('dimensions').length - 1))
-    ];
-
-    if(attempt[0] === attempt[1] || state.get('pair_history').some((x) => {
-      var cause1Match, cause2Match;
-      cause1Match = x[0] === attempt[0] || x[0] === attempt[1];
-      cause2Match = x[1] === attempt[1] || x[1] === attempt[0];
-      return x[2] === attempt[2] && cause1Match && cause2Match;
-    })) {
-      return getIndices();
-    }
-    return attempt;
+    return sets[currentSet][currentQuestion];
   }());
+
+  currentQuestion++;
+  if(typeof sets[currentSet][currentQuestion] === 'undefined') {
+    currentSet++;
+    currentQuestion = 0;
+  }
 
   exports.template(pair);
 
