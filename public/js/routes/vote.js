@@ -6,6 +6,8 @@ var questionsInSet = 0;
 var sets = [];
 var currentSet = 0;
 var currentQuestion = 0;
+var interstitialMode = false;
+var hasAgreedToContinue = false;
 
 mediator.subscribe("loaded", () => {
   questionsInSet = state.get('causes').length - 1;
@@ -50,10 +52,9 @@ var refreshStatePair = () => {
 
   exports.template(pair);
 
-  currentQuestion++;
-  if(typeof sets[currentSet][currentQuestion] === 'undefined') {
-    currentSet++;
-    currentQuestion = 0;
+  if(!interstitialMode) {
+    // only increment if we're not in interstitial mode
+    incrementQuestions();  
   }
 
   if(!_.isEqual(pair, [-1, -1, -1])) {
@@ -106,8 +107,18 @@ var handleClick = (e) => {
   if(closestVote) {
     voteFor(closestVote.getAttribute("data-vote-for"));
   } else if(target.id === "continue-to-next-set") {
+    hasAgreedToContinue = true;
     exports.template();
+    incrementQuestions();
   }
+}
+
+var incrementQuestions = () => {
+  currentQuestion++;
+  if(typeof sets[currentSet][currentQuestion] === 'undefined') {
+    currentSet++;
+    currentQuestion = 0;
+  }  
 }
 
 var exports = {
@@ -158,9 +169,7 @@ var exports = {
     sets[0] = sets[0].concat(sets[0].splice(0, indexOfQuestion));
   },
   template(pair) {
-    if(typeof pair === 'undefined') {
-      pair = state.get('pair');
-    }
+    if(typeof pair === 'undefined') { pair = state.get('pair'); }
     
     d.qs("[data-route='vote']").classList.remove("fade");
     d.qs("[data-route='vote']").removeAttribute("data-won");
@@ -172,10 +181,13 @@ var exports = {
     } else {
       state.set('pair', pair);
 
-      if(currentQuestion === 0 && currentSet > 0) {
+      if(currentQuestion === 0 && currentSet > 0 && !hasAgreedToContinue) {
+        interstitialMode = true;
         d.qs('[data-route="vote"]').setAttribute("data-interstitial", true);
         d.qs("#current-set").innerHTML = currentSet;
       } else {
+        interstitialMode = false;
+        hasAgreedToContinue = false;
         d.qs('[data-route="vote"]').setAttribute("data-interstitial", false);
         d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
         d.qs("#cause-0 .title").textContent = state.get('causes')[pair[0]].name;
