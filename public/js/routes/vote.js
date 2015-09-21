@@ -5,7 +5,7 @@ var mediator = require('../mediator');
 var possibleCombinationCount = 0;
 
 mediator.subscribe("loaded", () => {
-  possibleCombinationCount = util.factorial(state.get('causes').length + state.get('dimensions').length) / (util.factorial(3) * util.factorial(state.get('causes').length + state.get('dimensions').length - 3));
+  possibleCombinationCount = state.get('dimensions').length * (util.factorial(state.get('causes').length) / (2 * util.factorial(state.get('causes').length - 2)));
 });
 
 var refreshStatePair = () => {
