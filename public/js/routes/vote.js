@@ -127,6 +127,8 @@ var exports = {
   },
   stop() {
     mediator.unsubscribe("window_click", handleClick);
+    interstitialMode = false;
+    hasAgreedToContinue = true;
   },
   subscribeAll() {
     mediator.subscribe("window_click", handleClick);
