@@ -1,31 +1,37 @@
 <div class="route" data-route="vote">
-  <div id="question">
-    <div class="main">Which is more </div>
-    <div id="dimension"></div>?
-  </div>
-  <div id="cause-container">
-    <div data-vote-for="0" id="cause-0">
-      <div class="contents">
-        <div class="title"></div>
-        <div class="description"></div>
-        <div class="button">Choose</div>    
-        <div class="loader-container">
-          <div class="loader"></div>
-        </div>    
-      </div>
+  <div id="question-container">
+    <div id="question">
+      <div class="main">Which is more </div>
+      <div id="dimension"></div>?
     </div>
-    <div data-vote-for="1" id="cause-1">
-      <div class="contents">
-        <div class="title"></div>
-        <div class="description"></div>  
-        <div class="button">Choose</div>       
-        <div class="loader-container">
-          <div class="loader"></div>
+    <div id="cause-container">
+      <div data-vote-for="0" id="cause-0">
+        <div class="contents">
+          <div class="title"></div>
+          <div class="description"></div>
+          <div class="button">Choose</div>    
+          <div class="loader-container">
+            <div class="loader"></div>
+          </div>    
+        </div>
+      </div>
+      <div data-vote-for="1" id="cause-1">
+        <div class="contents">
+          <div class="title"></div>
+          <div class="description"></div>  
+          <div class="button">Choose</div>       
+          <div class="loader-container">
+            <div class="loader"></div>
+          </div>
         </div>
       </div>
     </div>
+    <div class="set-progress"></div>
   </div>
-  <div class="set-progress"></div>
+  <div id="interstitial">
+    You've finished set <span id="current-set"></span>.
+    <div id="continue-to-next-set" class="button">Continue.</div>
+  </div>
   <div id="choose-both">
     <div class="text">
       <div class="tagline">Can't decide?</div>

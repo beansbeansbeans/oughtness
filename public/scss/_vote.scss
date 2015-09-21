@@ -12,6 +12,16 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       display: inline-block;
     }
   }
+  &[data-interstitial="true"] {
+    #question-container {
+      display: none;
+    }
+  }
+  &[data-interstitial="false"] {
+    #interstitial {
+      display: none;
+    }
+  }
   $causes: 0, 1;
   @each $cause in $causes {
     $other-cause: 0;

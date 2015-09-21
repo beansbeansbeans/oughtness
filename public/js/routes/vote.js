@@ -105,6 +105,8 @@ var handleClick = (e) => {
     closestVote = target.closest('[data-vote-for]');
   if(closestVote) {
     voteFor(closestVote.getAttribute("data-vote-for"));
+  } else if(target.id === "continue-to-next-set") {
+    exports.template();
   }
 }
 
@@ -156,6 +158,10 @@ var exports = {
     sets[0] = sets[0].concat(sets[0].splice(0, indexOfQuestion));
   },
   template(pair) {
+    if(typeof pair === 'undefined') {
+      pair = state.get('pair');
+    }
+    
     d.qs("[data-route='vote']").classList.remove("fade");
     d.qs("[data-route='vote']").removeAttribute("data-won");
 
@@ -165,14 +171,20 @@ var exports = {
       d.qs("#choose-both").innerHTML = '';
     } else {
       state.set('pair', pair);
-      d.qs("#question ")
-      d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
-      d.qs("#cause-0 .title").textContent = state.get('causes')[pair[0]].name;
-      d.qs("#cause-0 .description").textContent = state.get('causes')[pair[0]].description;
-      d.qs("#cause-1 .title").textContent = state.get('causes')[pair[1]].name;
-      d.qs("#cause-1 .description").textContent = state.get('causes')[pair[1]].description;
 
-      d.qs('.set-progress').textContent = `Set ${currentSet + 1}: ${currentQuestion + 1} / ${sets[currentSet].length}`;
+      if(currentQuestion === 0 && currentSet > 0) {
+        d.qs('[data-route="vote"]').setAttribute("data-interstitial", true);
+        d.qs("#current-set").innerHTML = currentSet;
+      } else {
+        d.qs('[data-route="vote"]').setAttribute("data-interstitial", false);
+        d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
+        d.qs("#cause-0 .title").textContent = state.get('causes')[pair[0]].name;
+        d.qs("#cause-0 .description").textContent = state.get('causes')[pair[0]].description;
+        d.qs("#cause-1 .title").textContent = state.get('causes')[pair[1]].name;
+        d.qs("#cause-1 .description").textContent = state.get('causes')[pair[1]].description;
+
+        d.qs('.set-progress').textContent = `Set ${currentSet + 1}: ${currentQuestion + 1} / ${sets[currentSet].length}`;
+      }
     }
   }
 };
