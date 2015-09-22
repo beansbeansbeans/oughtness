@@ -141,8 +141,6 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     text-align: center;
     * {
       font-size: 0.8rem;
-      display: inline-block;
-      vertical-align: top;
     }
     .question-label {
       padding-top: 0.45rem;
