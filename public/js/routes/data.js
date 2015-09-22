@@ -32,6 +32,8 @@ var getCircularSegmentArea = (seg, rad) => {
 
 var rowHeight = 50;
 var r = 0;
+var control;
+var controlWidth = 0;
 var dragging = false;
 var circleOffsetLeft = 0;
 
@@ -43,8 +45,9 @@ var disabledCauses = [];
 var colors = ['#2B3A42', '#BDD4DE'];
 
 var setDimensions = () => {
-  var bounds = d.qs(".circle").getBoundingClientRect();
+  var bounds = d.qs(".slider").getBoundingClientRect();
   r = bounds.width / 2;
+  controlWidth = control.getBoundingClientRect().width;
   circleOffsetLeft = bounds.left;
 }
 
@@ -153,20 +156,13 @@ module.exports = {
   start() {
     causes = state.get("causes");
     dimensions = state.get("dimensions");
-    var control = d.qs(".circle-wrapper .controls");
-    var controlLabel = d.qs(".input .extended-controls");
-    var firstSection = d.qs('.section');
-    var lastSection = d.qs('.section:last-of-type');
+    control = d.qs(".slider .controls");
     var firstPercentLabel = d.qs('.input .urgency .value');
     var secondPercentLabel = d.qs('.input .tractability .value');
     var description = d.qs('.detail .description');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
 
-    firstSection.style.backgroundColor = colors[0];
-    lastSection.style.backgroundColor = colors[1];
-
-    controlLabel.addEventListener("mousedown", () => { dragging = true; });
     control.addEventListener("mousedown", () => { dragging = true; });
 
     window.addEventListener("mouseup", () => { dragging = false; });
@@ -222,9 +218,8 @@ module.exports = {
 
     var handleDrag = (e) => {
       var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * 2 * r)) : e.clientX;
-      var position = Math.min(Math.max((x - circleOffsetLeft), 1), r * 2 - 1);
+      var position = Math.min(Math.max((x - circleOffsetLeft), 1), r * 2 - controlWidth);
       control.style.left = position + 'px';
-      controlLabel.style.left = position + 'px';
 
       var h = Math.min(Math.max((x - circleOffsetLeft), 0), r * 2),
         circularArea = Math.PI * Math.pow(r, 2),
@@ -234,15 +229,11 @@ module.exports = {
 
       var percentage = area / circularArea;
 
-      firstSection.style.width = (position) + 'px';
-      lastSection.style.left = (position) + 'px';
-      lastSection.style.width = ((r * 2) - (position)) + 'px';
-
       weights[0].value = percentage;
       weights[1].value = 1 - percentage;
 
-      firstPercentLabel.textContent = Math.round(percentage * 100) + '%';
-      secondPercentLabel.textContent = Math.round((1 - percentage) * 100) + '%';
+      firstPercentLabel.textContent = Math.round(percentage * 100);
+      secondPercentLabel.textContent = Math.round((1 - percentage) * 100);
 
       update();
     }

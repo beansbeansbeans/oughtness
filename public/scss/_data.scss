@@ -1,5 +1,5 @@
-$detail-width: 35%;
-$middle-buffer: 5%;
+$detail-width: 50%;
+$middle-buffer: 3%;
 $circle-size: 3.5rem;
 $control-color: $outer-space;
 
@@ -8,9 +8,10 @@ $control-color: $outer-space;
   width: 80vw;
   margin: 0 auto;
   h1 {
-    font-size: 2.5rem;
-    border-bottom: solid 2px $outer-space;
-    padding-bottom: 0.5rem;
+    font-size: 2.25rem;
+    text-transform: uppercase;
+    border-bottom: solid 1px $outer-space;
+    padding-bottom: 1rem;
     margin-bottom: 0rem;
   }
   .visualization-container {
@@ -34,7 +35,6 @@ $control-color: $outer-space;
   }
   .input-wrapper {
     position: relative;
-    border-bottom: dotted 1px $outer-space;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     .input {
@@ -43,54 +43,45 @@ $control-color: $outer-space;
       padding-bottom: 1rem;
     }
   }
-  .chart {
-  }
   .description {
     margin-top: 2rem;
-    font-size: 2.5rem;
     font-weight: 100;
     text-align: center;
     line-height: 1.2;
-    padding: 5rem;
   }
   .input {
     position: relative;
     margin: 0 auto;
-    padding-left: 0.7rem;
+    padding-left: 1rem;
     .dimension, .circle-wrapper {
       display: inline-block;
       vertical-align: middle;
     }
   }
-  .circle-wrapper {
-    @include square($circle-size);
-    position: relative; 
-    margin-right: 1rem;
-    .circle-mask {
-      position: relative;
-      border-radius: 50%;
-      overflow: hidden;            
-    }
-    .circle-mask, .circle {
-      @include square(100%);
-    }  
-  }
-  .circle {
-    position: absolute;
-    .section {
-      position: absolute;
-      height: 100%;
-    }
+  .slider {
+    margin-top: 0.25rem;
+    height: 1px;
+    background: $outer-space;
+    position: relative;
   }
   .dimension {
-    @extend %header-font;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 1.6rem;
-    font-weight: 500;
-    margin-right: 1rem;
-    .name, .value {
-      display: inline-block;
+    .name {
+      font-size: 0.7rem;
+    }
+    .value {
+      @extend %header-font;
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-top: 0.1rem;
+    }
+    &.urgency {
+
+    }
+    &.tractability {
+      float: right;
+      text-align: right;
     }
   }
   .labels {
@@ -102,14 +93,7 @@ $control-color: $outer-space;
       bottom: 50%;
       &:before {
         content: "";
-        @include square(12px);
-        background: white;
-        border-radius: 50%;
-        left: -5px;
-        position: absolute;
-        top: -3px;
-        display: block;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.19), 0 2px 4px rgba(0, 0, 0, 0.23);
+        
       }
     }
   }
@@ -121,8 +105,14 @@ $control-color: $outer-space;
     position: absolute;
   }
   .controls {
-    top: 0;
-    height: 100%;
+    @include square(1.5rem);
+    left: -0.75rem;
+    top: -0.75rem;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    display: block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.19), 0 2px 4px rgba(0, 0, 0, 0.23);
   }
   .scale {
     position: relative;
