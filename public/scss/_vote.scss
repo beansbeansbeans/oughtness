@@ -146,6 +146,17 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       padding-top: 0.45rem;
     }
   }
+  #interstitial {
+    text-align: center;
+    padding-top: 2rem;
+    .message {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    .button {
+      display: inline-block;
+    }
+  }
   #choose-both {
     display: none; // ?
 
