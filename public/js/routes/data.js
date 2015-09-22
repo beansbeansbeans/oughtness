@@ -40,7 +40,7 @@ var weights = [];
 var data;
 var causes = [], dimensions = [];
 var disabledCauses = [];
-var colors = ['#2B3A42', '#FF530D'];
+var colors = ['#2B3A42', '#BDD4DE'];
 
 var setDimensions = () => {
   var bounds = d.qs(".circle").getBoundingClientRect();
@@ -159,7 +159,7 @@ module.exports = {
     var lastSection = d.qs('.section:last-of-type');
     var firstPercentLabel = d.qs('.input .urgency .value');
     var secondPercentLabel = d.qs('.input .tractability .value');
-    var description = d.qs('.input-wrapper .description');
+    var description = d.qs('.detail .description');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
 
