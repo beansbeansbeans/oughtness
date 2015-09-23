@@ -223,10 +223,12 @@ var exports = {
         d.qs("#dimension .example").textContent = dimension.definition.example;
         d.qs("#dimension .source").textContent = dimension.definition.source;
         
+        d.qs("#cause-0").setAttribute("data-cause-slug", cause0.slug);
         d.qs("#cause-0 .title").textContent = cause0.name;
         d.qs("#cause-0 .description").textContent = cause0.description;
         d.qs("#cause-0 .sources").innerHTML = cause0.moreInfoLink.reduce(buildSource, '');
 
+        d.qs("#cause-1").setAttribute("data-cause-slug", cause1.slug);
         d.qs("#cause-1 .title").textContent = cause1.name;
         d.qs("#cause-1 .description").textContent = cause1.description;
         d.qs("#cause-1 .sources").innerHTML = cause1.moreInfoLink.reduce(buildSource, '');
