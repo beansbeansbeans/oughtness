@@ -25,13 +25,8 @@ var formatEigenvalue = (num) => {
 
 var getCause = id => _.findWhere(causes, { _id: id }).name;
 
-var getCircularSegmentArea = (seg, rad) => {
-  var a = 2 * Math.acos(seg / rad);
-  return (Math.pow(rad, 2) / 2) * (a - Math.sin(a));
-}
-
 var rowHeight = 50;
-var r = 0;
+var trackWidth = 0;
 var control;
 var controlWidth = 0;
 var dragging = false;
@@ -46,7 +41,7 @@ var colors = ['#2B3A42', '#BDD4DE'];
 
 var setDimensions = () => {
   var bounds = d.qs(".slider").getBoundingClientRect();
-  r = bounds.width / 2;
+  trackWidth = bounds.width;
   controlWidth = control.getBoundingClientRect().width;
   circleOffsetLeft = bounds.left;
 }
@@ -217,17 +212,11 @@ module.exports = {
     mediator.subscribe("resize", handleResize);
 
     var handleDrag = (e) => {
-      var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * 2 * r)) : e.clientX;
-      var position = Math.min(Math.max((x - circleOffsetLeft), 1), r * 2 - controlWidth);
+      var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * trackWidth)) : e.clientX;
+      var position = Math.min(Math.max((x - circleOffsetLeft), 1), trackWidth - controlWidth);
       control.style.left = position + 'px';
 
-      var h = Math.min(Math.max((x - circleOffsetLeft), 0), r * 2),
-        circularArea = Math.PI * Math.pow(r, 2),
-        area = getCircularSegmentArea(Math.abs(r - h), r);
-
-      if(h > r) { area = circularArea - area; }
-
-      var percentage = area / circularArea;
+      var percentage = position / trackWidth;
 
       weights[0].value = percentage;
       weights[1].value = 1 - percentage;
