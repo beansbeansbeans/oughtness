@@ -1,6 +1,5 @@
 $detail-width: 50%;
 $middle-buffer: 3%;
-$circle-size: 3.5rem;
 $control-color: $outer-space;
 
 [data-route="data"] {
@@ -58,7 +57,7 @@ $control-color: $outer-space;
     position: relative;
     margin: 0 auto;
     padding-left: 1rem;
-    .dimension, .circle-wrapper {
+    .dimension {
       display: inline-block;
       vertical-align: middle;
     }

@@ -212,11 +212,11 @@ module.exports = {
     mediator.subscribe("resize", handleResize);
 
     var handleDrag = (e) => {
-      var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.2 * trackWidth)) : e.clientX;
+      var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.6 * trackWidth)) : e.clientX;
       var position = Math.min(Math.max((x - circleOffsetLeft), 1), trackWidth - controlWidth);
       control.style.left = position + 'px';
 
-      var percentage = position / trackWidth;
+      var percentage = position / (trackWidth - controlWidth);
 
       weights[0].value = percentage;
       weights[1].value = 1 - percentage;
