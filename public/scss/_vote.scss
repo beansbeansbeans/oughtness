@@ -1,4 +1,4 @@
-$vote-content-width: 60;
+$vote-content-width: 65;
 $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50 - ($vote-content-width / 100) * 50vw) / 2;
 
 [data-route="vote"] {
@@ -10,6 +10,49 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     text-transform: uppercase;
     #dimension, .main {
       display: inline-block;
+    }
+    #dimension {
+      border-bottom: solid 1px $outer-space;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        .popover {
+          opacity: 1;
+        }
+      }
+      .popover {
+        @include transition(opacity $transition-duration);
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        font-size: 0.9rem;
+        text-align: left;
+        font-weight: 100;
+        text-transform: none;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.19), 0 2px 4px rgba(0, 0, 0, 0.23);
+        padding: 1rem;
+        z-index: 1;
+        top: calc(100% + 0.5rem);
+        width: 15rem;
+        left: 50%;
+        margin-left: -7.5rem;
+        .repeated-word {
+          font-weight: 800;
+          margin-bottom: 1rem;
+        }
+        .definition, .example {
+          display: inline;
+          line-height: 1.2;
+        }
+        .example {
+          font-style: italic;
+        }
+        .source {
+          margin-top: 1rem;
+          font-size: 0.7rem;
+        }
+      }
     }
   }
   &[data-interstitial="true"] {

@@ -212,11 +212,16 @@ var exports = {
         interstitialMode = false;
         hasAgreedToContinue = false;
 
-        var cause0 = state.get('causes')[pair[0]],
+        var dimension = state.get('dimensions')[pair[2]],
+          cause0 = state.get('causes')[pair[0]],
           cause1 = state.get('causes')[pair[1]];
         
         d.qs('[data-route="vote"]').setAttribute("data-interstitial", false);
-        d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
+        d.qs("#dimension .word").textContent = dimension.adjective;
+        d.qs("#dimension .repeated-word").textContent = dimension.adjective;
+        d.qs("#dimension .definition").textContent = dimension.definition.text;
+        d.qs("#dimension .example").textContent = dimension.definition.example;
+        d.qs("#dimension .source").textContent = dimension.definition.source;
         
         d.qs("#cause-0 .title").textContent = cause0.name;
         d.qs("#cause-0 .description").textContent = cause0.description;
