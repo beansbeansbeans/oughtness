@@ -39,6 +39,8 @@ $control-color: $outer-space;
     position: relative;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
+    -webkit-user-select: none;
+    user-select: none;
     .input {
       margin-top: 1rem;
       padding-top: 1rem;
@@ -133,6 +135,8 @@ $control-color: $outer-space;
     right: 0;
     text-transform: uppercase;
     font-size: 0.7rem;
+    -webkit-user-select: none;
+    user-select: none;
     &, .label, .value {
       display: inline-block;
     }
