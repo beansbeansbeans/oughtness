@@ -48,6 +48,10 @@ body {
   }
 }
 
+a {
+  color: $fiord;
+}
+
 @import "widgets/loader";
 
 @import "ui_elements";

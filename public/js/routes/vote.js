@@ -104,7 +104,10 @@ var voteFor = (selection) => {
 var handleClick = (e) => {
   var target = e.target,
     closestVote = target.closest('[data-vote-for]');
-  if(closestVote) {
+
+  if(target.getAttribute("href")) {
+    return;
+  } else if(closestVote) {
     voteFor(closestVote.getAttribute("data-vote-for"));
   } else if(target.id === "continue-to-next-set") {
     hasAgreedToContinue = true;
@@ -119,6 +122,24 @@ var incrementQuestions = () => {
     currentSet++;
     currentQuestion = 0;
   }  
+}
+
+var buildSource = (prev, curr) => {
+  var source = document.createElement("div");
+  source.classList.add("source");
+  var link = document.createElement("a");
+  link.setAttribute("href", curr.link);
+  link.setAttribute("target", "_blank");
+  link.textContent = curr.display;
+  var subtitle = document.createElement("div");
+  subtitle.classList.add("subtitle");
+  subtitle.textContent = typeof curr.subtitle === 'undefined' ? '' : curr.subtitle;
+  source.appendChild(link);
+  source.appendChild(subtitle);
+  var wrapper = document.createElement("div");
+  wrapper.appendChild(source);
+
+  return prev + wrapper.innerHTML;
 }
 
 var exports = {
@@ -190,12 +211,20 @@ var exports = {
       } else {
         interstitialMode = false;
         hasAgreedToContinue = false;
+
+        var cause0 = state.get('causes')[pair[0]],
+          cause1 = state.get('causes')[pair[1]];
+        
         d.qs('[data-route="vote"]').setAttribute("data-interstitial", false);
         d.qs("#dimension").textContent = state.get('dimensions')[pair[2]].adjective;
-        d.qs("#cause-0 .title").textContent = state.get('causes')[pair[0]].name;
-        d.qs("#cause-0 .description").textContent = state.get('causes')[pair[0]].description;
-        d.qs("#cause-1 .title").textContent = state.get('causes')[pair[1]].name;
-        d.qs("#cause-1 .description").textContent = state.get('causes')[pair[1]].description;
+        
+        d.qs("#cause-0 .title").textContent = cause0.name;
+        d.qs("#cause-0 .description").textContent = cause0.description;
+        d.qs("#cause-0 .sources").innerHTML = cause0.moreInfoLink.reduce(buildSource, '');
+
+        d.qs("#cause-1 .title").textContent = cause1.name;
+        d.qs("#cause-1 .description").textContent = cause1.description;
+        d.qs("#cause-1 .sources").innerHTML = cause1.moreInfoLink.reduce(buildSource, '');
 
         d.qs('.set-progress #current-question').textContent = currentQuestion + 1;
         d.qs('.set-progress #total-questions').textContent = sets[currentSet].length;

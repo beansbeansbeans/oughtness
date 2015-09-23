@@ -103,6 +103,36 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       line-height: 1.35;
       text-align: left;
     }
+    .sources {
+      margin-top: 1.25rem;
+      font-size: 0.7rem;
+      text-align: left;
+      &:before {
+        content: "Sources";
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 0.35rem;
+        font-weight: 600;
+      }
+      .source {
+        line-height: 1.3;
+      }
+      a {
+        margin-right: 0.2rem;
+      }
+      .subtitle {
+        &:not(:empty) {
+          &:before {
+            content: "(";
+          }
+          &:after {
+            content: ")";
+          }          
+        }
+        font-style: italic;
+        display: inline;
+      }
+    }
     .button {
       margin-top: 2rem;
       display: inline-block;
