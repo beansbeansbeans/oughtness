@@ -40,6 +40,12 @@ $control-color: $outer-space;
     // border-right: dotted 1px $fiord;
     height: 45rem;
     position: relative;
+    .help {
+      padding-top: 20rem;
+      font-size: 1.5rem;
+      line-height: 1.3;
+      font-weight: 100;
+    }
     @each $cause in $cause-images {
       .image[data-cause-id=#{nth($cause, 1)}] {
         background-image: url("../images/" + nth($cause, 1) + ".png");
@@ -52,6 +58,27 @@ $control-color: $outer-space;
       margin-right: auto;
       height: 10rem;
       background-repeat: no-repeat;
+    }
+    .title {
+      @extend %header-font;
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .dimension {
+      font-size: 0.8rem;
+    }
+    .label {
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .more-info {
+      margin-bottom: 2rem;
+      font-weight: 100;
     }
   }
   .results {
@@ -74,18 +101,6 @@ $control-color: $outer-space;
     .input {
       padding-bottom: 1rem;
     }
-  }
-  .help {
-    padding-top: 20rem;
-    font-size: 1.5rem;
-    line-height: 1.3;
-    font-weight: 100;
-  }
-  .description {
-    margin-top: 2rem;
-    padding-top: 10rem;
-    font-weight: 100;
-    line-height: 1.2;
   }
   .input {
     position: relative;
@@ -110,7 +125,7 @@ $control-color: $outer-space;
       top: 2rem;
     }
   }
-  .dimension {
+  .input .dimension {
     text-transform: uppercase;
     .name {
       font-size: 0.7rem;
@@ -215,7 +230,7 @@ $control-color: $outer-space;
       padding: 1rem 4rem 1rem 1rem;
       white-space: nowrap;
       &.active {
-        background: yellow;
+        border-left: solid 1px $fiord;
         .bar, .values {
           opacity: 1;
         }

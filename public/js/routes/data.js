@@ -165,7 +165,6 @@ module.exports = {
     chart.addEventListener('mouseover', (e) => {
       var row = e.target.closest('.row');
       if(row) {
-        var template = '';
         var lastActive = chart.querySelector('.active');
         if(lastActive) { lastActive.classList.remove('active'); }
         row.classList.add('active');
@@ -187,11 +186,11 @@ module.exports = {
             }
           });
 
-          template += `With respect to ${dimension.name} ${causeName} won ${won} out of ${won + lost} times. `;          
+          description.querySelector('.' + dimension.name + ' .more-info').innerHTML = `With respect to ${dimension.name} ${causeName} won ${won} out of ${won + lost} times. `;
         });
 
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(causeID));
-        description.querySelector('.title').innerHTML = template;
+        description.querySelector('.title').innerHTML = causeName;
       }
     });
     chart.addEventListener('mouseleave', (e) => {
