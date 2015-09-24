@@ -265,13 +265,13 @@ $control-color: $outer-space;
         @include transition(width $transition-duration);
         height: 4px;
         &:first-of-type {
-          border-right: solid 1px $body-background-color;
+          border-right: solid 2px $body-background-color;
           .value:after {
             content: " :";
           }
         }
         &:last-of-type {
-          border-left: solid 1px $body-background-color;
+          border-left: solid 2px $body-background-color;
           .value {
             padding-left: 2rem;
           }
