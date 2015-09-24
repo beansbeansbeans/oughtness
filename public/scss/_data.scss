@@ -16,10 +16,17 @@ $control-color: $outer-space;
   .visualization-container {
     @extend %clearfix;
     &.preview {
-
+      .detail .help {
+        opacity: 0;
+      }
     }
     &:not(.preview) {
-
+      .detail .description {
+        opacity: 0;
+      }
+    }
+    .detail .help, .detail .description {
+      @include transition(opacity $transition-duration);
     }
   }
   .detail, .results {
@@ -27,7 +34,7 @@ $control-color: $outer-space;
   }
   .detail {
     width: $detail-width;
-    border-right: dotted 1px $outer-space;
+    border-right: dotted 1px $fiord;
     height: 45rem;
     padding-right: 5rem;
   }
