@@ -128,21 +128,7 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       margin-left: auto;
       margin-right: auto;
     }
-    $causes: (
-      ('climate-change', 200, 106, 1.2, 1 ), 
-      ('improving-democracy', 160, 120, 0, 1 ),
-      ('criminal-justice-reform', 160, 120, 0, 1 ),
-      ('defense-policy', 160, 120, 0, 1 ),
-      ('education-policy', 170, 125, 0, 1 ),
-      ('foreign-aid', 160, 120, 0, 1 ),
-      ('health-care-policy', 200, 112, 0.3, 1.2 ),
-      ('labor-mobility', 180, 128, -0.2, 0.8 ),
-      ('macroeconomic-policy', 160, 120, 0, 1 ),
-      ('redistribution', 160, 120, 0, 1 ),
-      ('trade-policy', 160, 120, 0, 1 ),
-      ('zoning-reform', 150, 131, -0.2, 0.8 )
-    ); 
-    @each $cause in $causes {
+    @each $cause in $cause-images {
       &[data-cause-slug=#{nth($cause, 1)}] {
         .image {
           margin-top: unquote(nth($cause, 4) + 'rem');

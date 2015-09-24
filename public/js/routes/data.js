@@ -24,6 +24,7 @@ var formatEigenvalue = (num) => {
 }
 
 var getCause = id => _.findWhere(causes, { _id: id }).name;
+var getCauseSlug = id => _.findWhere(causes, { _id: id }).slug;
 
 var rowHeight = 50;
 var trackWidth = 0;
@@ -189,7 +190,8 @@ module.exports = {
           template += `With respect to ${dimension.name} ${causeName} won ${won} out of ${won + lost} times. `;          
         });
 
-        description.innerHTML = template;
+        description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(causeID));
+        description.querySelector('.title').innerHTML = template;
       }
     });
     chart.addEventListener('mouseleave', (e) => {

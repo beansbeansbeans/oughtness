@@ -15,3 +15,18 @@ $thunderbird: #B9121B;
 
 $body-background-color: $gallery;
 $text-color: $outer-space;
+
+$cause-images: (
+  ('climate-change', 200, 106, 1.2, 1 ), 
+  ('improving-democracy', 160, 120, 0, 1 ),
+  ('criminal-justice-reform', 160, 120, 0, 1 ),
+  ('defense-policy', 160, 120, 0, 1 ),
+  ('education-policy', 170, 125, 0, 1 ),
+  ('foreign-aid', 160, 120, 0, 1 ),
+  ('health-care-policy', 200, 112, 0.3, 1.2 ),
+  ('labor-mobility', 180, 128, -0.2, 0.8 ),
+  ('macroeconomic-policy', 160, 120, 0, 1 ),
+  ('redistribution', 160, 120, 0, 1 ),
+  ('trade-policy', 160, 120, 0, 1 ),
+  ('zoning-reform', 150, 131, -0.2, 0.8 )
+); 

@@ -26,6 +26,9 @@ $control-color: $outer-space;
       }
     }
     .detail .help, .detail .description {
+      position: absolute;
+      left: 0;
+      right: 3rem;
       @include transition(opacity $transition-duration);
     }
   }
@@ -34,9 +37,22 @@ $control-color: $outer-space;
   }
   .detail {
     width: $detail-width;
-    border-right: dotted 1px $fiord;
+    // border-right: dotted 1px $fiord;
     height: 45rem;
-    padding-right: 5rem;
+    position: relative;
+    @each $cause in $cause-images {
+      .image[data-cause-id=#{nth($cause, 1)}] {
+        background-image: url("../images/" + nth($cause, 1) + ".png");
+        width: unquote(nth($cause, 2) + 'px');
+        background-size: unquote(nth($cause, 2) + 'px ' + nth($cause, 3) + 'px')
+      }
+    }
+    .image {
+      margin-left: auto;
+      margin-right: auto;
+      height: 10rem;
+      background-repeat: no-repeat;
+    }
   }
   .results {
     padding-left: 2rem;
@@ -59,11 +75,16 @@ $control-color: $outer-space;
       padding-bottom: 1rem;
     }
   }
+  .help {
+    padding-top: 20rem;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    font-weight: 100;
+  }
   .description {
     margin-top: 2rem;
     padding-top: 10rem;
     font-weight: 100;
-    text-align: center;
     line-height: 1.2;
   }
   .input {
