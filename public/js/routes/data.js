@@ -37,7 +37,7 @@ var weights = [];
 var data;
 var causes = [], dimensions = [];
 var disabledCauses = [];
-var colors = ['#2B3A42', '#BDD4DE'];
+var colors = ['#2B3A42', '#B9121B'];
 
 var setDimensions = () => {
   var bounds = d.qs(".slider").getBoundingClientRect();
