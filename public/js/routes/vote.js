@@ -175,7 +175,7 @@ var exports = {
     var indexOfSet = -1, setSearchIndex = 0, indexOfQuestion = -1;
     while(indexOfSet === -1) {
       if(sets[setSearchIndex].some((d, i) => {
-        if(util.arrayEquals(d, indices)) {
+        if(util.arrayEquals(d, indices) || util.arrayEquals(d, [indices[1], indices[0], indices[2]])) {
           indexOfQuestion = i;
           return true;
         }
