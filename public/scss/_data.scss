@@ -1,4 +1,4 @@
-$detail-width: 52%;
+$detail-width: 50%;
 $middle-buffer: 0%;
 $control-color: $outer-space;
 
@@ -32,7 +32,7 @@ $control-color: $outer-space;
     padding-right: 5rem;
   }
   .results {
-    padding-left: 1rem;
+    padding-left: 2rem;
     margin-left: $middle-buffer;
     width: calc(100% - #{$detail-width + $middle-buffer});
   }
