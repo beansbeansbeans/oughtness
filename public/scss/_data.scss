@@ -1,5 +1,5 @@
-$detail-width: 50%;
-$middle-buffer: 3%;
+$detail-width: 52%;
+$middle-buffer: 0%;
 $control-color: $outer-space;
 
 [data-route="data"] {
@@ -7,11 +7,11 @@ $control-color: $outer-space;
   width: 80vw;
   margin: 0 auto;
   h1 {
-    font-size: 2.25rem;
+    font-size: 1.5rem;
     text-transform: uppercase;
     // border-bottom: solid 1px $outer-space;
-    padding-bottom: 1rem;
-    margin-bottom: 0rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
   }
   .visualization-container {
     @extend %clearfix;
@@ -27,12 +27,20 @@ $control-color: $outer-space;
   }
   .detail {
     width: $detail-width;
+    border-right: dotted 1px $outer-space;
+    height: 45rem;
+    padding-right: 5rem;
   }
   .results {
-    margin-top: 1rem;
     padding-left: 1rem;
     margin-left: $middle-buffer;
     width: calc(100% - #{$detail-width + $middle-buffer});
+  }
+  .slider-help {
+    padding-top: 2rem;
+    font-weight: 100;
+    font-size: 0.7rem;
+    line-height: 1.2;
   }
   .input-wrapper {
     position: relative;
@@ -41,8 +49,6 @@ $control-color: $outer-space;
     -webkit-user-select: none;
     user-select: none;
     .input {
-      margin-top: 1rem;
-      padding-top: 1rem;
       padding-bottom: 1rem;
     }
   }
@@ -218,7 +224,7 @@ $control-color: $outer-space;
     }
   }
   .methodology {
-    border-top: solid 2px $outer-space;
+    border-top: solid 1px $outer-space;
     padding-top: 2rem;
     clear: both;
   }
