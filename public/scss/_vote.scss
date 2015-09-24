@@ -95,9 +95,11 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     opacity: 0;
   }
   #cause-container {
+    overflow: hidden;
+    padding-top: 2rem;
     @include transition(opacity $transition-duration);
     text-align: center;
-    margin: 5rem 0 2rem 0;
+    margin: 3rem 0 2rem 0;
     position: relative;
     @extend %clearfix;
     &:before {
@@ -108,7 +110,7 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       border-left: dotted 1px $outer-space;
       position: absolute;
       left: 50%;
-      top: 0;
+      top: 2rem;
     }
   }
   #cause-0, #cause-1 {
