@@ -109,8 +109,7 @@ var update = () => {
     .attr("data-cause-id", d => d.cause );
 
   enteringRows.append("div").attr("class", "label");
-  enteringRows.append("div").attr("class", "bar-container");
-  enteringRows.append("div").attr("class", "values");
+  enteringRows.append("div").attr("class", "bar-container").append("div").attr("class", "values");
   enteringRows.append("div").attr("class", "remove").text("remove");
   enteringRows.select(".label").text(d => getCause(d.cause));
   
