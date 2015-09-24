@@ -136,15 +136,43 @@ $control-color: $outer-space;
   .chart {
     position: relative;
   }
-  .scale {
-    position: absolute;
-    right: 0;
+  .header {
+    position: relative;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
     text-transform: uppercase;
     font-size: 0.7rem;
     -webkit-user-select: none;
     user-select: none;
+    .label {
+      position: relative;
+      display: inline-block;
+      padding-right: 0.35rem;
+    }
+    .label, .scale {
+      background: $body-background-color;
+      z-index: 1;
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      left: 1rem;
+      right: 1rem;
+      border-bottom: dotted 1px $outer-space;
+      top: 0.25rem;
+    }
+  }
+  .scale {
+    padding-left: 0.35rem;
+    position: absolute;
+    left: calc(100% - 3.7rem);
+    top: 0;
+    white-space: nowrap;
     &, .label, .value {
       display: inline-block;
+    }
+    .label {
+      margin-right: -0.2rem;
     }
   }
   .visualization {
