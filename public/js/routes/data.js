@@ -108,10 +108,10 @@ var update = () => {
     .style("height", rowHeight + 'px')
     .attr("data-cause-id", d => d.cause );
 
-  enteringRows.append("div").attr("class", "label");
+  enteringRows.append("div").attr("class", "label").append("div").attr("class", "text");
   enteringRows.append("div").attr("class", "bar-container").append("div").attr("class", "values");
-  enteringRows.append("div").attr("class", "remove").text("remove");
-  enteringRows.select(".label").text(d => getCause(d.cause));
+  enteringRows.select(".label").append("div").attr("class", "remove").text("remove");
+  enteringRows.select(".label").select(".text").text(d => getCause(d.cause));
   
   rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; })
     .select(".values").text((d) => {
