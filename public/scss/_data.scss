@@ -227,10 +227,9 @@ $control-color: $outer-space;
       position: absolute;
       left: 0;
       right: 0;
-      padding: 1rem 3rem 1rem 1rem;
+      padding: 1rem 2rem 1rem 1rem;
       white-space: nowrap;
       &.active {
-        border-left: solid 1px $fiord;
         .bar, .values {
           opacity: 1;
         }
@@ -244,7 +243,7 @@ $control-color: $outer-space;
         @include transition(opacity $transition-duration);
         font-size: 0.7rem;
         padding-left: 0.5rem;
-        top: 0.4rem;
+        top: 0.35rem;
       }
       .label {
         text-align: left;
@@ -281,6 +280,7 @@ $control-color: $outer-space;
         cursor: pointer;
         opacity: 0;
         margin-left: 0.5rem;
+        @include transition(opacity $transition-duration);
         &:before {
           content: "(";
         }
