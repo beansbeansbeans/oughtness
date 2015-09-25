@@ -1,5 +1,5 @@
 $vote-content-width: 65;
-$winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50 - ($vote-content-width / 100) * 50vw) / 2;
+$winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50 - ($vote-content-width / 100) * 50%) / 2;
 
 [data-route="vote"] {
   #question {
@@ -80,7 +80,7 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     }
     &[data-won="#{$cause}"] {
       #cause-container:before, #cause-#{$other-cause}, #cause-#{$cause} {
-        @include transform(translate3d(#{$winning-distance * $multiplier}, 0, 0));
+        @include transform(translate3d(50% * $multiplier, 0, 0));
       }
       #cause-container:before, #cause-#{$other-cause} {
         opacity: 0;
@@ -149,8 +149,9 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       }
     }
     .contents {
-      width: $vote-content-width * 1%;
-      margin: 0 auto;
+      width: 100%;
+      padding: 0 1% * (100 - $vote-content-width) / 2;
+      margin: 0;
     }
     .title {
       font-weight: bold;
