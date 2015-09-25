@@ -79,8 +79,11 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       $multiplier: 1;
     }
     &[data-won="#{$cause}"] {
-      #cause-container:before, #cause-#{$other-cause}, #cause-#{$cause} {
+      #cause-#{$other-cause}, #cause-#{$cause} {
         @include transform(translate3d(50% * $multiplier, 0, 0));
+      }
+      #cause-container:before {
+        left: 50% + ($multiplier * 25%);
       }
       #cause-container:before, #cause-#{$other-cause} {
         opacity: 0;
