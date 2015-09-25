@@ -1,0 +1,5 @@
+@mixin jumbo {
+  @media (min-width: 2200px) {
+    @content;
+  }
+}
