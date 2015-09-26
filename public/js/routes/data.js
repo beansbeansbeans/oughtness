@@ -154,7 +154,7 @@ module.exports = {
     control = d.qs(".slider .controls");
     var firstPercentLabel = d.qs('.input .criticalness .value');
     var secondPercentLabel = d.qs('.input .tractability .value');
-    var description = d.qs('.detail .description');
+    var description = d.qs('.detail .deep-dive');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
 
@@ -190,6 +190,7 @@ module.exports = {
 
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(causeID));
         description.querySelector('.title').innerHTML = causeName;
+        description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: causeID }).description;
       }
     });
     chart.addEventListener('mouseleave', (e) => {

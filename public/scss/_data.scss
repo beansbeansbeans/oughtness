@@ -24,11 +24,11 @@ $tractability-color: #DB9E36;
       }
     }
     &:not(.preview) {
-      .detail .description {
+      .detail .deep-dive {
         opacity: 0;
       }
     }
-    .detail .help, .detail .description {
+    .detail .help, .detail .deep-dive {
       position: absolute;
       left: 0;
       right: 3rem;
@@ -40,7 +40,6 @@ $tractability-color: #DB9E36;
   }
   .detail {
     width: $detail-width;
-    // border-right: dotted 1px $fiord;
     height: 45rem;
     position: relative;
     .help {
@@ -53,23 +52,37 @@ $tractability-color: #DB9E36;
       .image[data-cause-id=#{nth($cause, 1)}] {
         background-image: url("../images/" + nth($cause, 1) + ".png");
         width: unquote(nth($cause, 2) + 'px');
+        height: unquote(nth($cause, 3) + 'px');
         background-size: unquote(nth($cause, 2) + 'px ' + nth($cause, 3) + 'px')
       }
     }
-    .image {
-      margin-left: auto;
-      margin-right: auto;
-      height: 10rem;
-      background-repeat: no-repeat;
+    .context {
+      @extend %clearfix;
+      border-bottom: dotted 1px $outer-space;
+      padding-bottom: 1.8rem;
+      .image {
+        float: left;
+        margin-right: 1.5rem;
+        margin-bottom: .5rem;
+        background-repeat: no-repeat;
+      }
+      .title {
+        @extend %header-font;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        line-height: 1;
+        margin-bottom: 0.4rem;
+      }
+      .description {
+        font-weight: 100;
+        line-height: 1.65;
+        font-size: 0.9rem;
+      }
     }
-    .title {
-      @extend %header-font;
-      text-transform: uppercase;
-      font-weight: 800;
-      font-size: 1.5rem;
-      letter-spacing: 1px;
-      text-align: center;
-      margin-bottom: 2rem;
+    .dimensions-container {
+      padding: 2rem 0;
     }
     .dimension {
       font-size: 0.8rem;
