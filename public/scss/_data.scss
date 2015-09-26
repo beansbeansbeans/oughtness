@@ -5,6 +5,12 @@ $control-color: $outer-space;
 $criticalness-color: #8E2800;
 $tractability-color: #DB9E36;
 
+%data-label {
+  font-size: 0.7rem;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
 [data-route="data"] {
   padding-bottom: 5rem;
   width: 80vw;
@@ -305,9 +311,7 @@ $tractability-color: #DB9E36;
       }
       .label {
         text-align: left;
-        font-size: 0.7rem;
-        font-weight: 300;
-        text-transform: uppercase;
+        @extend %data-label;
         margin-bottom: -0.2rem;
         .text, .remove {
           display: inline-block;
@@ -351,6 +355,32 @@ $tractability-color: #DB9E36;
   }
   .disabled-causes {
     position: absolute;
+    padding-left: 1rem;
+    width: calc(100% - 1rem);
+    &:not(:empty) {
+      &:before {
+        content: "More causes";
+        @extend %data-label;
+        position: absolute;
+        top: 0;
+        background: $body-background-color;
+        z-index: 1;
+        padding-right: 0.5rem;
+      }     
+      &:after {
+        content: "";
+        border-bottom: dotted 1px $fiord;
+        width: 100%;
+        position: absolute;
+        top: 0.25rem;
+      } 
+    }
+    padding-top: 1.5rem;
+    .disabled-cause {
+      @extend %data-label;
+      cursor: pointer;
+      padding: 0.75rem 0;
+    }
   }
   &[data-loading="true"] {
     .visualization-container {
