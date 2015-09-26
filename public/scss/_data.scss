@@ -83,18 +83,57 @@ $tractability-color: #DB9E36;
     }
     .dimensions-container {
       padding: 2rem 0;
-    }
-    .dimension {
-      font-size: 0.8rem;
-    }
-    .label {
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-    .more-info {
-      margin-bottom: 2rem;
-      font-weight: 100;
+      @extend %clearfix;
+      .dimension {
+        font-size: 0.8rem;
+        width: 50%;
+        float: left;
+        text-align: center;
+        &.criticalness {
+          padding-right: 1rem;
+          .circle {
+            border: solid 1px $criticalness-color;
+            .percent {
+              background-color: $criticalness-color;
+            }
+          }
+        }
+        &.tractability {
+          padding-left: 1rem;
+          .circle {
+            border: solid 1px $tractability-color;
+            .percent {
+              background-color: $tractability-color;
+            }
+          }
+        }
+      }
+      .label {
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        margin-bottom: 0.5rem;
+      }
+      .circle {
+        @include square(5rem);
+        margin: 1rem auto;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        .percent {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+      }
+      .numbers {
+        margin-bottom: 1rem;
+      }
+      .more-info {
+        line-height: 1.3;
+        margin-bottom: 2rem;
+        font-weight: 100;
+      }
     }
   }
   .results {

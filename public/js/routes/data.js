@@ -185,7 +185,9 @@ module.exports = {
             }
           });
 
-          description.querySelector('.' + dimension.name + ' .more-info').innerHTML = `With respect to ${dimension.name} ${causeName} won ${won} out of ${won + lost} times. `;
+          description.querySelector('.' + dimension.name + ' .percent').style.height = 100 * (won / (won + lost)) + '%';
+          description.querySelector('.' + dimension.name + ' .numbers').textContent = `${won} / ${won + lost}`;
+          description.querySelector('.' + dimension.name + ' .more-info').innerHTML = `With respect to ${dimension.name} ${causeName.toLowerCase()} won ${Math.round(100 * won / (won + lost))}% of the time. `;
         });
 
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(causeID));
