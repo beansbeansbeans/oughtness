@@ -357,12 +357,13 @@ $tractability-color: #DB9E36;
     position: absolute;
     padding-left: 1rem;
     width: calc(100% - 1rem);
+    @include transition(all $transition-duration);
     &:not(:empty) {
       &:before {
         content: "More causes";
         @extend %data-label;
         position: absolute;
-        top: 0;
+        top: 2.5rem;
         background: $body-background-color;
         z-index: 1;
         padding-right: 0.5rem;
@@ -372,10 +373,10 @@ $tractability-color: #DB9E36;
         border-bottom: dotted 1px $fiord;
         width: 100%;
         position: absolute;
-        top: 0.25rem;
+        top: 2.75rem;
       } 
     }
-    padding-top: 1.5rem;
+    padding-top: 4rem;
     .disabled-cause {
       @extend %data-label;
       cursor: pointer;

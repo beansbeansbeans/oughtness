@@ -131,7 +131,7 @@ var update = () => {
     container.append("div").attr("class", "disabled-causes");
   }
 
-  container.select(".disabled-causes").style("margin-top", (rowHeight * (causes.length - disabledCauses.length + 2)) + 'px');
+  container.select(".disabled-causes").style("margin-top", (rowHeight * (causes.length - disabledCauses.length)) + 'px');
 
   var disabledCauseEls = container.select(".disabled-causes").selectAll(".disabled-cause").data(disabledCauses, _.identity);
 
