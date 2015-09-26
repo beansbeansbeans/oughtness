@@ -16,6 +16,10 @@ $tractability-color: #DB9E36;
     padding-bottom: 0.75rem;
     border-bottom: solid 1px $outer-space;
   }
+  .loader, .help {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
   .visualization-container {
     @extend %clearfix;
     &.preview {
@@ -42,10 +46,6 @@ $tractability-color: #DB9E36;
     width: $detail-width;
     height: 45rem;
     position: relative;
-    .help {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-    }
     @each $cause in $cause-images {
       .image[data-cause-id=#{nth($cause, 1)}] {
         background-image: url("../images/" + nth($cause, 1) + ".png");
@@ -348,9 +348,6 @@ $tractability-color: #DB9E36;
         }
       }
     }
-  }
-  .loader {
-    text-align: center;
   }
   .disabled-causes {
     position: absolute;
