@@ -2,6 +2,9 @@ $detail-width: 50%;
 $middle-buffer: 0%;
 $control-color: $outer-space;
 
+$criticalness-color: #8E2800;
+$tractability-color: #DB9E36;
+
 [data-route="data"] {
   padding-bottom: 5rem;
   width: 80vw;
@@ -137,13 +140,17 @@ $control-color: $outer-space;
       letter-spacing: 1px;
       margin-top: 0.2rem;
     }
-    &.urgency {
-
+    &.criticalness {
+      .value {
+        color: $criticalness-color;
+      }
     }
     &.tractability {
       float: right;
       text-align: right;
-      color: $thunderbird;
+      .value {
+        color: $tractability-color;
+      }
     }
   }
   .labels {

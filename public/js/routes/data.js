@@ -38,7 +38,7 @@ var weights = [];
 var data;
 var causes = [], dimensions = [];
 var disabledCauses = [];
-var colors = ['#2B3A42', '#B9121B'];
+var colors = ['#8E2800', '#DB9E36'];
 
 var setDimensions = () => {
   var bounds = d.qs(".slider").getBoundingClientRect();
@@ -152,7 +152,7 @@ module.exports = {
     causes = state.get("causes");
     dimensions = state.get("dimensions");
     control = d.qs(".slider .controls");
-    var firstPercentLabel = d.qs('.input .urgency .value');
+    var firstPercentLabel = d.qs('.input .criticalness .value');
     var secondPercentLabel = d.qs('.input .tractability .value');
     var description = d.qs('.detail .description');
     var chart = d.qs('.chart');
