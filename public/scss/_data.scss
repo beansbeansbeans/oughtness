@@ -11,16 +11,21 @@ $tractability-color: #DB9E36;
   text-transform: uppercase;
 }
 
+%section-title {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: solid 1px $outer-space;  
+  font-weight: 800;
+}
+
 [data-route="data"] {
   padding-bottom: 5rem;
   width: 80vw;
   margin: 0 auto;
   h1 {
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    margin-bottom: 2.5rem;
-    padding-bottom: 0.75rem;
-    border-bottom: solid 1px $outer-space;
+    @extend %section-title;
   }
   .loader, .help {
     font-size: 0.75rem;
@@ -394,8 +399,20 @@ $tractability-color: #DB9E36;
     }
   }
   .methodology {
-    border-top: solid 1px $outer-space;
     padding-top: 2rem;
     clear: both;
+    .title {
+      @extend %section-title;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+      font-weight: 500;
+    }
+    p {
+      font-weight: 100;
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
   }
 }
