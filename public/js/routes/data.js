@@ -141,6 +141,23 @@ var update = () => {
   disabledCauseEls.exit().remove();
 }
 
+var findArea = (k, r) => {
+  var t0, t1 = k * 2 * Math.PI;
+
+  if (k > 0 && k < 1) {
+    t1 = Math.pow(12 * k * Math.PI, 1 / 3);
+    for (var i = 0; i < 10; ++i) {
+      t0 = t1;
+      t1 = (Math.sin(t0) - t0 * Math.cos(t0) + 2 * k * Math.PI) / (1 - Math.cos(t0));
+    }
+    k = (1 - Math.cos(t1 / 2)) / 2;
+  }
+
+  var h = 2 * r * k;
+
+  return h;
+}
+
 module.exports = {
   initialize() {
 
@@ -171,6 +188,7 @@ module.exports = {
 
         var causeID = row.getAttribute('data-cause-id');
         var causeName = getCause(causeID);
+        var r = description.querySelector(".circle").offsetHeight / 2;
 
         dimensions.forEach((dimension) => {
           var won = 0, lost = 0;
@@ -185,7 +203,7 @@ module.exports = {
             }
           });
 
-          description.querySelector('.' + dimension.name + ' .percent').style.height = 100 * (won / (won + lost)) + '%';
+          description.querySelector('.' + dimension.name + ' .percent').style.height = findArea((won / (won + lost)), r) + 'px';
           description.querySelector('.' + dimension.name + ' .numbers').textContent = `${won} / ${won + lost}`;
           description.querySelector('.' + dimension.name + ' .more-info').innerHTML = `With respect to ${dimension.name} ${causeName.toLowerCase()} won ${Math.round(100 * won / (won + lost))}% of the time. `;
         });
