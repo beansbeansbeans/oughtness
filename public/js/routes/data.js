@@ -216,7 +216,7 @@ module.exports = {
 
     var handleDrag = (e) => {
       var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.6 * trackWidth)) : e.clientX;
-      var position = Math.min(Math.max((x - circleOffsetLeft), 1), trackWidth - controlWidth);
+      var position = Math.min(Math.max((x - circleOffsetLeft - controlWidth / 2), 1), trackWidth - controlWidth);
       control.style.left = position + 'px';
 
       var percentage = position / (trackWidth - controlWidth);
