@@ -95,7 +95,13 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
         .button {
           background: $outer-space;
           color: $body-background-color;
-        }        
+          .text {
+            opacity: 0;
+          }
+          path {
+            opacity: 1;
+          }    
+        }    
       }
     }
   }
@@ -206,6 +212,23 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       margin-top: 2rem;
       display: inline-block;
       font-size: 0.9rem;
+      position: relative;
+      .text {
+        @include transition(opacity $transition-duration);
+      }
+      svg {
+        position: absolute;
+        top: 0.2rem;
+        width: 1.5rem;
+        left: 50%;
+        margin-left: -0.75rem;
+        path {
+          opacity: 0;
+          @include transition(opacity $transition-duration);
+          @include transform(scale(0.8));
+          fill: $body-background-color;
+        }
+      }
     }
     .loader-container {
       opacity: 0;
