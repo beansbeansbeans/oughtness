@@ -213,6 +213,32 @@ module.exports = {
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(causeID));
         description.querySelector('.title').innerHTML = causeName;
         description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: causeID }).description;
+
+        var relevantVotes = data.votes.filter((d) => {
+          return Object.keys(d.causes).indexOf(causeID) !== -1;
+        });
+
+        var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === dimensions[0]._id);
+
+        var otherCauses = causes.filter(d => d._id !== causeID);
+        var graph = d3.select(".detail .graph");
+        var bars = graph.selectAll(".bar").data(otherCauses);
+        var maxHeight = 40;
+        var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
+        var getBarHeight = (d) => {
+          var vote = _.find(relevantVotesForDimension, (vote) => {
+            return Object.keys(vote.causes).indexOf(d._id) !== -1;
+          });
+
+          if(!vote) { return 0; }
+
+          return barHeightScale(vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
+        }
+        bars.enter().append("rect").attr("class", "bar");
+        bars.attr("width", 10).attr("x", (_, i) => { return i * 20; })
+          .attr("y", (d) => { return maxHeight - getBarHeight(d); })
+          .attr("height", getBarHeight);
+
       }
     });
 
