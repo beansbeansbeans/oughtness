@@ -175,9 +175,54 @@ module.exports = {
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
 
+    var getEnabledVotes = () => {
+      return data.votes.filter((d) => {
+        return Object.keys(d.causes).every(c => disabledCauses.indexOf(c) === -1);
+      });
+    }
+
     control.addEventListener("mousedown", () => { dragging = true; });
 
     window.addEventListener("mouseup", () => { dragging = false; });
+
+    var drawMiniBarChart = (causeID, dimensionID) => {
+      // drawing mini bar charts
+      
+      var relevantVotes = getEnabledVotes().filter((d) => {
+        return Object.keys(d.causes).indexOf(causeID) !== -1;
+      });
+
+      var graph = d3.select(".detail .graph");
+      var graphSVG = graph.select("svg");
+
+      var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === dimensionID);
+      var otherCauses = causes.filter(d => d._id !== causeID);
+      
+      var bars = graphSVG.selectAll(".bar").data(otherCauses);
+      var maxHeight = 40;
+      var barWidth = 10;
+      var barBuffer = 10;
+      var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
+      var getBarHeight = (d) => {
+        var vote = _.find(relevantVotesForDimension, (vote) => {
+          return Object.keys(vote.causes).indexOf(d._id) !== -1;
+        });
+
+        if(!vote) { return 0; }
+
+        return barHeightScale(vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
+      }
+
+      graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight);
+      bars.enter().append("rect").attr("class", "bar");
+      bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
+        .attr("y", (d) => { return maxHeight - getBarHeight(d); })
+        .attr("height", getBarHeight);
+
+      var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
+      labels.enter().append("div").attr("class", "label");
+      labels.text(d => d.name).style("left", (_, i) => { return (i * (barWidth + barBuffer)) + 'px'; });
+    }
 
     chart.addEventListener("mouseover", (e) => {
       var row = e.target.closest('.row');
@@ -191,12 +236,11 @@ module.exports = {
         var causeID = row.getAttribute('data-cause-id');
         var causeName = getCause(causeID);
         var r = description.querySelector(".circle").offsetHeight / 2;
+        var enabledVotes = getEnabledVotes();
 
         dimensions.forEach((dimension) => {
           var won = 0, lost = 0;
-          data.votes.filter((d) => {
-            return Object.keys(d.causes).every(c => disabledCauses.indexOf(c) === -1);
-          }).forEach((d) => {
+          enabledVotes.forEach((d) => {
             if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(causeID) !== -1) {
               Object.keys(d.causes).forEach((c) => {
                 if(c === causeID) { won += d.causes[c];
@@ -214,40 +258,7 @@ module.exports = {
         description.querySelector('.title').innerHTML = causeName;
         description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: causeID }).description;
 
-        var relevantVotes = data.votes.filter((d) => {
-          return Object.keys(d.causes).indexOf(causeID) !== -1;
-        });
-
-        var graph = d3.select(".detail .graph");
-        var graphSVG = graph.select("svg");
-
-        var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === dimensions[0]._id);
-        var otherCauses = causes.filter(d => d._id !== causeID);
-        
-        var bars = graphSVG.selectAll(".bar").data(otherCauses);
-        var maxHeight = 40;
-        var barWidth = 10;
-        var barBuffer = 10;
-        var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
-        var getBarHeight = (d) => {
-          var vote = _.find(relevantVotesForDimension, (vote) => {
-            return Object.keys(vote.causes).indexOf(d._id) !== -1;
-          });
-
-          if(!vote) { return 0; }
-
-          return barHeightScale(vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
-        }
-
-        graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight);
-        bars.enter().append("rect").attr("class", "bar");
-        bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-          .attr("y", (d) => { return maxHeight - getBarHeight(d); })
-          .attr("height", getBarHeight);
-
-        var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
-        labels.enter().append("div").attr("class", "label");
-        labels.text(d => d.name).style("left", (_, i) => { return (i * (barWidth + barBuffer)) + 'px'; });
+        drawMiniBarChart(causeID, dimensions[0]._id);
 
       }
     });
