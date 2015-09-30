@@ -282,7 +282,8 @@ module.exports = {
 
     description.addEventListener("click", (e) => {
       if(e.target.closest(".dimension")) {
-        drawMiniBarChart(activeCauseID, dimensions[1]._id)
+        var indexOfClosestDimension = [].slice.call(description.querySelectorAll(".dimension")).indexOf(e.target.closest(".dimension"));
+        drawMiniBarChart(activeCauseID, dimensions[indexOfClosestDimension]._id)
       }
     });
 
