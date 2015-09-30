@@ -145,6 +145,29 @@ $tractability-color: #DB9E36;
         font-weight: 100;
       }
     }
+    .dimensions-detail {
+      .graph {
+        position: relative;
+        .labels {
+          position: relative;
+          top: auto;
+          bottom: auto;
+        }
+        .label {
+          position: absolute;
+          font-size: 0.7rem;
+          font-weight: 100;
+          top: calc(100% + 15rem);
+          @include transform(rotate(-90deg));
+          transform-origin: left;
+          -webkit-transform-origin: left;
+          white-space: nowrap;
+          text-align: right;
+          width: 15rem;
+          text-transform: uppercase;
+        }
+      }
+    }
   }
   .results {
     padding-left: 1.5rem;

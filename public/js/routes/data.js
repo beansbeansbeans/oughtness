@@ -218,12 +218,16 @@ module.exports = {
           return Object.keys(d.causes).indexOf(causeID) !== -1;
         });
 
-        var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === dimensions[0]._id);
-
-        var otherCauses = causes.filter(d => d._id !== causeID);
         var graph = d3.select(".detail .graph");
-        var bars = graph.selectAll(".bar").data(otherCauses);
+        var graphSVG = graph.select("svg");
+
+        var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === dimensions[0]._id);
+        var otherCauses = causes.filter(d => d._id !== causeID);
+        
+        var bars = graphSVG.selectAll(".bar").data(otherCauses);
         var maxHeight = 40;
+        var barWidth = 10;
+        var barBuffer = 10;
         var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
         var getBarHeight = (d) => {
           var vote = _.find(relevantVotesForDimension, (vote) => {
@@ -234,10 +238,16 @@ module.exports = {
 
           return barHeightScale(vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
         }
+
+        graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight);
         bars.enter().append("rect").attr("class", "bar");
-        bars.attr("width", 10).attr("x", (_, i) => { return i * 20; })
+        bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
           .attr("y", (d) => { return maxHeight - getBarHeight(d); })
           .attr("height", getBarHeight);
+
+        var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
+        labels.enter().append("div").attr("class", "label");
+        labels.text(d => d.name).style("left", (_, i) => { return (i * (barWidth + barBuffer)) + 'px'; });
 
       }
     });
