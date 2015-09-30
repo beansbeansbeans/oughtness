@@ -174,6 +174,7 @@ module.exports = {
     var description = d.qs('.detail .deep-dive');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
+    var activeCauseID;
 
     var getEnabledVotes = () => {
       return data.votes.filter((d) => {
@@ -233,17 +234,17 @@ module.exports = {
 
         visualization.classList.add("preview");
 
-        var causeID = row.getAttribute('data-cause-id');
-        var causeName = getCause(causeID);
+        activeCauseID = row.getAttribute('data-cause-id');
+        var causeName = getCause(activeCauseID);
         var r = description.querySelector(".circle").offsetHeight / 2;
         var enabledVotes = getEnabledVotes();
 
         dimensions.forEach((dimension) => {
           var won = 0, lost = 0;
           enabledVotes.forEach((d) => {
-            if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(causeID) !== -1) {
+            if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(activeCauseID) !== -1) {
               Object.keys(d.causes).forEach((c) => {
-                if(c === causeID) { won += d.causes[c];
+                if(c === activeCauseID) { won += d.causes[c];
                 } else { lost += d.causes[c]; }
               });
             }
@@ -254,12 +255,11 @@ module.exports = {
           description.querySelector('.' + dimension.name + ' .more-info').innerHTML = `With respect to ${dimension.name} ${causeName.toLowerCase()} won ${Math.round(100 * won / (won + lost))}% of the time. `;
         });
 
-        description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(causeID));
+        description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(activeCauseID));
         description.querySelector('.title').innerHTML = causeName;
-        description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: causeID }).description;
+        description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: activeCauseID }).description;
 
-        drawMiniBarChart(causeID, dimensions[0]._id);
-
+        drawMiniBarChart(activeCauseID, dimensions[0]._id);
       }
     });
 
@@ -277,6 +277,12 @@ module.exports = {
       } else if(e.target.classList.contains('disabled-cause')) {
         disabledCauses.splice(disabledCauses.indexOf(e.target.getAttribute("data-cause-id")), 1);
         update();
+      }
+    });
+
+    description.addEventListener("click", (e) => {
+      if(e.target.closest(".dimension")) {
+        drawMiniBarChart(activeCauseID, dimensions[1]._id)
       }
     });
 
