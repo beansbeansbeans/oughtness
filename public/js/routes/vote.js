@@ -208,6 +208,9 @@ var exports = {
         interstitialMode = true;
         d.qs('[data-route="vote"]').setAttribute("data-interstitial", true);
         d.qs("#current-set").innerHTML = currentSet;
+        d.qs("#set-total").innerHTML = sets.length;
+        d.qs("#cause-total").innerHTML = state.get('causes').length;
+        d.qs("#dimensions-total").innerHTML = state.get('dimensions').length;
       } else {
         interstitialMode = false;
         hasAgreedToContinue = false;

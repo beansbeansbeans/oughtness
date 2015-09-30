@@ -4,7 +4,11 @@
   line-height: 2;
   border-radius: 2px;
   cursor: pointer;
-  @include transition(background-color $transition-duration);
+  @include transition(background-color $transition-duration, color $transition-duration);
+  &:hover {
+    color: $body-background-color;
+    background: $outer-space;
+  }
 }
 
 %clearfix {
