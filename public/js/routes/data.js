@@ -178,12 +178,32 @@ module.exports = {
     control.addEventListener("mousedown", () => { dragging = true; });
 
     window.addEventListener("mouseup", () => { dragging = false; });
-    chart.addEventListener('mouseover', (e) => {
+
+    chart.addEventListener("mouseover", (e) => {
       var row = e.target.closest('.row');
       if(row) {
         var lastActive = chart.querySelector('.active');
         if(lastActive) { lastActive.classList.remove('active'); }
         row.classList.add('active');
+      }
+    });
+
+    chart.addEventListener("mouseleave", () => {
+      var lastActive = chart.querySelector('.active');
+      if(lastActive) { lastActive.classList.remove('active'); }
+    });
+
+    chart.addEventListener("click", (e) => {
+      var row = e.target.closest('.row');
+      if(e.target.classList.contains('remove')) {
+        if(disabledCauses.length < causes.length - 2) {
+          disabledCauses.push(e.target.closest('.row').getAttribute("data-cause-id"));
+          update();          
+        }
+      } else if(e.target.classList.contains('disabled-cause')) {
+        disabledCauses.splice(disabledCauses.indexOf(e.target.getAttribute("data-cause-id")), 1);
+        update();
+      } else if(row) {
         visualization.classList.add("preview");
 
         var causeID = row.getAttribute('data-cause-id');
@@ -211,22 +231,6 @@ module.exports = {
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(causeID));
         description.querySelector('.title').innerHTML = causeName;
         description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: causeID }).description;
-      }
-    });
-    chart.addEventListener('mouseleave', (e) => {
-      visualization.classList.remove("preview");
-      var lastActive = chart.querySelector('.active');
-      if(lastActive) { lastActive.classList.remove('active'); }
-    });
-    chart.addEventListener("click", (e) => {
-      if(e.target.classList.contains('remove')) {
-        if(disabledCauses.length < causes.length - 2) {
-          disabledCauses.push(e.target.closest('.row').getAttribute("data-cause-id"));
-          update();          
-        }
-      } else if(e.target.classList.contains('disabled-cause')) {
-        disabledCauses.splice(disabledCauses.indexOf(e.target.getAttribute("data-cause-id")), 1);
-        update();
       }
     });
 

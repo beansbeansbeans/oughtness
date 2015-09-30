@@ -298,6 +298,7 @@ $tractability-color: #DB9E36;
       right: 0;
       padding: 1rem 2rem 1rem 1rem;
       white-space: nowrap;
+      cursor: pointer;
       &.active {
         .bar, .values {
           opacity: 1;
