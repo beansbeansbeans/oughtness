@@ -198,9 +198,9 @@ var exports = {
     d.qs("[data-route='vote']").removeAttribute("data-won");
 
     if(_.isEqual(pair, [-1, -1, -1])) {
-      d.qs("#question").innerHTML = "that's it. check out the data.";
-      d.qs("#cause-container").innerHTML = '';
-      d.qs("#choose-both").innerHTML = '';
+      interstitialMode = true;
+      d.qs('[data-route="vote"]').setAttribute("data-interstitial", true);
+      d.qs('[data-route="vote"]').setAttribute("data-complete", true);
     } else {
       state.set('pair', pair);
 

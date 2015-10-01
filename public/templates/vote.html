@@ -51,11 +51,17 @@
     </div>
   </div>
   <div id="interstitial">
-    <div class="message">
-      You've finished set <span id="current-set"></span>.
+    <div class="incomplete">
+      <div class="message">
+        You've finished set <span id="current-set"></span>.
+      </div>
+      <div id="continue-to-next-set" class="button">Next set</div>
+      <div class="description">There are <span id="set-total"></span> sets of questions in total. That's how many it takes to collect data on every permutation of the <span id="cause-total"></span> causes and <span id="dimensions-total"></span> dimensions we're evaluating. But that's a lot of questions and you might want to just <a href="./data">check out the data instead</a>.</div>      
     </div>
-    <div id="continue-to-next-set" class="button">Next set</div>
-    <div class="description">There are <span id="set-total"></span> sets of questions in total. That's how many it takes to collect data on every permutation of the <span id="cause-total"></span> causes and <span id="dimensions-total"></span> dimensions we're evaluating. But that's a lot of questions and you might want to just <a href="./data">check out the data instead</a>.</div>
+    <div class="complete">
+      <div class="message">That's it!</div>
+      <a href="./data" class="button">View data</a>
+    </div>
   </div>
   <div id="choose-both">
     <div class="text">
