@@ -1,0 +1,19 @@
+[data-route="about"] {
+  .main {
+    width: 75vw;
+    margin-left: auto;
+    margin-right: auto;
+    h1 {
+      text-transform: uppercase;
+      margin-bottom: 1.5em;
+    }
+    .description {
+      margin-bottom: 1rem;
+      font-weight: 100;
+      line-height: 1.5;
+      a {
+        font-weight: 500;
+      }
+    }
+  }
+}
