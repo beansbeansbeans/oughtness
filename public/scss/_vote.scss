@@ -294,15 +294,4 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
       }
     }
   }
-  #choose-both {
-    display: none; // ?
-
-    text-align: center;
-    .text, .tagline, #choose-both-button {
-      display: inline-block;
-    }
-    .button {
-      margin-left: 8px;
-    }
-  }
 }
