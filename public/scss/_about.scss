@@ -2,13 +2,30 @@
   .main {
     @extend %content-width;
     h1 {
-      text-transform: uppercase;
-      margin-bottom: 1.5em;
+      @extend %section-title;
     }
-    .description {
+    .section {
+      @extend %clearfix;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      .title, .detail {
+        float: left;
+      }
+      .title {
+        width: 7.5rem;
+        font-weight: 500;
+        // font-size: 1.25rem;
+      }
+      .detail {
+        margin-left: 0.5rem;
+        width: calc(100% - 8rem);
+      }
+    }
+    p {
+      margin-top: 0;
       margin-bottom: 1rem;
       font-weight: 100;
-      line-height: 1.5;
       a {
         font-weight: 500;
       }
