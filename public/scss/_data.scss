@@ -18,6 +18,8 @@ $tractability-color: #DB9E36;
     @extend %section-title;
   }
   .loader, .help {
+    margin-top: -0.2rem;
+    line-height: 1.5;
     font-size: 0.75rem;
     text-transform: uppercase;
   }
