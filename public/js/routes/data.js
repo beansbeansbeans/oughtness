@@ -214,11 +214,14 @@ module.exports = {
         return barHeightScale(vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
       }
 
+      var dimensionIndex = _.findIndex(dimensions, x => x._id === dimensionID);
+
       graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight);
       bars.enter().append("rect").attr("class", "bar");
       bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
         .attr("y", (d) => { return maxHeight - getBarHeight(d); })
-        .attr("height", getBarHeight);
+        .attr("height", getBarHeight)
+        .attr("fill", colors[dimensionIndex]);
 
       var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
       labels.enter().append("div").attr("class", "label");

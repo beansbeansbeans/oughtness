@@ -162,6 +162,9 @@ $tractability-color: #DB9E36;
           width: 15rem;
           text-transform: uppercase;
         }
+        .bar {
+          @include transition(all $transition-duration);
+        }
       }
     }
   }
