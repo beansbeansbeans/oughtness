@@ -1,8 +1,6 @@
 [data-route="about"] {
   .main {
-    width: 75vw;
-    margin-left: auto;
-    margin-right: auto;
+    @extend %content-width;
     h1 {
       text-transform: uppercase;
       margin-bottom: 1.5em;

@@ -22,8 +22,7 @@ $tractability-color: #DB9E36;
 
 [data-route="data"] {
   padding-bottom: 5rem;
-  width: 80vw;
-  margin: 0 auto;
+  @extend %content-width;
   h1 {
     @extend %section-title;
   }
