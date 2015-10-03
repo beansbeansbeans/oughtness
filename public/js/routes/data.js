@@ -242,16 +242,16 @@ module.exports = {
       graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight * 2);
       bars.enter().append("rect").attr("class", "bar");
       bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-        .attr("y", (d) => { return maxHeight - getBarHeight(d); })
-        .attr("height", getBarHeight)
+        .attr("y", (d) => { return getBarHeight(d); })
+        .attr("height", (d) => { return maxHeight - getBarHeight(d); })
         .attr("fill", colors[dimensionIndex]);
 
       bottomBars.enter().append("rect").attr("class", "bottom-bar");
       bottomBars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
         .attr("y", (d) => { return maxHeight + 2; })
-        .attr("height", (d) => { return maxHeight - getBarHeight(d); })
+        .attr("height", getBarHeight)
         .attr("fill", colors[dimensionIndex])
-        .attr("fill-opacity", 0.5);
+        .attr("fill-opacity", 0.35);
 
       var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
       labels.enter().append("div").attr("class", "label");
