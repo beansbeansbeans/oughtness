@@ -203,7 +203,12 @@ module.exports = {
 
     window.addEventListener("mouseup", () => { dragging = false; });
 
-    var drawMiniBarChart = (causeID, dimensionID, won, lost) => {
+    var setActive = (activeCauseID, activeDimensionID) => {
+      description.querySelector('.dimensions-container').setAttribute("data-active-dimension", getDimension(activeDimensionID));
+      drawMiniBarChart(activeCauseID, activeDimensionID);
+    }
+
+    var drawMiniBarChart = (causeID, dimensionID) => {
       // drawing mini bar charts
       
       var relevantVotes = getEnabledVotes().filter((d) => {
@@ -282,7 +287,7 @@ module.exports = {
         description.querySelector('.title').innerHTML = causeName;
         description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: activeCauseID }).description;
 
-        drawMiniBarChart(activeCauseID, dimensions[0]._id);
+        setActive(activeCauseID, dimensions[0]._id);
       }
     });
 
@@ -306,7 +311,7 @@ module.exports = {
     description.addEventListener("click", (e) => {
       if(e.target.closest(".dimension")) {
         var indexOfClosestDimension = [].slice.call(description.querySelectorAll(".dimension")).indexOf(e.target.closest(".dimension"));
-        drawMiniBarChart(activeCauseID, dimensions[indexOfClosestDimension]._id)
+        setActive(activeCauseID, dimensions[indexOfClosestDimension]._id)
       }
     });
 
