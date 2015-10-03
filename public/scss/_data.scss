@@ -136,6 +136,11 @@ $tractability-color: #DB9E36;
     }
     .dimensions-detail {
       padding-top: 2rem;
+      .more-info {
+        line-height: 1.5;
+        font-weight: 100;
+        font-size: 0.9rem;
+      }
       .graph {
         position: relative;
         .labels {
