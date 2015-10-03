@@ -160,14 +160,13 @@ $dimensions: 'criticalness', 'tractability';
           position: absolute;
           font-size: 0.7rem;
           font-weight: 100;
-          top: calc(100% + 19rem);
           @include transform(rotate(-90deg));
           transform-origin: left;
           -webkit-transform-origin: left;
           white-space: nowrap;
           text-align: right;
-          width: 15rem;
           text-transform: uppercase;
+          @include transition(all $transition-duration);
         }
         .bar, .bottom-bar {
           @include transition(all $transition-duration);

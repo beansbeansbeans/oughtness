@@ -257,7 +257,9 @@ module.exports = {
 
       var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
       labels.enter().append("div").attr("class", "label");
-      labels.text(d => getAbbreviation(d.name)).style("left", (_, i) => { return (i * (barWidth + barBuffer)) + 'px'; });
+      labels.text(d => getAbbreviation(d.name))
+        .style("left", (_, i) => { return (i * (barWidth + barBuffer) + 4) + 'px'; })
+        .style("top", (d) => { return (getBarHeight(d) - 15) + 'px'; });
 
       var stats = getStats(causeID, dimensionID);
 
