@@ -93,6 +93,26 @@ $dimensions: 'criticalness', 'tractability';
         &[data-active-dimension=#{$dimension}] {
           .#{$dimension} {
             opacity: 1;
+            position: relative;
+            &:before, &:after {
+              content: "";
+              @include square(1.5rem);
+              position: absolute;
+              display: block;
+              @include transform(rotate(45deg));
+              left: 50%;
+              top: 100%;
+              margin-left: -0.75rem;
+            }
+            &:before {
+              border: dotted 1px $fiord;
+              margin-top: -0.75rem;
+            }
+            &:after {
+              background: $body-background-color;
+              margin-top: -0.85rem;
+              border: solid 1px $body-background-color;
+            }
           }
         }
       }
