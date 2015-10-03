@@ -259,7 +259,7 @@ module.exports = {
       labels.enter().append("div").attr("class", "label");
       labels.text(d => getAbbreviation(d.name))
         .style("left", (_, i) => { return (i * (barWidth + barBuffer) + 4) + 'px'; })
-        .style("top", (d) => { return (getBarHeight(d) - 15) + 'px'; });
+        .style("top", (d) => { return (getBarHeight(d) - 5) + 'px'; });
 
       var stats = getStats(causeID, dimensionID);
 

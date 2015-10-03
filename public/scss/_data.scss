@@ -166,6 +166,8 @@ $dimensions: 'criticalness', 'tractability';
           white-space: nowrap;
           text-align: right;
           text-transform: uppercase;
+          width: 2rem;
+          text-align: right;
           @include transition(all $transition-duration);
         }
         .bar, .bottom-bar {
