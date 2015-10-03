@@ -200,9 +200,10 @@ module.exports = {
       var otherCauses = causes.filter(d => d._id !== causeID);
       
       var bars = graphSVG.selectAll(".bar").data(otherCauses);
+      var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
       var maxHeight = 40;
       var barWidth = 10;
-      var barBuffer = 10;
+      var barBuffer = 34;
       var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
       var getBarHeight = (d) => {
         var vote = _.find(relevantVotesForDimension, (vote) => {
@@ -216,12 +217,19 @@ module.exports = {
 
       var dimensionIndex = _.findIndex(dimensions, x => x._id === dimensionID);
 
-      graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight);
+      graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight * 2);
       bars.enter().append("rect").attr("class", "bar");
       bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
         .attr("y", (d) => { return maxHeight - getBarHeight(d); })
         .attr("height", getBarHeight)
         .attr("fill", colors[dimensionIndex]);
+
+      bottomBars.enter().append("rect").attr("class", "bottom-bar");
+      bottomBars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
+        .attr("y", (d) => { return maxHeight + 2; })
+        .attr("height", (d) => { return maxHeight - getBarHeight(d); })
+        .attr("fill", colors[dimensionIndex])
+        .attr("fill-opacity", 0.5);
 
       var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
       labels.enter().append("div").attr("class", "label");
