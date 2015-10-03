@@ -23,6 +23,10 @@ var formatEigenvalue = (num) => {
   return val;
 }
 
+var getAbbreviation = (d) => {
+  return d.split(' ').reduce((p, c) => { return p + c[0]; }, '');
+}
+
 var getCause = id => _.findWhere(causes, { _id: id }).name;
 var getCauseSlug = id => _.findWhere(causes, { _id: id }).slug;
 var getDimension = id => _.findWhere(dimensions, { _id: id }).name;
@@ -114,7 +118,7 @@ var update = () => {
   enteringRows.append("div").attr("class", "label").append("div").attr("class", "text");
   enteringRows.append("div").attr("class", "bar-container").append("div").attr("class", "values");
   enteringRows.select(".label").append("div").attr("class", "remove").text("remove");
-  enteringRows.select(".label").select(".text").text(d => getCause(d.cause));
+  enteringRows.select(".label").select(".text").text(d => `${getCause(d.cause)} (${getAbbreviation(getCause(d.cause))})`);
   
   rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; })
     .select(".values").text((d) => {
@@ -209,8 +213,6 @@ module.exports = {
     }
 
     var drawMiniBarChart = (causeID, dimensionID) => {
-      // drawing mini bar charts
-      
       var relevantVotes = getEnabledVotes().filter((d) => {
         return Object.keys(d.causes).indexOf(causeID) !== -1;
       });
@@ -255,7 +257,7 @@ module.exports = {
 
       var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
       labels.enter().append("div").attr("class", "label");
-      labels.text(d => d.name).style("left", (_, i) => { return (i * (barWidth + barBuffer)) + 'px'; });
+      labels.text(d => getAbbreviation(d.name)).style("left", (_, i) => { return (i * (barWidth + barBuffer)) + 'px'; });
 
       var stats = getStats(causeID, dimensionID);
 
