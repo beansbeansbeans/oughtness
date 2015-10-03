@@ -226,7 +226,7 @@ module.exports = {
       var bars = graphSVG.selectAll(".bar").data(otherCauses);
       var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
       var maxHeight = 40;
-      var barWidth = 6;
+      var barWidth = 5;
       var barBuffer = (detailWidth - (barWidth * causes.length)) / otherCauses.length;
       var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
       var getBarHeight = (d) => {
@@ -241,7 +241,7 @@ module.exports = {
 
       var dimensionIndex = _.findIndex(dimensions, x => x._id === dimensionID);
 
-      graphSVG.attr("width", otherCauses.length * (barWidth + barBuffer)).attr("height", maxHeight * 2);
+      graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer)).attr("height", maxHeight * 2);
       bars.enter().append("rect").attr("class", "bar");
       bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
         .attr("y", (d) => { return getBarHeight(d); })
