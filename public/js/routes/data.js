@@ -32,6 +32,7 @@ var control;
 var controlWidth = 0;
 var dragging = false;
 var circleOffsetLeft = 0;
+var detailWidth = 0;
 
 var visData, normalizedVisData;
 var weights = [];
@@ -45,6 +46,7 @@ var setDimensions = () => {
   trackWidth = bounds.width;
   controlWidth = control.getBoundingClientRect().width;
   circleOffsetLeft = bounds.left;
+  detailWidth = d.qs(".detail").getBoundingClientRect().width;
 }
 
 var handleResize = () => {
@@ -203,7 +205,7 @@ module.exports = {
       var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
       var maxHeight = 40;
       var barWidth = 10;
-      var barBuffer = 34;
+      var barBuffer = (detailWidth - (barWidth * causes.length)) / otherCauses.length;
       var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
       var getBarHeight = (d) => {
         var vote = _.find(relevantVotesForDimension, (vote) => {
