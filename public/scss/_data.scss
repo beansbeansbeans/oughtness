@@ -5,6 +5,8 @@ $control-color: $outer-space;
 $criticalness-color: #8E2800;
 $tractability-color: #DB9E36;
 
+$dimensions: 'criticalness', 'tractability';
+
 %data-label {
   font-size: 0.7rem;
   font-weight: 300;
@@ -87,6 +89,13 @@ $tractability-color: #DB9E36;
     .dimensions-container {
       @extend %clearfix;
       border-bottom: dotted 1px $fiord;
+      @each $dimension in $dimensions {
+        &[data-active-dimension=#{$dimension}] {
+          .#{$dimension} {
+            opacity: 1;
+          }
+        }
+      }
       .dimension {
         cursor: pointer;
         padding: 2.5rem 0;
@@ -95,7 +104,6 @@ $tractability-color: #DB9E36;
         float: left;
         text-align: center;
         &.criticalness {
-          padding-right: 1rem;
           border-right: dotted 1px $fiord;
           .circle {
             border: solid 1px $criticalness-color;
@@ -105,7 +113,6 @@ $tractability-color: #DB9E36;
           }
         }
         &.tractability {
-          padding-left: 1rem;
           .circle {
             border: solid 1px $tractability-color;
             .percent {
@@ -140,6 +147,7 @@ $tractability-color: #DB9E36;
         line-height: 1.5;
         font-weight: 100;
         font-size: 0.9rem;
+        margin-bottom: 2rem;
       }
       .graph {
         position: relative;
