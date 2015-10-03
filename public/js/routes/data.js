@@ -25,6 +25,7 @@ var formatEigenvalue = (num) => {
 
 var getCause = id => _.findWhere(causes, { _id: id }).name;
 var getCauseSlug = id => _.findWhere(causes, { _id: id }).slug;
+var getDimension = id => _.findWhere(dimensions, { _id: id }).name;
 
 var rowHeight = 50;
 var trackWidth = 0;
@@ -184,11 +185,25 @@ module.exports = {
       });
     }
 
+    var getStats = (activeCauseID, dimensionID) => {
+      var won = 0, lost = 0;
+      getEnabledVotes().forEach((d) => {
+        if(d.dimension === dimensionID && Object.keys(d.causes).indexOf(activeCauseID) !== -1) {
+          Object.keys(d.causes).forEach((c) => {
+            if(c === activeCauseID) { won += d.causes[c];
+            } else { lost += d.causes[c]; }
+          });
+        }
+      });
+
+      return { won, lost };
+    }
+
     control.addEventListener("mousedown", () => { dragging = true; });
 
     window.addEventListener("mouseup", () => { dragging = false; });
 
-    var drawMiniBarChart = (causeID, dimensionID) => {
+    var drawMiniBarChart = (causeID, dimensionID, won, lost) => {
       // drawing mini bar charts
       
       var relevantVotes = getEnabledVotes().filter((d) => {
@@ -236,6 +251,10 @@ module.exports = {
       var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
       labels.enter().append("div").attr("class", "label");
       labels.text(d => d.name).style("left", (_, i) => { return (i * (barWidth + barBuffer)) + 'px'; });
+
+      var stats = getStats(causeID, dimensionID);
+
+      d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(dimensionID)} ${getCause(causeID).toLowerCase()} won ${Math.round(100 * stats.won / (stats.won + stats.lost))}% of the time. `;
     }
 
     chart.addEventListener("mouseover", (e) => {
@@ -253,19 +272,10 @@ module.exports = {
         var enabledVotes = getEnabledVotes();
 
         dimensions.forEach((dimension) => {
-          var won = 0, lost = 0;
-          enabledVotes.forEach((d) => {
-            if(d.dimension === dimension._id && Object.keys(d.causes).indexOf(activeCauseID) !== -1) {
-              Object.keys(d.causes).forEach((c) => {
-                if(c === activeCauseID) { won += d.causes[c];
-                } else { lost += d.causes[c]; }
-              });
-            }
-          });
+          var stats = getStats(activeCauseID, dimension._id);
 
-          description.querySelector('.' + dimension.name + ' .percent').style.height = findArea((won / (won + lost)), r) + 'px';
-          description.querySelector('.' + dimension.name + ' .numbers').textContent = `${won} / ${won + lost}`;
-          description.querySelector('.' + dimension.name + ' .more-info').innerHTML = `With respect to ${dimension.name} ${causeName.toLowerCase()} won ${Math.round(100 * won / (won + lost))}% of the time. `;
+          description.querySelector('.' + dimension.name + ' .percent').style.height = findArea((stats.won / (stats.won + stats.lost)), r) + 'px';
+          description.querySelector('.' + dimension.name + ' .numbers').textContent = `${stats.won} / ${stats.won + stats.lost}`;
         });
 
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(activeCauseID));
