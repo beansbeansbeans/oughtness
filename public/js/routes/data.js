@@ -226,7 +226,7 @@ module.exports = {
       var bars = graphSVG.selectAll(".bar").data(otherCauses);
       var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
       var maxHeight = 40;
-      var barWidth = 10;
+      var barWidth = 6;
       var barBuffer = (detailWidth - (barWidth * causes.length)) / otherCauses.length;
       var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
       var getBarHeight = (d) => {
