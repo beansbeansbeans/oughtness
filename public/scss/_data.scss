@@ -48,7 +48,6 @@ $dimensions: 'criticalness', 'tractability';
     float: left;
   }
   .detail {
-    border-right: dotted 1px $fiord;
     width: $detail-width;
     height: 45rem;
     position: relative;
@@ -197,6 +196,7 @@ $dimensions: 'criticalness', 'tractability';
     }
   }
   .results {
+    border-left: dotted 1px $fiord;
     padding-left: 1.5rem;
     margin-left: $middle-buffer;
     width: calc(100% - #{$detail-width + $middle-buffer});
@@ -450,7 +450,7 @@ $dimensions: 'criticalness', 'tractability';
     }
   }
   .methodology {
-    padding-top: 2rem;
+    padding-top: 3rem;
     clear: both;
     .title {
       @extend %section-title;
@@ -461,8 +461,9 @@ $dimensions: 'criticalness', 'tractability';
       font-weight: 500;
     }
     p {
+      font-size: 0.9rem;
       font-weight: 100;
-      line-height: 1.5;
+      line-height: 1.65;
       margin-bottom: 1.25rem;
     }
     a {

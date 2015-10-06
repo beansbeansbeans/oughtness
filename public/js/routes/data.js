@@ -107,7 +107,7 @@ var update = () => {
 
   var scale = d3.scale.linear().domain([minCombinedValue, maxCombinedValue]).range([5, 100]);
 
-  var container = d3.select(".visualization").style("height", rowHeight * (causes.length + 2) + 'px');
+  var container = d3.select(".visualization").style("height", rowHeight * (causes.length + 1) + 'px');
 
   var rows = container.selectAll(".row").data(normalizedVisData, d => d.cause);
 
