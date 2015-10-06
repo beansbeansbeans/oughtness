@@ -51,7 +51,7 @@ var setDimensions = () => {
   trackWidth = bounds.width;
   controlWidth = control.getBoundingClientRect().width;
   circleOffsetLeft = bounds.left;
-  detailWidth = d.qs(".detail").getBoundingClientRect().width;
+  detailWidth = d.qs(".detail .graph").getBoundingClientRect().width;
 }
 
 var handleResize = () => {
@@ -227,7 +227,7 @@ module.exports = {
       var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
       var maxHeight = 40;
       var barWidth = 5;
-      var barBuffer = (detailWidth - (barWidth * causes.length)) / otherCauses.length;
+      var barBuffer = (detailWidth - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
       var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
       var getBarHeight = (d) => {
         var vote = _.find(relevantVotesForDimension, (vote) => {
