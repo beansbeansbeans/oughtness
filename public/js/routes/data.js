@@ -248,10 +248,10 @@ module.exports = {
       bars.enter().append("rect").attr("class", "bar");
       bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
         .attr("y", 0)
-        .attr("height", (d) => { return maxHeight - getBarHeight(d); })
+        .attr("height", maxHeight)
         .attr("fill", colors[dimensionIndex])
         .style("transform", (d) => {
-          return "translate3d(0, " + getBarHeight(d) + "px, 0)";
+          return "translate3d(0, " + getBarHeight(d) + "px, 0) scale(1," + ((maxHeight - getBarHeight(d)) / maxHeight) + ")";
         });
 
       bottomBars.enter().append("rect").attr("class", "bottom-bar");
