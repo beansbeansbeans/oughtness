@@ -107,8 +107,6 @@ var update = () => {
     return p;
   }, 0);
 
-  d.qs('.chart .scale .value').textContent = formatEigenvalue(maxCombinedValue);
-
   var scale = d3.scale.linear().domain([minCombinedValue, maxCombinedValue]).range([5, 100]);
 
   var container = d3.select(".visualization").style("height", rowHeight * (causes.length + 1) + 'px');
