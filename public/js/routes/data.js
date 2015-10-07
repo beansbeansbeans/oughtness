@@ -256,10 +256,13 @@ module.exports = {
 
       bottomBars.enter().append("rect").attr("class", "bottom-bar");
       bottomBars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-        .attr("y", (d) => { return maxHeight + 2; })
-        .attr("height", getBarHeight)
+        .attr("y", 0)
+        .attr("height", maxHeight)
         .attr("fill", colors[dimensionIndex])
-        .attr("fill-opacity", 0.35);
+        .attr("fill-opacity", 0.35)
+        .style("transform", (d) => {
+          return "translate3d(0, " + (maxHeight + 2) + "px, 0) scale(1," + (getBarHeight(d) / maxHeight) + ")";
+        });
 
       var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
       labels.enter().append("div").attr("class", "label");
