@@ -31,6 +31,8 @@ var getCause = id => _.findWhere(causes, { _id: id }).name;
 var getCauseSlug = id => _.findWhere(causes, { _id: id }).slug;
 var getDimension = id => _.findWhere(dimensions, { _id: id }).name;
 
+var cancelMouseOverCause = false;
+
 var rowHeight = 50;
 var trackWidth = 0;
 var control;
@@ -266,7 +268,8 @@ module.exports = {
       d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(dimensionID)} ${getCause(causeID).toLowerCase()} won ${Math.round(100 * stats.won / (stats.won + stats.lost))}% of the time. `;
     }
 
-    chart.addEventListener("mouseover", (e) => {
+    chart.addEventListener("mouseover", _.debounce((e) => {
+      if(cancelMouseOverCause) { return; }
       var row = e.target.closest('.row');
       if(row) {
         var lastActive = chart.querySelector('.active');
@@ -293,6 +296,14 @@ module.exports = {
 
         setActive(activeCauseID, dimensions[0]._id);
       }
+    }, 150));
+
+    description.addEventListener("mouseover", () => {
+      cancelMouseOverCause = true;
+    });
+
+    description.addEventListener("mouseleave", () => {
+      cancelMouseOverCause = false;
     });
 
     chart.addEventListener("mouseleave", () => {
