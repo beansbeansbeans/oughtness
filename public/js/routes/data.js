@@ -247,9 +247,12 @@ module.exports = {
       graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer)).attr("height", maxHeight * 2);
       bars.enter().append("rect").attr("class", "bar");
       bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-        .attr("y", (d) => { return getBarHeight(d); })
+        .attr("y", 0)
         .attr("height", (d) => { return maxHeight - getBarHeight(d); })
-        .attr("fill", colors[dimensionIndex]);
+        .attr("fill", colors[dimensionIndex])
+        .style("transform", (d) => {
+          return "translate3d(0, " + getBarHeight(d) + "px, 0)";
+        });
 
       bottomBars.enter().append("rect").attr("class", "bottom-bar");
       bottomBars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
@@ -262,7 +265,7 @@ module.exports = {
       labels.enter().append("div").attr("class", "label");
       labels.text(d => getAbbreviation(d.name))
         .style("left", (_, i) => { return (i * (barWidth + barBuffer) + 4) + 'px'; })
-        .style("top", (d) => { return (getBarHeight(d) - 5) + 'px'; });
+        .style("transform", (d) => { return "translateY(" + (getBarHeight(d) - 5) + 'px) rotate(-90deg)'; });
 
       var stats = getStats(causeID, dimensionID);
 
