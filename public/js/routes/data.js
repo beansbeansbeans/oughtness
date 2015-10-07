@@ -41,6 +41,8 @@ var dragging = false;
 var circleOffsetLeft = 0;
 var detailWidth = 0;
 
+var lastActiveCause = -1;
+
 var visData, normalizedVisData;
 var weights = [];
 var data;
@@ -183,7 +185,6 @@ module.exports = {
     var description = d.qs('.detail .deep-dive');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
-    var activeCauseID;
 
     var getEnabledVotes = () => {
       return data.votes.filter((d) => {
@@ -191,12 +192,12 @@ module.exports = {
       });
     }
 
-    var getStats = (activeCauseID, dimensionID) => {
+    var getStats = (lastActiveCause, dimensionID) => {
       var won = 0, lost = 0;
       getEnabledVotes().forEach((d) => {
-        if(d.dimension === dimensionID && Object.keys(d.causes).indexOf(activeCauseID) !== -1) {
+        if(d.dimension === dimensionID && Object.keys(d.causes).indexOf(lastActiveCause) !== -1) {
           Object.keys(d.causes).forEach((c) => {
-            if(c === activeCauseID) { won += d.causes[c];
+            if(c === lastActiveCause) { won += d.causes[c];
             } else { lost += d.causes[c]; }
           });
         }
@@ -209,9 +210,9 @@ module.exports = {
 
     window.addEventListener("mouseup", () => { dragging = false; });
 
-    var setActive = (activeCauseID, activeDimensionID) => {
+    var setActive = (lastActiveCause, activeDimensionID) => {
       description.querySelector('.dimensions-container').setAttribute("data-active-dimension", getDimension(activeDimensionID));
-      drawMiniBarChart(activeCauseID, activeDimensionID);
+      drawMiniBarChart(lastActiveCause, activeDimensionID);
     }
 
     var drawMiniBarChart = (causeID, dimensionID) => {
@@ -270,32 +271,39 @@ module.exports = {
 
     chart.addEventListener("mouseover", _.debounce((e) => {
       if(cancelMouseOverCause) { return; }
+
       var row = e.target.closest('.row');
-      if(row) {
-        var lastActive = chart.querySelector('.active');
+      var lastActive = chart.querySelector('.active');
+
+      if(!row || row.getAttribute('data-cause-id') === lastActiveCause) { return; }
+
+      description.style.opacity = 0;
+      
+      setTimeout(() => {
         if(lastActive) { lastActive.classList.remove('active'); }
         row.classList.add('active');
 
         visualization.classList.add("preview");
 
-        activeCauseID = row.getAttribute('data-cause-id');
-        var causeName = getCause(activeCauseID);
+        lastActiveCause = row.getAttribute('data-cause-id');
+        var causeName = getCause(lastActiveCause);
         var r = description.querySelector(".circle").offsetHeight / 2;
         var enabledVotes = getEnabledVotes();
 
         dimensions.forEach((dimension) => {
-          var stats = getStats(activeCauseID, dimension._id);
+          var stats = getStats(lastActiveCause, dimension._id);
 
           description.querySelector('.' + dimension.name + ' .percent').style.height = findArea((stats.won / (stats.won + stats.lost)), r) + 'px';
           description.querySelector('.' + dimension.name + ' .numbers').textContent = `${stats.won} / ${stats.won + stats.lost}`;
         });
 
-        description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(activeCauseID));
+        description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(lastActiveCause));
         description.querySelector('.title').innerHTML = causeName;
-        description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: activeCauseID }).description;
+        description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: lastActiveCause }).description;
 
-        setActive(activeCauseID, dimensions[0]._id);
-      }
+        setActive(lastActiveCause, dimensions[0]._id);
+        description.style.opacity = 1;
+      }, 200);
     }, 150));
 
     description.addEventListener("mouseover", () => {
@@ -326,7 +334,7 @@ module.exports = {
     description.addEventListener("click", (e) => {
       if(e.target.closest(".dimension")) {
         var indexOfClosestDimension = [].slice.call(description.querySelectorAll(".dimension")).indexOf(e.target.closest(".dimension"));
-        setActive(activeCauseID, dimensions[indexOfClosestDimension]._id)
+        setActive(lastActiveCause, dimensions[indexOfClosestDimension]._id)
       }
     });
 
