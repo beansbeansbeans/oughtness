@@ -51,33 +51,20 @@ $dimensions: 'criticalness', 'tractability';
     width: $detail-width;
     height: 45rem;
     position: relative;
-    @each $cause in $cause-images {
-      .image[data-cause-id=#{nth($cause, 1)}] {
-        background-image: url("../images/" + nth($cause, 1) + ".png");
-        width: unquote(nth($cause, 2) + 'px');
-        height: unquote(nth($cause, 3) + 'px');
-        background-size: unquote(nth($cause, 2) + 'px ' + nth($cause, 3) + 'px')
-      }
-    }
     .context {
       @extend %clearfix;
       border-bottom: dotted 1px $outer-space;
       padding-bottom: 2.1rem;
       margin-top: -2px;
-      .image {
-        float: left;
-        margin-right: 1.5rem;
-        margin-bottom: .5rem;
-        background-repeat: no-repeat;
-      }
       .title {
         @extend %header-font;
         text-transform: uppercase;
         font-weight: 800;
-        font-size: 1.5rem;
-        letter-spacing: 1px;
+        font-size: 3.8rem;
+        letter-spacing: 3px;
         line-height: 1;
         margin-bottom: 0.4rem;
+        margin-top: -0.2rem;
       }
       .description {
         font-weight: 100;
