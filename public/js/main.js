@@ -14,6 +14,10 @@ window.addEventListener("click", (e) => {
   mediator.publish("window_click", e);
 });
 
+window.addEventListener("keydown", (e) => {
+  mediator.publish("window_keydown", e);
+});
+
 window.addEventListener("resize", _.debounce(() => {
   mediator.publish("resize");
 }, 200));

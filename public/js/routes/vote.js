@@ -116,6 +116,14 @@ var handleClick = (e) => {
   }
 }
 
+var handleKeyDown = (e) => {
+  if(e.keyCode === 37) {
+    voteFor(0);
+  } else if(e.keyCode === 39) {
+    voteFor(1);
+  }
+}
+
 var incrementQuestions = () => {
   currentQuestion++;
   if(typeof sets[currentSet][currentQuestion] === 'undefined') {
@@ -148,11 +156,13 @@ var exports = {
   },
   stop() {
     mediator.unsubscribe("window_click", handleClick);
+    mediator.unsubscribe("window_keydown", handleKeyDown);
     interstitialMode = false;
     hasAgreedToContinue = true;
   },
   subscribeAll() {
     mediator.subscribe("window_click", handleClick);
+    mediator.subscribe("window_keydown", handleKeyDown);
   },
   start() {
     refreshStatePair();
