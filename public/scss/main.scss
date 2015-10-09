@@ -26,7 +26,7 @@ body {
   nav {
     @extend %header-font;
     padding: 20px;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     li {
       position: relative;
       list-style: none;
@@ -44,7 +44,7 @@ body {
     }
   }
   #content {
-    padding: 20px 0;
+    padding: 0.8rem 0;
   }
 }
 
