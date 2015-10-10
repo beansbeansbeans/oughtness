@@ -48,9 +48,24 @@ $dimensions: 'criticalness', 'tractability';
     float: left;
   }
   .detail {
+    $image-scale: 0.9;
     width: $detail-width;
     height: 45rem;
     position: relative;
+    @each $cause in $cause-images {
+      .image[data-cause-id=#{nth($cause, 1)}] {
+        background-image: url("../images/" + nth($cause, 1) + ".png");
+        width: unquote(($image-scale * nth($cause, 2)) + 'px');
+        height: unquote(($image-scale * nth($cause, 3)) + 'px');
+        background-size: unquote(($image-scale * nth($cause, 2)) + 'px ' + ($image-scale * nth($cause, 3)) + 'px')
+      }
+    }
+    .image {
+      float: left;
+      margin-top: 0.5rem;
+      margin-right: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
     .context {
       @extend %clearfix;
       border-bottom: dotted 1px $outer-space;
@@ -63,7 +78,7 @@ $dimensions: 'criticalness', 'tractability';
         font-size: 3.8rem;
         letter-spacing: 3px;
         line-height: 1;
-        margin-bottom: 0.4rem;
+        margin-bottom: 1rem;
         margin-top: -0.2rem;
       }
       .description {
