@@ -1,5 +1,8 @@
 module.exports = {
   vendors: ['', 'webkit', 'Moz', 'O'],
+  capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  },
   prefixedProperties: {
     transition: {
       js: "transition",
