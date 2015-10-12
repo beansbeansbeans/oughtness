@@ -122,7 +122,7 @@ var update = () => {
   enteringRows.select(".label").append("div").attr("class", "remove").text("remove");
   enteringRows.select(".label").select(".text").text(d => `${getCause(d.cause)} (${getAbbreviation(getCause(d.cause))})`);
   
-  rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
+  rows.style(util.prefixedProperties.transform.dom, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
 
   rows.exit().remove();
 
@@ -241,7 +241,7 @@ module.exports = {
         .attr("y", 0)
         .attr("height", maxHeight)
         .attr("fill", colors[dimensionIndex])
-        .style(util.prefixedProperties.transform.js, (d) => {
+        .style(util.prefixedProperties.transform.dom, (d) => {
           return "translate3d(0, " + getBarHeight(d) + "px, 0) scale(1," + ((maxHeight - getBarHeight(d)) / maxHeight) + ")";
         });
 
@@ -251,7 +251,7 @@ module.exports = {
         .attr("height", maxHeight)
         .attr("fill", colors[dimensionIndex])
         .attr("fill-opacity", 0.35)
-        .style(util.prefixedProperties.transform.js, (d) => {
+        .style(util.prefixedProperties.transform.dom, (d) => {
           return "translate3d(0, " + (maxHeight + 2) + "px, 0) scale(1," + (getBarHeight(d) / maxHeight) + ")";
         });
 
@@ -259,7 +259,7 @@ module.exports = {
       labels.enter().append("div").attr("class", "label");
       labels.text(d => getAbbreviation(d.name))
         .style("left", (_, i) => { return (i * (barWidth + barBuffer) + 4) + 'px'; })
-        .style(util.prefixedProperties.transform.js, (d) => { return "translateY(" + (getBarHeight(d) - 5) + 'px) rotate(-90deg)'; });
+        .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (getBarHeight(d) - 5) + 'px) rotate(-90deg)'; });
 
       var stats = getStats(causeID, dimensionID);
 
