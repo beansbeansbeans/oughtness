@@ -370,7 +370,7 @@ $dimensions: 'criticalness', 'tractability';
       .label {
         text-align: left;
         @extend %data-label;
-        margin-bottom: -0.2rem;
+        margin-bottom: 0.2rem;
         .text, .remove {
           display: inline-block;
         }
