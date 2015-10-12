@@ -296,6 +296,9 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
 }
 
 .arrow-instructions {
+  [data-mobile="true"] & {
+    display: none;
+  }
   margin-top: 3rem;
   text-align: center;
   &:before {

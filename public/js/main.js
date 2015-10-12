@@ -3,6 +3,7 @@ var mediator = require("./mediator");
 var util = require('./util');
 var api = require('./api');
 var router = require('./router');
+var useragent = require('./useragent');
 
 if(window.location.hostname === "localhost") {
   api.setURL("http://localhost:4400");
@@ -23,6 +24,8 @@ window.addEventListener("resize", _.debounce(() => {
 }, 200));
 
 window.addEventListener("DOMContentLoaded", () => {
+  document.body.setAttribute("data-mobile", UserAgent.getBrowserInfo().mobile);
+
   mediator.subscribe("route_updated", (context) => {
     var path = context.path.split('/')[0],
       partial = d.qs("#" + path + '-template');
