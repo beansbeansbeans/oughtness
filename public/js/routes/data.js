@@ -42,6 +42,7 @@ var circleOffsetLeft = 0;
 var detailWidth = 0;
 
 var lastActiveCause = -1;
+var activeDimensionID;
 
 var visData, normalizedVisData;
 var weights = [];
@@ -60,7 +61,88 @@ var setDimensions = () => {
 
 var handleResize = () => {
   setDimensions();
+  drawMiniBarChart(lastActiveCause);
   update();
+}
+
+var getStats = (lastActiveCause, dimensionID) => {
+  var won = 0, lost = 0;
+  getEnabledVotes().forEach((d) => {
+    if(d.dimension === dimensionID && Object.keys(d.causes).indexOf(lastActiveCause) !== -1) {
+      Object.keys(d.causes).forEach((c) => {
+        if(c === lastActiveCause) { won += d.causes[c];
+        } else { lost += d.causes[c]; }
+      });
+    }
+  });
+
+  return { won, lost };
+}
+
+var getEnabledVotes = () => {
+  return data.votes.filter((d) => {
+    return Object.keys(d.causes).every(c => disabledCauses.indexOf(c) === -1);
+  });
+}
+
+var drawMiniBarChart = (causeID) => {
+  var relevantVotes = getEnabledVotes().filter((d) => {
+    return Object.keys(d.causes).indexOf(causeID) !== -1;
+  });
+
+  var graph = d3.select(".detail .graph");
+  var graphSVG = graph.select("svg");
+
+  var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
+  var otherCauses = causes.filter(d => d._id !== causeID);
+  
+  var bars = graphSVG.selectAll(".bar").data(otherCauses);
+  var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
+  var maxHeight = 40;
+  var barWidth = 5;
+  var barBuffer = (detailWidth - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
+  var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
+  var getBarHeight = (d) => {
+    var vote = _.find(relevantVotesForDimension, (vote) => {
+      return Object.keys(vote.causes).indexOf(d._id) !== -1;
+    });
+
+    if(!vote) { return 0; }
+
+    return barHeightScale(vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
+  }
+
+  var dimensionIndex = _.findIndex(dimensions, x => x._id === activeDimensionID);
+
+  graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer)).attr("height", maxHeight * 2);
+  bars.enter().append("rect").attr("class", "bar");
+  bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
+    .attr("y", 0)
+    .attr("height", maxHeight)
+    .attr("fill", colors[dimensionIndex])
+    .style(util.prefixedProperties.transform.dom, (d) => {
+      return "translate3d(0, " + getBarHeight(d) + "px, 0) scale(1," + ((maxHeight - getBarHeight(d)) / maxHeight) + ")";
+    });
+
+  bottomBars.enter().append("rect").attr("class", "bottom-bar");
+  bottomBars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
+    .attr("y", 0)
+    .attr("height", maxHeight)
+    .attr("fill", colors[dimensionIndex])
+    .attr("fill-opacity", 0.35)
+    .style(util.prefixedProperties.transform.dom, (d) => {
+      return "translate3d(0, " + (maxHeight + 2) + "px, 0) scale(1," + (getBarHeight(d) / maxHeight) + ")";
+    });
+
+  var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
+  labels.enter().append("div").attr("class", "label");
+  labels.text(d => getAbbreviation(d.name))
+    .style("left", (_, i) => { return (i * (barWidth + barBuffer) + 4) + 'px'; })
+    .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (getBarHeight(d) - 5) + 'px) rotate(-90deg)'; });
+
+  var stats = getStats(causeID, activeDimensionID);
+
+  d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(activeDimensionID)} ${getCause(causeID).toLowerCase()} won ${Math.round(100 * stats.won / (stats.won + stats.lost))}% of the time. `;
 }
 
 var update = () => {
@@ -181,89 +263,10 @@ module.exports = {
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
 
-    var getEnabledVotes = () => {
-      return data.votes.filter((d) => {
-        return Object.keys(d.causes).every(c => disabledCauses.indexOf(c) === -1);
-      });
-    }
-
-    var getStats = (lastActiveCause, dimensionID) => {
-      var won = 0, lost = 0;
-      getEnabledVotes().forEach((d) => {
-        if(d.dimension === dimensionID && Object.keys(d.causes).indexOf(lastActiveCause) !== -1) {
-          Object.keys(d.causes).forEach((c) => {
-            if(c === lastActiveCause) { won += d.causes[c];
-            } else { lost += d.causes[c]; }
-          });
-        }
-      });
-
-      return { won, lost };
-    }
-
-    var setActive = (lastActiveCause, activeDimensionID) => {
+    var setActive = (lastActiveCause, dimension) => {
+      activeDimensionID = dimension;
       description.querySelector('.dimensions-container').setAttribute("data-active-dimension", getDimension(activeDimensionID));
-      drawMiniBarChart(lastActiveCause, activeDimensionID);
-    }
-
-    var drawMiniBarChart = (causeID, dimensionID) => {
-      var relevantVotes = getEnabledVotes().filter((d) => {
-        return Object.keys(d.causes).indexOf(causeID) !== -1;
-      });
-
-      var graph = d3.select(".detail .graph");
-      var graphSVG = graph.select("svg");
-
-      var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === dimensionID);
-      var otherCauses = causes.filter(d => d._id !== causeID);
-      
-      var bars = graphSVG.selectAll(".bar").data(otherCauses);
-      var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
-      var maxHeight = 40;
-      var barWidth = 5;
-      var barBuffer = (detailWidth - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
-      var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
-      var getBarHeight = (d) => {
-        var vote = _.find(relevantVotesForDimension, (vote) => {
-          return Object.keys(vote.causes).indexOf(d._id) !== -1;
-        });
-
-        if(!vote) { return 0; }
-
-        return barHeightScale(vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
-      }
-
-      var dimensionIndex = _.findIndex(dimensions, x => x._id === dimensionID);
-
-      graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer)).attr("height", maxHeight * 2);
-      bars.enter().append("rect").attr("class", "bar");
-      bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-        .attr("y", 0)
-        .attr("height", maxHeight)
-        .attr("fill", colors[dimensionIndex])
-        .style(util.prefixedProperties.transform.dom, (d) => {
-          return "translate3d(0, " + getBarHeight(d) + "px, 0) scale(1," + ((maxHeight - getBarHeight(d)) / maxHeight) + ")";
-        });
-
-      bottomBars.enter().append("rect").attr("class", "bottom-bar");
-      bottomBars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-        .attr("y", 0)
-        .attr("height", maxHeight)
-        .attr("fill", colors[dimensionIndex])
-        .attr("fill-opacity", 0.35)
-        .style(util.prefixedProperties.transform.dom, (d) => {
-          return "translate3d(0, " + (maxHeight + 2) + "px, 0) scale(1," + (getBarHeight(d) / maxHeight) + ")";
-        });
-
-      var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
-      labels.enter().append("div").attr("class", "label");
-      labels.text(d => getAbbreviation(d.name))
-        .style("left", (_, i) => { return (i * (barWidth + barBuffer) + 4) + 'px'; })
-        .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (getBarHeight(d) - 5) + 'px) rotate(-90deg)'; });
-
-      var stats = getStats(causeID, dimensionID);
-
-      d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(dimensionID)} ${getCause(causeID).toLowerCase()} won ${Math.round(100 * stats.won / (stats.won + stats.lost))}% of the time. `;
+      drawMiniBarChart(lastActiveCause);
     }
 
     var handleOverCause = (e) => {
