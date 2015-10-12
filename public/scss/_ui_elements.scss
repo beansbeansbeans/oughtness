@@ -29,10 +29,15 @@
 }
 
 %section-title {
-  font-size: 1.5rem;
   text-transform: uppercase;
   margin-bottom: 2.5rem;
   padding-bottom: 0.75rem;
   border-bottom: solid 1px $outer-space;  
   font-weight: 800;
+  @include desktop {
+    font-size: 1.5rem;
+  }
+  @include mobile {
+    font-size: 0.8rem;
+  }
 }
