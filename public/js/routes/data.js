@@ -201,10 +201,6 @@ module.exports = {
       return { won, lost };
     }
 
-    control.addEventListener("mousedown", () => { dragging = true; });
-
-    window.addEventListener("mouseup", () => { dragging = false; });
-
     var setActive = (lastActiveCause, activeDimensionID) => {
       description.querySelector('.dimensions-container').setAttribute("data-active-dimension", getDimension(activeDimensionID));
       drawMiniBarChart(lastActiveCause, activeDimensionID);
@@ -307,10 +303,31 @@ module.exports = {
       }, 200);
     }
 
+    var handleUp = (e) => {
+      dragging = false;
+    }
+
+    var handleMove = (e) => {
+      if(!dragging) { return; }
+      handleDrag(e);
+    }
+
     if(UserAgent.getBrowserInfo().desktop) {
       chart.addEventListener("mouseover", _.debounce(handleOverCause, 150));
+      window.addEventListener("mousedown", (e) => {
+        if(e.target.classList.contains("controls")) { dragging = true; }
+      });
+      window.addEventListener("mouseup", handleUp);
+      window.addEventListener("mousemove", handleMove);
     } else {
       chart.addEventListener("touchstart", handleOverCause);
+      window.addEventListener("touchstart", (e) => {
+        if(e.target.classList.contains("controls") || e.target.closest(".input")) {
+          dragging = true;
+        }
+      });
+      window.addEventListener("touchend", handleUp);
+      window.addEventListener("touchmove", handleMove);
     }
 
     description.addEventListener("mouseover", () => {
@@ -348,6 +365,9 @@ module.exports = {
     mediator.subscribe("resize", handleResize);
 
     var handleDrag = (e) => {
+      if(e && e.touches) {
+        e = e.touches[0];
+      }
       var x = typeof e === 'undefined' ? (circleOffsetLeft + (0.6 * trackWidth)) : e.clientX;
       var position = Math.min(Math.max((x - circleOffsetLeft - controlWidth / 2), 1), trackWidth - controlWidth);
       control.style.left = position + 'px';
@@ -362,11 +382,6 @@ module.exports = {
 
       update();
     }
-
-    window.addEventListener("mousemove", (e) => {
-      if(!dragging) { return; }
-      handleDrag(e);
-    });
 
     visData = new Array(causes.length);
     normalizedVisData = new Array(causes.length);
