@@ -150,9 +150,11 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
     cursor: pointer;
     width: 50%;
     &:hover {
-      .button {
-        background: $outer-space;
-        color: $body-background-color;
+      @include desktop {
+        .button {
+          background: $outer-space;
+          color: $body-background-color;
+        }        
       }
     }
     .image {
@@ -296,7 +298,7 @@ $winning-distance: 50 - (50 / 100) * ($vote-content-width / 100 / 2) * 100 - (50
 }
 
 .arrow-instructions {
-  [data-mobile="true"] & {
+  @include mobile {
     display: none;
   }
   margin-top: 3rem;

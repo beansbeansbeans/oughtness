@@ -30,3 +30,15 @@
     margin-right: auto;
   }
 }
+
+@mixin mobile {
+  [data-mobile="true"] & {
+    @content;
+  }
+}
+
+@mixin desktop {
+  [data-mobile="false"] & {
+    @content;
+  }
+}
