@@ -453,6 +453,9 @@ $dimensions: 'criticalness', 'tractability';
   }
   .methodology {
     padding-top: 3rem;
+    @include mobile { // so no overlap
+      padding-top: 20rem;
+    }
     clear: both;
     .title {
       @extend %section-title;
