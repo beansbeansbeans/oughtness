@@ -4,6 +4,7 @@ var util = require('./util');
 var api = require('./api');
 var router = require('./router');
 var useragent = require('./useragent');
+var closest = require('./closest');
 
 if(window.location.hostname === "localhost") {
   api.setURL("http://localhost:4400");
