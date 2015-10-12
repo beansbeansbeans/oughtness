@@ -270,7 +270,7 @@ module.exports = {
       d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(dimensionID)} ${getCause(causeID).toLowerCase()} won ${Math.round(100 * stats.won / (stats.won + stats.lost))}% of the time. `;
     }
 
-    chart.addEventListener("mouseover", _.debounce((e) => {
+    var handleOverCause = (e) => {
       if(cancelMouseOverCause) { return; }
 
       var row = e.target.closest('.row');
@@ -305,7 +305,13 @@ module.exports = {
         setActive(lastActiveCause, dimensions[0]._id);
         description.style.opacity = 1;
       }, 200);
-    }, 150));
+    }
+
+    if(UserAgent.getBrowserInfo().desktop) {
+      chart.addEventListener("mouseover", _.debounce(handleOverCause, 150));
+    } else {
+      chart.addEventListener("touchstart", handleOverCause);
+    }
 
     description.addEventListener("mouseover", () => {
       cancelMouseOverCause = true;
