@@ -301,6 +301,13 @@ $dimensions: 'criticalness', 'tractability';
   .chart {
     position: relative;
   }
+  .explanation {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    padding-left: 0.9rem;
+    font-weight: 100;
+    margin-top: 2rem;
+  }
   .header {
     position: relative;
     padding-left: 1rem;
@@ -384,17 +391,10 @@ $dimensions: 'criticalness', 'tractability';
         display: inline-block;
         @include transition(width $transition-duration);
         height: 4px;
-        &:first-of-type {
-          border-right: solid 2px $body-background-color;
-          .value:after {
-            content: " :";
-          }
-        }
+        border-right: solid 1px $body-background-color;
         &:last-of-type {
           border-left: solid 2px $body-background-color;
-          .value {
-            padding-left: 2rem;
-          }
+          border-right: none;
         }
       }
       .remove {
@@ -462,7 +462,7 @@ $dimensions: 'criticalness', 'tractability';
     }
     .subtitle {
       font-size: 1.1rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
       font-weight: 500;
     }
     p {
