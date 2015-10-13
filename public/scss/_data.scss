@@ -352,7 +352,7 @@ $dimensions: 'criticalness', 'tractability';
       padding: 1rem 0 1rem 1rem;
       white-space: nowrap;
       cursor: pointer;
-      &.active {
+      &:hover {
         .bar, .values {
           opacity: 1;
         }
