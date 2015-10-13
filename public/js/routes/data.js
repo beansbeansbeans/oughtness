@@ -201,11 +201,14 @@ var update = () => {
     .attr("data-cause-id", d => d.cause );
 
   enteringRows.append("div").attr("class", "label").append("div").attr("class", "text");
-  enteringRows.append("div").attr("class", "bar-container");
+  enteringRows.append("div").attr("class", "bar-container").append("div").attr("class", "values");;
   enteringRows.select(".label").append("div").attr("class", "remove").text("remove");
   enteringRows.select(".label").select(".text").text(d => `${getCause(d.cause)} (${getAbbreviation(getCause(d.cause))})`);
   
-  rows.style(util.prefixedProperties.transform.dom, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; });
+  rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; })
+      .select(".values").text((d) => {
+        return `${formatEigenvalue(d.results[0].sum)} : ${formatEigenvalue(d.results[1].sum)}`;
+      }).style("left", d => scale(d.results[0].metaSum) + '%');
 
   rows.exit().remove();
 

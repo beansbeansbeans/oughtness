@@ -366,7 +366,6 @@ $dimensions: 'criticalness', 'tractability';
         @include transition(opacity $transition-duration);
         font-size: 0.7rem;
         padding-left: 0.5rem;
-        top: 0.35rem;
       }
       .label {
         text-align: left;
