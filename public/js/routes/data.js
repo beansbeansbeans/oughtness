@@ -86,6 +86,7 @@ var getEnabledVotes = () => {
 }
 
 var drawMiniBarChart = (causeID) => {
+  if(causeID === -1 || typeof activeDimensionID === 'undefined') { return; }
   var relevantVotes = getEnabledVotes().filter((d) => {
     return Object.keys(d.causes).indexOf(causeID) !== -1;
   });
