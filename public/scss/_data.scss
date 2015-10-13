@@ -476,7 +476,9 @@ $dimensions: 'criticalness', 'tractability';
       font-weight: 500;
     }
     @include mobile {
-      font-size: 1rem;
+      .subtitle, p {
+        font-size: 12px;
+      }
     }
   }
 }
