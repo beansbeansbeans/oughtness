@@ -7,23 +7,6 @@ window.UserAgent = (function() {
     });
   }
 
-  function checkWebGL() {
-    var ctx, canvas = document.createElement('canvas');
-
-    /* Fast fail: no WebGL capability at all */
-    if (!window.WebGLRenderingContext) {
-      return false;
-    }
-
-    return ['webgl', 'experimental-webgl'].some(function (type) {
-      try {
-        return !!canvas.getContext(type);
-      } catch (e) {
-        return false;
-      }
-    });
-  }
-
   function UserAgent() {}
 
   UserAgent.prototype.getBrowserInfo = function (agent) {
@@ -50,8 +33,7 @@ window.UserAgent = (function() {
       desktop: true,
       tablet: false,
       mobile: false,
-      ios: false,
-      webgl: checkWebGL()
+      ios: false
     };
 
     for (j = 0; j < regexs.length && !matches; j += 1) {
@@ -262,11 +244,6 @@ window.UserAgent = (function() {
 
     result.browserSupported = true;
     result.roadblocked = false;
-
-    // Everything is OK, unless webgl (on non-mobile) is not supported
-    if (!browser.webgl && browser.desktop) {
-      result.roadblocked = true;
-    }
 
     return result;
 
