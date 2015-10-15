@@ -360,6 +360,9 @@ $dimensions: 'criticalness', 'tractability';
       white-space: nowrap;
       cursor: pointer;
       &:hover {
+        .label .text {
+          font-weight: bold;
+        }
         .bar, .values {
           opacity: 1;
         }
