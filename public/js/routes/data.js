@@ -255,6 +255,7 @@ module.exports = {
 
   },
   stop() {
+    lastActiveCause = -1;
     mediator.unsubscribe("resize", handleResize);
   },
   start() {
