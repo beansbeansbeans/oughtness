@@ -17,8 +17,8 @@ var normalize = (data, weights) => {
   });
 }
 
-var formatEigenvalue = (num) => {
-  var val = (100 * num).toFixed(1);
+var formatEigenvalue = (num, max) => {
+  var val = (100 * num / max).toFixed(1);
   if(+val[val.length - 1] === 0) { val = Math.round(val); }
   return val;
 }
@@ -207,7 +207,7 @@ var update = () => {
   
   rows.style(util.prefixedProperties.transform.js, (d, i) => { return 'translate3d(0,' + i * rowHeight + 'px, 0)'; })
       .select(".values").text((d) => {
-        return `${formatEigenvalue(d.results[0].sum)} : ${formatEigenvalue(d.results[1].sum)}`;
+        return `${formatEigenvalue(d.results[0].sum, maxCombinedValue)} : ${formatEigenvalue(d.results[1].sum, maxCombinedValue)}`;
       }).style("left", d => scale(d.results[0].metaSum) + '%');
 
   rows.exit().remove();
