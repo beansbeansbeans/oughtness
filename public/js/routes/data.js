@@ -47,6 +47,7 @@ var activeDimensionID;
 var visData, normalizedVisData;
 var weights = [];
 var data;
+var orderedCauses = [];
 var causes = [], dimensions = [];
 var disabledCauses = [];
 var colors = ['#8E2800', '#DB9E36'];
@@ -85,6 +86,22 @@ var getEnabledVotes = () => {
   });
 }
 
+var maxHeight = 40;
+var barWidth = 5;
+var barBuffer;
+
+var indexWithinNormalizedData;
+
+var getMiniBarLeft = (cause) => {
+  var index = _.findIndex(normalizedVisData, (d) => {
+    return d.cause === cause._id;
+  });
+  if(index > indexWithinNormalizedData) {
+    index--;
+  }
+  return index * (barWidth + barBuffer); 
+}
+
 var drawMiniBarChart = (causeID) => {
   if(causeID === -1 || typeof activeDimensionID === 'undefined') { return; }
   var relevantVotes = getEnabledVotes().filter((d) => {
@@ -97,11 +114,13 @@ var drawMiniBarChart = (causeID) => {
   var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
   var otherCauses = causes.filter(d => d._id !== causeID);
   
-  var bars = graphSVG.selectAll(".bar").data(otherCauses);
-  var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses);
-  var maxHeight = 40;
-  var barWidth = 5;
-  var barBuffer = (detailWidth - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
+  var bars = graphSVG.selectAll(".bar").data(otherCauses, (d) => {
+    return d._id;
+  });
+  var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses, (d) => {
+    return d._id;
+  });
+  barBuffer = (detailWidth - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
   var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
   var getBarHeight = (d) => {
     var vote = _.find(relevantVotesForDimension, (vote) => {
@@ -115,31 +134,40 @@ var drawMiniBarChart = (causeID) => {
 
   var dimensionIndex = _.findIndex(dimensions, x => x._id === activeDimensionID);
 
+  indexWithinNormalizedData = _.findIndex(normalizedVisData, (d) => {
+    return d.cause === causeID;
+  });
+
   graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer)).attr("height", maxHeight * 2);
   bars.enter().append("rect").attr("class", "bar");
-  bars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-    .attr("y", 0)
+  bars.attr("width", barWidth).attr("x", getMiniBarLeft).attr("y", 0)
     .attr("height", maxHeight)
     .attr("fill", colors[dimensionIndex])
     .style(util.prefixedProperties.transform.dom, (d) => {
       return "translate3d(0, " + getBarHeight(d) + "px, 0) scale(1," + ((maxHeight - getBarHeight(d)) / maxHeight) + ")";
     });
+  bars.exit().remove();
 
   bottomBars.enter().append("rect").attr("class", "bottom-bar");
-  bottomBars.attr("width", barWidth).attr("x", (_, i) => { return i * (barWidth + barBuffer); })
-    .attr("y", 0)
+  bottomBars.attr("width", barWidth).attr("x", getMiniBarLeft).attr("y", 0)
     .attr("height", maxHeight)
     .attr("fill", colors[dimensionIndex])
     .attr("fill-opacity", 0.35)
     .style(util.prefixedProperties.transform.dom, (d) => {
       return "translate3d(0, " + (maxHeight + 2) + "px, 0) scale(1," + (getBarHeight(d) / maxHeight) + ")";
     });
+  bottomBars.exit().remove();
 
-  var labels = graph.select(".labels").selectAll(".label").data(otherCauses);
+  var labels = graph.select(".labels").selectAll(".label").data(otherCauses, (d) => {
+    return d._id;
+  });
   labels.enter().append("div").attr("class", "label");
   labels.text(d => getAbbreviation(d.name))
-    .style("left", (_, i) => { return (i * (barWidth + barBuffer) + 4) + 'px'; })
+    .style("left", (cause) => { 
+      return (getMiniBarLeft(cause) + 4) + 'px';
+    })
     .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (getBarHeight(d) - 5) + 'px) rotate(-90deg)'; });
+  labels.exit().remove();
 
   var stats = getStats(causeID, activeDimensionID);
 
@@ -231,6 +259,8 @@ var update = () => {
     .attr("data-cause-id", _.identity).text(getCause);
 
   disabledCauseEls.exit().remove();
+
+  drawMiniBarChart(lastActiveCause);
 }
 
 var findArea = (k, r) => {
