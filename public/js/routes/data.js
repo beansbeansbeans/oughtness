@@ -171,7 +171,7 @@ var drawMiniBarChart = (causeID) => {
 
   var stats = getStats(causeID, activeDimensionID);
 
-  d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(activeDimensionID)} ${getCause(causeID).toLowerCase()} won ${Math.round(100 * stats.won / (stats.won + stats.lost))}% of the time. `;
+  d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(activeDimensionID)} ${getCause(causeID).toLowerCase()} won ${stats.won} out of ${stats.won + stats.lost} times. `;
 }
 
 var update = () => {
@@ -329,7 +329,8 @@ module.exports = {
           var stats = getStats(lastActiveCause, dimension._id);
 
           description.querySelector('.' + dimension.name + ' .percent').style.height = findArea((stats.won / (stats.won + stats.lost)), r) + 'px';
-          description.querySelector('.' + dimension.name + ' .numbers').textContent = `${stats.won} / ${stats.won + stats.lost}`;
+
+          description.querySelector('.' + dimension.name + ' .numbers').textContent = `${Math.round(100 * stats.won / (stats.won + stats.lost))}%`;
         });
 
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(lastActiveCause));
