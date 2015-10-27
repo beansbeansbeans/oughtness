@@ -384,9 +384,29 @@ $dimensions: 'criticalness', 'tractability';
         @include transition(width $transition-duration);
         height: 4px;
         border-right: solid 1px $body-background-color;
+        position: relative;
         &:last-of-type {
           border-left: solid 2px $body-background-color;
           border-right: none;
+          &:before, &:after {
+            content: "";
+            position: absolute;
+            display: block;
+            opacity: 0;            
+          }
+          &:before {
+            background: $body-background-color;
+            left: 100%;
+            width: 0.9rem;
+            height: 0.5rem;
+            top: -2px;
+          }
+          &:after {
+            content: "]";
+            top: -2px;
+            @include transition(opacity $transition-duration);
+            left: calc(100% + 0.5rem);
+          }
         }
       }
       .remove {
@@ -408,7 +428,7 @@ $dimensions: 'criticalness', 'tractability';
         display: block;
         left: 1rem;
         right: -10rem;
-        top: 2.1rem;
+        top: 34px;
         height: 1px;
         opacity: 0;
         @include transition(opacity $transition-duration);
@@ -491,6 +511,9 @@ $dimensions: 'criticalness', 'tractability';
   .visualization-container[data-active-cause-id=#{nth($cause, 1)}] {
     .row[data-cause-slug=#{nth($cause, 1)}] {
       &:after {
+        opacity: 1;
+      }
+      .bar:last-of-type:after, .bar:last-of-type:before {
         opacity: 1;
       }
     }
