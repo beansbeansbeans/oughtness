@@ -200,7 +200,7 @@ $dimensions: 'criticalness', 'tractability';
   }
   .results {
     overflow: hidden;
-    border-right: dotted 1px $fiord;
+    border-right: solid 1px $fiord;
     padding-right: 3rem;
     margin-right: $middle-buffer;
     width: calc(100% - #{$detail-width + $middle-buffer});
