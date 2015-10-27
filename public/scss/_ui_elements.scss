@@ -23,7 +23,7 @@
 
 %content-width {
   max-width: 1400px;
-  min-width: 900px;
+  min-width: $min-content-width;
   width: 75vw;
   margin: 0 auto;
 }

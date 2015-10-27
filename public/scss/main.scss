@@ -35,6 +35,7 @@ body {
     }
   }
   nav {
+    min-width: $min-content-width;
     @extend %header-font;
     padding: 20px;
     letter-spacing: 2px;
