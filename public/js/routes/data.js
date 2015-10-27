@@ -309,7 +309,14 @@ module.exports = {
     var handleOverCause = (e) => {
       if(cancelMouseOverCause) { return; }
 
-      var row = e.target.closest('.row');
+      var row;
+
+      if(e.target) {
+        row = e.target.closest('.row');
+      } else {
+        row = e;
+      }
+
       var lastActive = chart.querySelector('.active');
 
       if(!row || row.getAttribute('data-cause-id') === lastActiveCause) { return; }
@@ -466,6 +473,7 @@ module.exports = {
       d.qs('[data-route="data"]').setAttribute("data-loading", false);
       setDimensions();
       handleDrag();
+      handleOverCause(d.qs('.row:nth-of-type(4)'));
     }, false);
   }
 };

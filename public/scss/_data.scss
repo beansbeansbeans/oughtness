@@ -37,9 +37,12 @@ $dimensions: 'criticalness', 'tractability';
         opacity: 0;
       }
     }
+    .help {
+      opacity: 0;
+    }
     .detail .help, .detail .deep-dive {
       position: absolute;
-      left: 3rem;
+      left: 2.5rem;
       right: 0;
       @include transition(opacity 200ms);
     }
@@ -201,7 +204,7 @@ $dimensions: 'criticalness', 'tractability';
   .results {
     overflow: hidden;
     border-right: solid 1px $fiord;
-    padding-right: 3rem;
+    padding-right: 2.6rem;
     margin-right: $middle-buffer;
     width: calc(100% - #{$detail-width + $middle-buffer});
   }
