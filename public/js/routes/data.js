@@ -226,6 +226,7 @@ var update = () => {
 
   var enteringRows = rows.enter().append("div").attr("class", "row")
     .style("height", rowHeight + 'px')
+    .attr("data-cause-slug", x => getCauseSlug(x.cause))
     .attr("data-cause-id", d => d.cause );
 
   enteringRows.append("div").attr("class", "label").append("div").attr("class", "text");
@@ -256,6 +257,7 @@ var update = () => {
   var disabledCauseEls = container.select(".disabled-causes").selectAll(".disabled-cause").data(disabledCauses, _.identity);
 
   disabledCauseEls.enter().append("div").attr("class", "disabled-cause")
+    .attr("data-cause-slug", x => getCauseSlug(x))
     .attr("data-cause-id", _.identity).text(getCause);
 
   disabledCauseEls.exit().remove();
@@ -321,6 +323,7 @@ module.exports = {
         visualization.classList.add("preview");
 
         lastActiveCause = row.getAttribute('data-cause-id');
+        visualization.setAttribute("data-active-cause-id", getCauseSlug(lastActiveCause));
         var causeName = getCause(lastActiveCause);
         var r = description.querySelector(".circle").offsetHeight / 2;
         var enabledVotes = getEnabledVotes();

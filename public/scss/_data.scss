@@ -199,6 +199,7 @@ $dimensions: 'criticalness', 'tractability';
     }
   }
   .results {
+    overflow: hidden;
     border-right: dotted 1px $fiord;
     padding-right: 3rem;
     margin-right: $middle-buffer;
@@ -357,9 +358,6 @@ $dimensions: 'criticalness', 'tractability';
       white-space: nowrap;
       cursor: pointer;
       &:hover {
-        .label .text {
-          font-weight: bold;
-        }
         .bar {
           opacity: 1;
         }
@@ -379,6 +377,7 @@ $dimensions: 'criticalness', 'tractability';
         width: 100%;
         white-space: nowrap;
         position: relative;
+        z-index: 1;
       }
       .bar {
         display: inline-block;
@@ -402,6 +401,18 @@ $dimensions: 'criticalness', 'tractability';
         &:after {
           content: ")";
         }
+      }
+      &:after {
+        content: "";
+        position: absolute;
+        display: block;
+        left: 1rem;
+        right: -10rem;
+        top: 2.1rem;
+        height: 1px;
+        opacity: 0;
+        @include transition(opacity $transition-duration);
+        border-bottom: dotted 1px $fiord;
       }
     }
   }
@@ -471,6 +482,16 @@ $dimensions: 'criticalness', 'tractability';
     @include mobile {
       .subtitle, p {
         font-size: 12px;
+      }
+    }
+  }
+}
+
+@each $cause in $cause-images {
+  .visualization-container[data-active-cause-id=#{nth($cause, 1)}] {
+    .row[data-cause-slug=#{nth($cause, 1)}] {
+      &:after {
+        opacity: 1;
       }
     }
   }
