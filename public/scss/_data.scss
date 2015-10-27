@@ -39,8 +39,8 @@ $dimensions: 'criticalness', 'tractability';
     }
     .detail .help, .detail .deep-dive {
       position: absolute;
-      left: 0;
-      right: 3rem;
+      left: 3rem;
+      right: 0;
       @include transition(opacity 200ms);
     }
   }
@@ -199,9 +199,9 @@ $dimensions: 'criticalness', 'tractability';
     }
   }
   .results {
-    border-left: dotted 1px $fiord;
-    padding-left: 1.5rem;
-    margin-left: $middle-buffer;
+    border-right: dotted 1px $fiord;
+    padding-right: 3rem;
+    margin-right: $middle-buffer;
     width: calc(100% - #{$detail-width + $middle-buffer});
   }
   .slider-help {
@@ -223,7 +223,6 @@ $dimensions: 'criticalness', 'tractability';
   .input {
     position: relative;
     margin: 0 auto;
-    padding-left: 1rem;
     .dimension {
       display: inline-block;
       vertical-align: middle;
@@ -304,13 +303,11 @@ $dimensions: 'criticalness', 'tractability';
   .explanation {
     font-size: 0.8rem;
     line-height: 1.5;
-    padding-left: 0.9rem;
     font-weight: 100;
     margin-top: 2rem;
   }
   .header {
     position: relative;
-    padding-left: 1rem;
     padding-bottom: 1rem;
     text-transform: uppercase;
     font-size: 0.7rem;
@@ -356,26 +353,19 @@ $dimensions: 'criticalness', 'tractability';
       position: absolute;
       left: 0;
       right: 0;
-      padding: 1rem 0 1rem 1rem;
+      padding: 1rem 0;
       white-space: nowrap;
       cursor: pointer;
       &:hover {
         .label .text {
           font-weight: bold;
         }
-        .bar, .values {
-          opacity: 1;
-        }
-        .remove {
+        .bar {
           opacity: 1;
         }
       }
       .values {
-        position: absolute;
-        opacity: 0;
-        @include transition(opacity $transition-duration);
-        font-size: 0.7rem;
-        padding-left: 0.5rem;
+        display: none;
       }
       .label {
         text-align: left;
@@ -401,6 +391,7 @@ $dimensions: 'criticalness', 'tractability';
         }
       }
       .remove {
+        display: none;
         cursor: pointer;
         opacity: 0;
         margin-left: 0.5rem;
