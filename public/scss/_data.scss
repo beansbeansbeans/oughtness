@@ -173,6 +173,19 @@ $dimensions: 'criticalness', 'tractability';
       }
       .lower-vote-labels {
         margin-top: 0.35rem;
+        .label {
+          &:after {
+            content: "";
+            @include square(2px);
+            border-radius: 50%;
+            background: $fiord;
+            position: absolute;
+            display: block;
+            top: calc(100% + 0.5rem);
+            left: 50%;
+            margin-left: -1px;
+          }
+        }
       }
       .graph {
         position: relative;
@@ -203,7 +216,7 @@ $dimensions: 'criticalness', 'tractability';
           fill: $body-background-color;
         }
         .line {
-          stroke: rgba($fiord, 0.75);
+          stroke: rgba($fiord, 0.5);
           stroke-dasharray: 1 1;
         }
       }

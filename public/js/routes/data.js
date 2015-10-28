@@ -202,7 +202,7 @@ var drawMiniBarChart = (causeID) => {
     .style("left", (cause) => { 
       return (getMiniBarLeft(cause) + 4) + 'px';
     })
-    .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (maxHeight + 10) + 'px) rotate(-90deg)'; });
+    .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (maxHeight) + 'px) rotate(-90deg)'; });
   labels.exit().remove();
 
   var stats = getStats(causeID, activeDimensionID);
