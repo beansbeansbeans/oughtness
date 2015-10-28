@@ -114,6 +114,9 @@ var drawMiniBarChart = (causeID) => {
   var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
   var otherCauses = causes.filter(d => d._id !== causeID);
   
+  var graphLines = graphSVG.selectAll(".line").data(otherCauses, (d) => {
+    return d._id;
+  });
   var bars = graphSVG.selectAll(".bar").data(otherCauses, (d) => {
     return d._id;
   });
@@ -139,6 +142,13 @@ var drawMiniBarChart = (causeID) => {
   });
 
   graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer)).attr("height", maxHeight * 2);
+
+  graphLines.enter().append("line").attr("class", "line");
+  graphLines.attr("x1", x => getMiniBarLeft(x) + 2.5)
+    .attr("y1", 0).attr("x2", x => getMiniBarLeft(x) + 2.5)
+    .attr("y2", maxHeight * 2);
+  graphLines.exit().remove();
+
   bars.enter().append("rect").attr("class", "bar");
   bars.attr("width", barWidth).attr("x", getMiniBarLeft).attr("y", 0)
     .attr("height", maxHeight)
@@ -166,7 +176,7 @@ var drawMiniBarChart = (causeID) => {
     .style("left", (cause) => { 
       return (getMiniBarLeft(cause) + 4) + 'px';
     })
-    .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (getBarHeight(d) - 5) + 'px) rotate(-90deg)'; });
+    .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (maxHeight + 10) + 'px) rotate(-90deg)'; });
   labels.exit().remove();
 
   var stats = getStats(causeID, activeDimensionID);

@@ -184,6 +184,10 @@ $dimensions: 'criticalness', 'tractability';
         .bar, .bottom-bar {
           @include transition(all $transition-duration);
         }
+        .line {
+          stroke: $fiord;
+          stroke-dasharray: 1 1;
+        }
       }
     }
   }
