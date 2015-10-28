@@ -41,6 +41,8 @@ var dragging = false;
 var circleOffsetLeft = 0;
 var detailWidth = 0;
 
+var svgBuffer = 2;
+
 var lastActiveCause = -1;
 var activeDimensionID;
 
@@ -99,7 +101,7 @@ var getMiniBarLeft = (cause) => {
   if(index > indexWithinNormalizedData) {
     index--;
   }
-  return index * (barWidth + barBuffer); 
+  return svgBuffer + index * (barWidth + barBuffer); 
 }
 
 var drawMiniBarChart = (causeID) => {
@@ -123,7 +125,7 @@ var drawMiniBarChart = (causeID) => {
   var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses, (d) => {
     return d._id;
   });
-  barBuffer = (detailWidth - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
+  barBuffer = (detailWidth - (svgBuffer * 2) - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
   var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
   var getBarHeight = (d) => {
     var vote = _.find(relevantVotesForDimension, (vote) => {
@@ -141,7 +143,7 @@ var drawMiniBarChart = (causeID) => {
     return d.cause === causeID;
   });
 
-  graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer)).attr("height", maxHeight * 2);
+  graphSVG.attr("width", (otherCauses.length * barWidth) + ((otherCauses.length - 1) * barBuffer) + (svgBuffer * 2)).attr("height", maxHeight * 2);
 
   graphLines.enter().append("line").attr("class", "line");
   graphLines.attr("x1", x => getMiniBarLeft(x) + 2.5)
