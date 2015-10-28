@@ -154,7 +154,18 @@ var drawMiniBarChart = (causeID) => {
 
   upperVotes.enter().append("div").attr("class", "label");
   upperVotes.style("left", (cause) => { 
-    return (getMiniBarLeft(cause) + 4) + 'px';
+    return (getMiniBarLeft(cause) + 3) + 'px';
+  }).text((d) => {
+    var vote = _.find(relevantVotesForDimension, (vote) => {
+      return Object.keys(vote.causes).indexOf(d._id) !== -1;
+    });
+    if(!vote) { return 0; }
+    return Math.round(100 - 100 * vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
+  });
+  upperVotes.exit().remove();
+  lowerVotes.enter().append("div").attr("class", "label");
+  lowerVotes.style("left", (cause) => { 
+    return (getMiniBarLeft(cause) + 3) + 'px';
   }).text((d) => {
     var vote = _.find(relevantVotesForDimension, (vote) => {
       return Object.keys(vote.causes).indexOf(d._id) !== -1;
@@ -162,7 +173,7 @@ var drawMiniBarChart = (causeID) => {
     if(!vote) { return 0; }
     return Math.round(100 * vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
   });
-  upperVotes.exit().remove();
+  lowerVotes.exit().remove();
 
   bars.enter().append("rect").attr("class", "bar");
   bars.attr("width", barWidth).attr("x", getMiniBarLeft).attr("y", 0)
