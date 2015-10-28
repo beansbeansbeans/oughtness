@@ -151,20 +151,6 @@ $dimensions: 'criticalness', 'tractability';
         font-size: 0.75rem;
         margin-bottom: 0.5rem;
       }
-      .circle {
-        @include square(5rem);
-        margin: 1rem auto;
-        border-radius: 50%;
-        overflow: hidden;
-        position: relative;
-        .percent {
-          @include transition(all $transition-duration);
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        }
-      }
     }
     .dimensions-detail {
       padding-top: 2rem;

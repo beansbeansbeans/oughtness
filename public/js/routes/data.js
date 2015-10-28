@@ -265,23 +265,6 @@ var update = () => {
   drawMiniBarChart(lastActiveCause);
 }
 
-var findArea = (k, r) => {
-  var t0, t1 = k * 2 * Math.PI;
-
-  if (k > 0 && k < 1) {
-    t1 = Math.pow(12 * k * Math.PI, 1 / 3);
-    for (var i = 0; i < 10; ++i) {
-      t0 = t1;
-      t1 = (Math.sin(t0) - t0 * Math.cos(t0) + 2 * k * Math.PI) / (1 - Math.cos(t0));
-    }
-    k = (1 - Math.cos(t1 / 2)) / 2;
-  }
-
-  var h = 2 * r * k;
-
-  return h;
-}
-
 module.exports = {
   initialize() {
 
@@ -332,13 +315,10 @@ module.exports = {
         lastActiveCause = row.getAttribute('data-cause-id');
         visualization.setAttribute("data-active-cause-id", getCauseSlug(lastActiveCause));
         var causeName = getCause(lastActiveCause);
-        var r = description.querySelector(".circle").offsetHeight / 2;
         var enabledVotes = getEnabledVotes();
 
         dimensions.forEach((dimension) => {
           var stats = getStats(lastActiveCause, dimension._id);
-
-          description.querySelector('.' + dimension.name + ' .percent').style.height = findArea((stats.won / (stats.won + stats.lost)), r) + 'px';
 
           description.querySelector('.' + dimension.name + ' .numbers').textContent = `${Math.round(100 * stats.won / (stats.won + stats.lost))}%`;
         });
