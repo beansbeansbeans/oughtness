@@ -153,6 +153,7 @@ var drawMiniBarChart = (causeID) => {
   bars.attr("width", barWidth).attr("x", getMiniBarLeft).attr("y", 0)
     .attr("height", maxHeight)
     .attr("fill", colors[dimensionIndex])
+    .attr("stroke", colors[dimensionIndex])
     .style(util.prefixedProperties.transform.dom, (d) => {
       return "translate3d(0, " + getBarHeight(d) + "px, 0) scale(1," + ((maxHeight - getBarHeight(d)) / maxHeight) + ")";
     });
@@ -160,11 +161,10 @@ var drawMiniBarChart = (causeID) => {
 
   bottomBars.enter().append("rect").attr("class", "bottom-bar");
   bottomBars.attr("width", barWidth).attr("x", getMiniBarLeft).attr("y", 0)
-    .attr("height", maxHeight)
-    .attr("fill", colors[dimensionIndex])
-    .attr("fill-opacity", 0.35)
+    .attr("height", getBarHeight)
+    .attr("stroke", colors[dimensionIndex])
     .style(util.prefixedProperties.transform.dom, (d) => {
-      return "translate3d(0, " + (maxHeight + 2) + "px, 0) scale(1," + (getBarHeight(d) / maxHeight) + ")";
+      return "translate3d(0, " + (maxHeight) + "px, 0)";
     });
   bottomBars.exit().remove();
 

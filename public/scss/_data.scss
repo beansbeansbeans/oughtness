@@ -183,6 +183,10 @@ $dimensions: 'criticalness', 'tractability';
         }
         .bar, .bottom-bar {
           @include transition(all $transition-duration);
+          stroke-width: 1px;
+        }
+        .bottom-bar {
+          fill: $body-background-color;
         }
         .line {
           stroke: $fiord;
