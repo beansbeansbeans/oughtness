@@ -160,6 +160,15 @@ $dimensions: 'criticalness', 'tractability';
         font-size: 0.9rem;
         margin-bottom: 1.5rem;
       }
+      .upper-vote-labels, .lower-vote-labels {
+        .label {
+          position: absolute;
+          @include transform(translateX(-50%));
+        }
+      }
+      .upper-vote-labels {
+        height: 1rem;
+      }
       .graph {
         position: relative;
         .labels {
@@ -167,7 +176,7 @@ $dimensions: 'criticalness', 'tractability';
           top: auto;
           bottom: auto;
         }
-        .label {
+        .labels .label {
           position: absolute;
           font-size: 0.7rem;
           font-weight: 100;

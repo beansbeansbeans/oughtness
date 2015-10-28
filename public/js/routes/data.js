@@ -104,14 +104,16 @@ var getMiniBarLeft = (cause) => {
   return svgBuffer + index * (barWidth + barBuffer); 
 }
 
+
 var drawMiniBarChart = (causeID) => {
   if(causeID === -1 || typeof activeDimensionID === 'undefined') { return; }
+  var graph = d3.select(".detail .graph");
+  var graphSVG = graph.select("svg");
+  var upperVotesContainer = d3.select(".detail .upper-vote-labels");
+  var lowerVotesContainer = d3.select(".detail .lower-vote-labels");
   var relevantVotes = getEnabledVotes().filter((d) => {
     return Object.keys(d.causes).indexOf(causeID) !== -1;
   });
-
-  var graph = d3.select(".detail .graph");
-  var graphSVG = graph.select("svg");
 
   var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
   var otherCauses = causes.filter(d => d._id !== causeID);
@@ -119,12 +121,11 @@ var drawMiniBarChart = (causeID) => {
   var graphLines = graphSVG.selectAll(".line").data(otherCauses, (d) => {
     return d._id;
   });
-  var bars = graphSVG.selectAll(".bar").data(otherCauses, (d) => {
-    return d._id;
-  });
-  var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses, (d) => {
-    return d._id;
-  });
+  var upperVotes = upperVotesContainer.selectAll(".label").data(otherCauses, (d) => { return d._id; });
+  var lowerVotes = lowerVotesContainer.selectAll(".label").data(otherCauses, (d) => { return d._id; });
+  var bars = graphSVG.selectAll(".bar").data(otherCauses, (d) => { return d._id; });
+  var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses, (d) => { return d._id; });
+
   barBuffer = (detailWidth - (svgBuffer * 2) - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
   var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
   var getBarHeight = (d) => {
@@ -150,6 +151,18 @@ var drawMiniBarChart = (causeID) => {
     .attr("y1", 0).attr("x2", x => getMiniBarLeft(x) + 2.5)
     .attr("y2", maxHeight * 2);
   graphLines.exit().remove();
+
+  upperVotes.enter().append("div").attr("class", "label");
+  upperVotes.style("left", (cause) => { 
+    return (getMiniBarLeft(cause) + 4) + 'px';
+  }).text((d) => {
+    var vote = _.find(relevantVotesForDimension, (vote) => {
+      return Object.keys(vote.causes).indexOf(d._id) !== -1;
+    });
+    if(!vote) { return 0; }
+    return Math.round(100 * vote.causes[d._id] / (vote.causes[d._id] + vote.causes[causeID]));
+  });
+  upperVotes.exit().remove();
 
   bars.enter().append("rect").attr("class", "bar");
   bars.attr("width", barWidth).attr("x", getMiniBarLeft).attr("y", 0)
