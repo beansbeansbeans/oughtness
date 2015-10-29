@@ -353,12 +353,6 @@ module.exports = {
         var causeName = getCause(lastActiveCause);
         var enabledVotes = getEnabledVotes();
 
-        dimensions.forEach((dimension) => {
-          var stats = getStats(lastActiveCause, dimension._id);
-
-          description.querySelector('.' + dimension.name + ' .numbers').textContent = `${Math.round(100 * stats.won / (stats.won + stats.lost))}%`;
-        });
-
         description.querySelector('.image').setAttribute("data-cause-id", getCauseSlug(lastActiveCause));
         description.querySelector('.title').innerHTML = causeName;
         description.querySelector('.description').innerHTML = _.findWhere(causes, { _id: lastActiveCause }).description;

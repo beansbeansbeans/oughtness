@@ -71,7 +71,6 @@ $dimensions: 'criticalness', 'tractability';
     }
     .context {
       @extend %clearfix;
-      border-bottom: dotted 1px $outer-space;
       padding-bottom: 2.1rem;
       margin-top: -2px;
       .title {
@@ -92,68 +91,51 @@ $dimensions: 'criticalness', 'tractability';
       }
     }
     .dimensions-container {
-      @extend %clearfix;
-      border-bottom: dotted 1px $fiord;
+      margin-top: 0.1rem;
+      border-top: dotted 1px $fiord;
+      overflow: visible;
       @each $dimension in $dimensions {
         &[data-active-dimension=#{$dimension}] {
           .#{$dimension} {
             opacity: 1;
-            position: relative;
-            &:before, &:after {
-              content: "";
-              @include square(1.5rem);
-              position: absolute;
-              display: block;
-              @include transform(rotate(45deg));
-              left: 50%;
-              top: 100%;
-              margin-left: -0.75rem;
-            }
-            &:before {
-              border: dotted 1px $fiord;
-              margin-top: -0.75rem;
-            }
             &:after {
-              background: $body-background-color;
-              margin-top: -0.85rem;
-              border: solid 1px $body-background-color;
+              opacity: 1;
             }
           }
         }
       }
       .dimension {
+        position: relative;
+        display: inline-block;
+        padding-top: 0.85rem;
         cursor: pointer;
-        padding: 2.5rem 0;
         font-size: 0.8rem;
-        width: 50%;
-        float: left;
-        text-align: center;
         &.criticalness {
-          border-right: dotted 1px $fiord;
-          .circle {
-            border: solid 1px $criticalness-color;
-            .percent {
-              background-color: $criticalness-color;
-            }
-          }
+          margin-right: 0.5rem;
         }
         &.tractability {
-          .circle {
-            border: solid 1px $tractability-color;
-            .percent {
-              background-color: $tractability-color;
-            }
-          }
+          float: right;
         }
+        &:after {
+          content: "";
+          opacity: 0;
+          background: $fiord;
+          width: 100%;
+          height: 3px;
+          display: block;
+          position: absolute;
+          top: -2px;
+          @include transition(opacity $transition-duration);
+        }            
       }
-      .label {
+      .label, .text {
         text-transform: uppercase;
         font-size: 0.75rem;
         margin-bottom: 0.5rem;
       }
     }
     .dimensions-detail {
-      padding-top: 2rem;
+      padding-top: 1.7rem;
       .more-info {
         line-height: 1.5;
         font-weight: 100;
