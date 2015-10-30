@@ -31,8 +31,6 @@ var getCause = id => _.findWhere(causes, { _id: id }).name;
 var getCauseSlug = id => _.findWhere(causes, { _id: id }).slug;
 var getDimension = id => _.findWhere(dimensions, { _id: id }).name;
 
-var cancelMouseOverCause = false;
-
 var rowHeight = 50;
 var trackWidth = 0;
 var control;
@@ -104,6 +102,8 @@ var getMiniBarLeft = (cause) => {
   return svgBuffer + index * (barWidth + barBuffer); 
 }
 
+var relevantVotes;
+var relevantVotesForDimension;
 
 var drawMiniBarChart = (causeID) => {
   if(causeID === -1 || typeof activeDimensionID === 'undefined') { return; }
@@ -111,11 +111,11 @@ var drawMiniBarChart = (causeID) => {
   var graphSVG = graph.select("svg");
   var upperVotesContainer = d3.select(".detail .upper-vote-labels");
   var lowerVotesContainer = d3.select(".detail .lower-vote-labels");
-  var relevantVotes = getEnabledVotes().filter((d) => {
+  relevantVotes = getEnabledVotes().filter((d) => {
     return Object.keys(d.causes).indexOf(causeID) !== -1;
   });
 
-  var relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
+  relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
   var otherCauses = causes.filter(d => d._id !== causeID);
   
   var graphLines = graphSVG.selectAll(".line").data(otherCauses, (d) => {
@@ -199,10 +199,10 @@ var drawMiniBarChart = (causeID) => {
   });
   labels.enter().append("div").attr("class", "label");
   labels.text(d => getAbbreviation(d.name))
+    .attr("data-compared-cause", d => d._id)
     .style("left", (cause) => { 
       return (getMiniBarLeft(cause) + 4) + 'px';
-    })
-    .style(util.prefixedProperties.transform.dom, (d) => { return "translateY(" + (maxHeight) + 'px) rotate(-90deg)'; });
+    });
   labels.exit().remove();
 
   var stats = getStats(causeID, activeDimensionID);
@@ -318,6 +318,7 @@ module.exports = {
     var description = d.qs('.detail .deep-dive');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
+    var comparisonHighlight = description.querySelector(".highlight-comparison .text");
 
     var setActive = (lastActiveCause, dimension) => {
       activeDimensionID = dimension;
@@ -325,9 +326,17 @@ module.exports = {
       drawMiniBarChart(lastActiveCause);
     }
 
-    var handleOverCause = (e) => {
-      if(cancelMouseOverCause) { return; }
+    var handleOverDescription = (e) => {
+      var comparedCause = e.target.dataset.comparedCause;
+      if(e.target.classList.contains("label") && comparedCause) {
+        var vote = _.find(relevantVotesForDimension, (vote) => {
+          return Object.keys(vote.causes).indexOf(comparedCause) !== -1;
+        });
+        comparisonHighlight.innerHTML = `When pitted against ${getCause(comparedCause).toLowerCase()}, ${getCause(lastActiveCause).toLowerCase()} won ${vote.causes[lastActiveCause]} out of ${vote.causes[lastActiveCause] + vote.causes[comparedCause]} times.`;
+      }
+    }
 
+    var handleOverCause = (e) => {
       var row;
 
       if(e.target) {
@@ -373,6 +382,7 @@ module.exports = {
 
     if(UserAgent.getBrowserInfo().desktop) {
       chart.addEventListener("mouseover", _.debounce(handleOverCause, 150));
+      description.addEventListener("mouseover", handleOverDescription);
       window.addEventListener("mousedown", (e) => {
         if(e.target.classList.contains("controls")) { dragging = true; }
       });
@@ -380,6 +390,7 @@ module.exports = {
       window.addEventListener("mousemove", handleMove);
     } else {
       chart.addEventListener("touchstart", handleOverCause);
+      description.addEventListener("touchstart", handleOverDescription);
       window.addEventListener("touchstart", (e) => {
         if(e.target.classList.contains("controls") || e.target.closest(".input")) {
           dragging = true;
@@ -388,14 +399,6 @@ module.exports = {
       window.addEventListener("touchend", handleUp);
       window.addEventListener("touchmove", handleMove);
     }
-
-    description.addEventListener("mouseover", () => {
-      cancelMouseOverCause = true;
-    });
-
-    description.addEventListener("mouseleave", () => {
-      cancelMouseOverCause = false;
-    });
 
     chart.addEventListener("mouseleave", () => {
       var lastActive = chart.querySelector('.active');

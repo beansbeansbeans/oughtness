@@ -169,18 +169,31 @@ $dimensions: 'criticalness', 'tractability';
           }
         }
       }
+      .highlight-comparison {
+        margin-top: 5rem;
+        border-top: dotted 1px $fiord;
+        padding-top: 1rem;
+        .text {
+          line-height: 1.5;
+          font-weight: 100;
+          font-size: 0.9rem;
+        }
+      }
       .graph {
         position: relative;
+        svg {
+          pointer-events: none;
+        }
         .labels {
-          position: relative;
-          top: auto;
-          bottom: auto;
+          position: absolute;
+          top: 0;
+          z-index: 1;
         }
         .labels .label {
           position: absolute;
           font-size: 0.7rem;
           font-weight: 100;
-          @include transform(rotate(-90deg));
+          @include transform(translateY(162px) rotate(-90deg));
           transform-origin: left;
           -webkit-transform-origin: left;
           white-space: nowrap;
@@ -189,6 +202,15 @@ $dimensions: 'criticalness', 'tractability';
           width: 2rem;
           text-align: right;
           @include transition(all $transition-duration);
+          cursor: pointer;
+          &:before {
+            content: "";
+            width: 150px;
+            height: 10px;
+            display: block;
+            position: absolute;
+            top: -1px;
+          }
         }
         .bar, .bottom-bar {
           @include transition(all $transition-duration);
