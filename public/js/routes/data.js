@@ -39,6 +39,7 @@ var dragging = false;
 var circleOffsetLeft = 0;
 var detailWidth = 0;
 
+var comparisonHighlight;
 var svgBuffer = 2;
 
 var lastActiveCause = -1;
@@ -208,6 +209,21 @@ var drawMiniBarChart = (causeID) => {
   var stats = getStats(causeID, activeDimensionID);
 
   d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(activeDimensionID)} ${getCause(causeID).toLowerCase()} won ${stats.won} out of ${stats.won + stats.lost} times. `;
+
+  handleOverDescription(normalizedVisData[0].cause);
+}
+
+var handleOverDescription = (e) => {
+  var comparedCause = e;
+  if(typeof e === "object") {
+    comparedCause = e.target.dataset.comparedCause;
+  }
+  if(comparedCause) {
+    var vote = _.find(relevantVotesForDimension, (vote) => {
+      return Object.keys(vote.causes).indexOf(comparedCause) !== -1;
+    });
+    comparisonHighlight.innerHTML = `When pitted against ${getCause(comparedCause).toLowerCase()}, ${getCause(lastActiveCause).toLowerCase()} won ${vote.causes[lastActiveCause]} out of ${vote.causes[lastActiveCause] + vote.causes[comparedCause]} times.`;
+  }
 }
 
 var update = () => {
@@ -318,22 +334,12 @@ module.exports = {
     var description = d.qs('.detail .deep-dive');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
-    var comparisonHighlight = description.querySelector(".highlight-comparison .text");
+    comparisonHighlight = description.querySelector(".highlight-comparison .text");
 
     var setActive = (lastActiveCause, dimension) => {
       activeDimensionID = dimension;
       description.querySelector('.dimensions-container').setAttribute("data-active-dimension", getDimension(activeDimensionID));
       drawMiniBarChart(lastActiveCause);
-    }
-
-    var handleOverDescription = (e) => {
-      var comparedCause = e.target.dataset.comparedCause;
-      if(e.target.classList.contains("label") && comparedCause) {
-        var vote = _.find(relevantVotesForDimension, (vote) => {
-          return Object.keys(vote.causes).indexOf(comparedCause) !== -1;
-        });
-        comparisonHighlight.innerHTML = `When pitted against ${getCause(comparedCause).toLowerCase()}, ${getCause(lastActiveCause).toLowerCase()} won ${vote.causes[lastActiveCause]} out of ${vote.causes[lastActiveCause] + vote.causes[comparedCause]} times.`;
-      }
     }
 
     var handleOverCause = (e) => {
