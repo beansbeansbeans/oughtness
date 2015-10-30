@@ -40,6 +40,7 @@ var circleOffsetLeft = 0;
 var detailWidth = 0;
 
 var comparisonHighlight;
+var description;
 var svgBuffer = 2;
 
 var lastActiveCause = -1;
@@ -219,6 +220,10 @@ var handleOverDescription = (e) => {
     comparedCause = e.target.dataset.comparedCause;
   }
   if(comparedCause) {
+    [].forEach.call(description.querySelectorAll('.label[data-compared-cause]'), function(d) {
+      d.classList.remove("active");
+    });
+    description.querySelector('.label[data-compared-cause="' + comparedCause + '"]').classList.add("active");
     var vote = _.find(relevantVotesForDimension, (vote) => {
       return Object.keys(vote.causes).indexOf(comparedCause) !== -1;
     });
@@ -331,7 +336,7 @@ module.exports = {
     control = d.qs(".slider .controls");
     var firstPercentLabel = d.qs('.input .criticalness .value');
     var secondPercentLabel = d.qs('.input .tractability .value');
-    var description = d.qs('.detail .deep-dive');
+    description = d.qs('.detail .deep-dive');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
     comparisonHighlight = description.querySelector(".highlight-comparison .text");

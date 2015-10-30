@@ -203,6 +203,9 @@ $dimensions: 'criticalness', 'tractability';
           text-align: right;
           @include transition(all $transition-duration);
           cursor: pointer;
+          &.active {
+            color: red;
+          }
           &:before {
             content: "";
             width: 150px;
