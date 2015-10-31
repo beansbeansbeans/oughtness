@@ -95,6 +95,7 @@ var barBuffer;
 var indexWithinNormalizedData;
 
 var getMiniBarLeft = (cause) => {
+  if(!cause) { return; }
   var index = _.findIndex(normalizedVisData, (d) => {
     return d.cause === cause._id;
   });
@@ -106,6 +107,7 @@ var getMiniBarLeft = (cause) => {
 
 var relevantVotes;
 var relevantVotesForDimension;
+var otherCauses;
 
 var drawMiniBarChart = (causeID) => {
   if(causeID === -1 || typeof activeDimensionID === 'undefined') { return; }
@@ -118,7 +120,7 @@ var drawMiniBarChart = (causeID) => {
   });
 
   relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
-  var otherCauses = causes.filter(d => d._id !== causeID);
+  otherCauses = causes.filter(d => d._id !== causeID);
   
   var graphLines = graphSVG.selectAll(".line").data(otherCauses, (d) => {
     return d._id;
@@ -199,19 +201,26 @@ var drawMiniBarChart = (causeID) => {
   var labels = graph.select(".labels").selectAll(".label").data(otherCauses, (d) => {
     return d._id;
   });
-  labels.enter().append("div").attr("class", "label");
-  labels.text(d => getAbbreviation(d.name))
-    .attr("data-compared-cause", d => d._id)
+  labels.enter().append("div").attr("class", "label").append("div").attr("class", "text");
+  labels.attr("data-compared-cause", d => d._id)
     .style("left", (cause) => { 
       return (getMiniBarLeft(cause) + 4) + 'px';
-    });
+    })
+    .select(".text").text(d => getAbbreviation(d.name));
   labels.exit().remove();
 
   var stats = getStats(causeID, activeDimensionID);
 
   d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(activeDimensionID)} ${getCause(causeID).toLowerCase()} won ${stats.won} out of ${stats.won + stats.lost} times. `;
 
-  handleOverDescription(normalizedVisData[0].cause);
+  var leftMostCause = otherCauses.reduce((prev, curr) => {
+    if(!prev || getMiniBarLeft(curr) < getMiniBarLeft(prev)) {
+      return curr;
+    }
+    return prev;
+  }, 0);
+
+  handleOverDescription(leftMostCause._id);
 }
 
 var handleOverDescription = (e) => {

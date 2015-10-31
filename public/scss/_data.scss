@@ -204,15 +204,34 @@ $dimensions: 'criticalness', 'tractability';
           @include transition(all $transition-duration);
           cursor: pointer;
           &.active {
-            color: red;
+            &:after {
+              content: "[";
+              position: absolute;
+              right: 100%;
+              font-size: 0.75rem;
+              top: -1px;
+            }
+            .text {
+              pointer-events: none;
+              &:after {
+                content: "";
+                width: 1.7rem;
+                height: 1px;
+                border-bottom: dotted 1px $fiord;
+                position: absolute;
+                display: block;
+                right: calc(100% + 7px);
+                top: 3px;
+              }
+            }
           }
           &:before {
             content: "";
             width: 150px;
-            height: 10px;
+            height: 20px;
             display: block;
             position: absolute;
-            top: -1px;
+            top: -5px;
           }
         }
         .bar, .bottom-bar {
