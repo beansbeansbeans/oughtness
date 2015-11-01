@@ -136,10 +136,13 @@ $dimensions: 'criticalness', 'tractability';
     }
     .dimensions-detail {
       padding-top: 1.7rem;
-      .more-info {
+      .more-info, .graph-explanation {
         line-height: 1.5;
         font-weight: 100;
         font-size: 0.9rem;
+      }
+      .graph-explanation {
+        margin-top: 1rem;
         margin-bottom: 2.5rem;
       }
       .upper-vote-labels, .lower-vote-labels {

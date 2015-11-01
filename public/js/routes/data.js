@@ -122,13 +122,11 @@ var drawMiniBarChart = (causeID) => {
   relevantVotesForDimension = relevantVotes.filter(d => d.dimension === activeDimensionID);
   otherCauses = causes.filter(d => d._id !== causeID);
   
-  var graphLines = graphSVG.selectAll(".line").data(otherCauses, (d) => {
-    return d._id;
-  });
-  var upperVotes = upperVotesContainer.selectAll(".label").data(otherCauses, (d) => { return d._id; });
-  var lowerVotes = lowerVotesContainer.selectAll(".label").data(otherCauses, (d) => { return d._id; });
-  var bars = graphSVG.selectAll(".bar").data(otherCauses, (d) => { return d._id; });
-  var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses, (d) => { return d._id; });
+  var graphLines = graphSVG.selectAll(".line").data(otherCauses, x => x._id);
+  var upperVotes = upperVotesContainer.selectAll(".label").data(otherCauses, x => x._id);
+  var lowerVotes = lowerVotesContainer.selectAll(".label").data(otherCauses, x => x._id);
+  var bars = graphSVG.selectAll(".bar").data(otherCauses, x => x._id);
+  var bottomBars = graphSVG.selectAll(".bottom-bar").data(otherCauses, x => x._id);
 
   barBuffer = (detailWidth - (svgBuffer * 2) - (barWidth * otherCauses.length)) / (otherCauses.length - 1);
   var barHeightScale = d3.scale.linear().domain([0, 1]).range([0, maxHeight]);
@@ -212,6 +210,7 @@ var drawMiniBarChart = (causeID) => {
   var stats = getStats(causeID, activeDimensionID);
 
   d.qs(".dimensions-detail .more-info").innerHTML = `With respect to ${getDimension(activeDimensionID)} ${getCause(causeID).toLowerCase()} won ${stats.won} out of ${stats.won + stats.lost} times. `;
+  d.qs(".dimensions-detail .graph-explanation span").innerHTML = getCause(causeID).toLowerCase();
 
   var leftMostCause = otherCauses.reduce((prev, curr) => {
     if(!prev || getMiniBarLeft(curr) < getMiniBarLeft(prev)) {
