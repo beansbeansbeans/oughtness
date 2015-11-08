@@ -40,11 +40,14 @@ var circleOffsetLeft = 0;
 var detailWidth = 0;
 
 var comparisonHighlight;
+var detail;
 var description;
 var svgBuffer = 2;
 
 var lastActiveCause = -1;
 var activeDimensionID;
+
+var overDetail = false;
 
 var visData, normalizedVisData;
 var weights = [];
@@ -344,6 +347,7 @@ module.exports = {
     control = d.qs(".slider .controls");
     var firstPercentLabel = d.qs('.input .criticalness .value');
     var secondPercentLabel = d.qs('.input .tractability .value');
+    detail = d.qs('.detail');
     description = d.qs('.detail .deep-dive');
     var chart = d.qs('.chart');
     var visualization = d.qs('.visualization-container');
@@ -356,6 +360,7 @@ module.exports = {
     }
 
     var handleOverCause = (e) => {
+      if(overDetail) { return; }
       var row;
 
       if(e.target) {
@@ -400,7 +405,13 @@ module.exports = {
     }
 
     if(UserAgent.getBrowserInfo().desktop) {
-      chart.addEventListener("mouseover", _.debounce(handleOverCause, 150));
+      detail.addEventListener("mouseover", () => {
+        overDetail = true;
+      });
+      detail.addEventListener("mouseout", () => {
+        overDetail = false;
+      });
+      chart.addEventListener("mouseover", _.debounce(handleOverCause, 200));
       description.addEventListener("mouseover", handleOverDescription);
       window.addEventListener("mousedown", (e) => {
         if(e.target.classList.contains("controls")) { dragging = true; }
