@@ -516,7 +516,7 @@ module.exports = {
       d.qs('[data-route="data"]').setAttribute("data-loading", false);
       setDimensions();
       handleDrag();
-      handleOverCause(d.qs('.row:nth-of-type(4)'));
+      handleOverCause(d.qs('.row:nth-of-type(1)'));
     }, false);
   }
 };
