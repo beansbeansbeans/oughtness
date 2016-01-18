@@ -9,7 +9,7 @@ var closest = require('./closest');
 if(window.location.hostname === "localhost") {
   api.setURL("http://localhost:4400");
 } else {
-  api.setURL("http://oughtness-49671.onmodulus.net");
+  api.setURL("https://oughtness-49671.onmodulus.net");
 }
 
 window.addEventListener("click", (e) => {
