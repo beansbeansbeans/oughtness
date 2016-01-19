@@ -437,6 +437,7 @@ module.exports = {
 
     chart.addEventListener("click", (e) => {
       if(e.target.classList.contains('remove')) {
+        return;
         if(disabledCauses.length < causes.length - 2) {
           disabledCauses.push(e.target.closest('.row').getAttribute("data-cause-id"));
           update();          
@@ -486,9 +487,9 @@ module.exports = {
     });
 
     api.get('/vectors', (error, result) => {
-      data = result.data;
+      data = result;
 
-      result.data.result.forEach((d, i) => {
+      result.result.forEach((d, i) => {
         var total = 0;
 
         d.causes.forEach((row, rowIndex) => {

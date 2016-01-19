@@ -41,13 +41,13 @@ window.addEventListener("DOMContentLoaded", () => {
   util.async([
     (done) => {
       api.get('/causes', (err, results) => {
-        state.set('causes', results.data);
+        state.set('causes', results);
         done();
       });
     },
     (done) => {
       api.get('/dimensions', (err, results) => {
-        state.set('dimensions', results.data);
+        state.set('dimensions', results);
         done();
       });
     }
